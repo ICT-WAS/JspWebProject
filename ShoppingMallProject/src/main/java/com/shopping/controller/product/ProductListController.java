@@ -4,6 +4,4 @@ package com.shopping.controller.product;
 
 //@WebServlet("/product/list")
 public class ProductListController {
-	
-
 }
