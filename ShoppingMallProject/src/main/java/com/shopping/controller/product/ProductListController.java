@@ -1,9 +1,7 @@
 package com.shopping.controller.product;
+import javax.servlet.annotation.WebServlet;
 
-//import javax.servlet.annotation.WebServlet;
-
-//@WebServlet("/product/list")
+@WebServlet("/product/list")
 public class ProductListController {
-	
 
 }

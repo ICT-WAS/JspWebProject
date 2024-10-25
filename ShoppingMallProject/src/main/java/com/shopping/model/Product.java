@@ -137,9 +137,4 @@ public class Product {
 				+ ", quantity=" + quantity + ", registrationDate=" + registrationDate + ", brand=" + brand + ", status="
 				+ status + "]";
 	}
-	
-	
-	
-	
-	
 }

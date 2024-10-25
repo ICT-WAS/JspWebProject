@@ -64,5 +64,4 @@ public class ProductDao extends SuperDao{
 		Product product = new Product();
 		return product;
 	}
-
 }
