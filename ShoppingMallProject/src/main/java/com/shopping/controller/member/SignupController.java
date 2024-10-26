@@ -83,14 +83,14 @@ public class SignupController extends HttpServlet {
 		
 		int cnt = dao.signUp(bean);
 		
-		if(cnt==-1) {
+		if(cnt==1) {
+			request.getSession().setAttribute("id", id);
+			response.sendRedirect("/main");
+		}else {
 			// 실패 시 처리 방안
 			// 1. 다시 회원가입으로 돌려보내고 alert 띄운다.
 			// 2. 메인으로 보낸다.
 			doGet(request, response);
-		}else {
-			request.getSession().setAttribute("id", id);
-			response.sendRedirect("/main");
 		}
 	}
 

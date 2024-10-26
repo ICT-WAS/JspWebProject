@@ -46,7 +46,7 @@ public class MemberDao extends SuperDao{
 	}
 
 	public int signUp(Member bean) {
-		int cnt = -1;
+		int cnt = 0;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
