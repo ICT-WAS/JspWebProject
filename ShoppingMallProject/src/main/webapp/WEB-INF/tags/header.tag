@@ -370,13 +370,15 @@
                                     <ul>
                                         <li><a href="my-account.html"><span class="fa fa-user"></span> 
                                         <span>로그인</span><i class="fa fa-chevron-down"></i></a>
-                                            <c:if test="${sessionScope.id == null}">
-                                            	<li><a href="/ShoppingMallProject/login">로그인</a></li>
-                                               	<li><a href="/ShoppingMallProject/signup">회원가입</a></li>
-                                            </c:if>
-                                            <c:if test="${sessionScope.id != null}">
-												<li><a href="/ShoppingMallProject/logout">로그아웃</a></li>
-											</c:if>
+                                        	<ul class="ht-dropdown ht-my_account">
+                                            		<c:if test="${sessionScope.id == null}">
+                                            			<li><a href="/ShoppingMallProject/login">로그인</a></li>
+                                               			<li><a href="/ShoppingMallProject/signup">회원가입</a></li>
+                                            		</c:if>
+                                            		<c:if test="${sessionScope.id != null}">
+								<li><a href="/ShoppingMallProject/logout">로그아웃</a></li>
+							<c:if>
+						</ul>
                                         </li>
                                     </ul>
                                 </div>
