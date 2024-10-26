@@ -1,4 +1,3 @@
-<%@page import="com.shopping.model.CartProduct"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
@@ -16,6 +15,7 @@
     <meta charset="UTF-8">
 	
 	<!-- 스크립트 -->
+	
 	<style>
 		.button {
 		    background: #ffffff;
@@ -43,25 +43,30 @@
 	    width: 100%;
 	    border: 1px solid transparent;
 	    cursor: pointer;
-	}
-	
-	.point-input {
-	    background: #ffffff;
-	    border: 1px solid #e5e5e5;
-	    border-radius: 0;
-	    height: 42px;
-	    width: 100%;
-	    padding: 0 0 0 10px;
 		}
-	
-	 table {
-            border-collapse: collapse; /* 테두리 겹침 방지 */
-            width: 100%; /* 테이블 너비 조정 (선택 사항) */
-        }
-        th, td {
-            border: none; /* 기본 테두리 제거 */
-            padding: 8px; /* 셀 내부 여백 */s
-        }
+		
+		.point-input {
+		    background: #ffffff;
+		    border: 1px solid #e5e5e5;
+		    border-radius: 0;
+		    height: 42px;
+		    width: 100%;
+		    padding: 0 0 0 10px;
+			}
+		
+		 table {
+	            border-collapse: collapse; /* 테두리 겹침 방지 */
+	            width: 100%; /* 테이블 너비 조정 (선택 사항) */
+	        }
+	        th, td {
+	            border: none; /* 기본 테두리 제거 */
+	            padding: 8px; /* 셀 내부 여백 */s
+	        }
+	        
+	        .img-thumbnail {
+			    width: 60px; /* 원하는 너비 */
+			    height: auto; /* 비율 유지 */
+			}
 	
 	</style>
 	
@@ -78,7 +83,7 @@
             	<div class="container-xxl">
             		<div class="row">
                     <div class="col-6 col-lg-8">
-                        <form action="javascript:void(0)">
+                        <form method="post">
                             <div class="checkbox-form">
                                 <h3>주문서</h3>
                                 <div class="row">
@@ -143,22 +148,14 @@
 		                                <table class="table">
 		                                	<c:forEach var="cartItem" items="${cartItems}">
 		                                		<tr>
-		                                            <td><img class="img-thumbnail" src="static/template_assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></td>
+		                                            <td><img class="img-thumbnail" src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></td>
 		                                            <td class="uren-product-name"><a href="javascript:void(0)">${cartItem.name}</a></td>
-		                                            <td class="uren-product-price"><span class="amount">${cartItem.price}원</span></td>
+		                                            <td class="uren-product-price"><span class="amount">${cartItem.formattedPrice}원</span></td>
 		                                            <td class="quantity"><span class="amount">x${cartItem.quantity}</span></td>
-		                                            <td class="product-subtotal"><span class="amount">${cartItem.total}원</span></td>
+		                                            <td class="product-subtotal"><span class="amount">${cartItem.formattedTotal}원</span></td>
 		                                        </tr>
 		                                	</c:forEach>
-                                    	<tr>
-                                            <td><img class="img-thumbnail" src="static/template_assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></td>
-                                            <td class="uren-product-name"><a href="javascript:void(0)">Juma rema pola</a></td>
-                                            <td class="uren-product-price"><span class="amount">$46.80</span></td>
-                                            <td class="quantity"><span class="amount">1</span></td>
-                                            <td class="product-subtotal"><span class="amount">$46.80</span></td>
-                                        </tr>
-                                </table>
-                                
+                                		</table>
 				                    </div>
                                     
                                     <div class="col-md-12 mb-3">
@@ -172,14 +169,14 @@
 		                            </div>
 		                            <div class="col-md-3">
 		                                <div class="checkout-form-list">
-                                            <input placeholder="" type="number" class="point-input">
+                                            <input name="point" placeholder="" type="number" class="point-input">
                                         </div>
 		                            </div>
 		                            <div class="col-md-2">
-		                            	<input type="submit" value="전액 사용" class="button">
+		                            	<input type="button" value="전액 사용" class="button">
 		                            </div>
 		                            <div class="col-md-3 mt-3">
-		                                보유 적립금 : 0원
+		                                보유 적립금 : ${member.point}원
 		                            </div>
 	                    			
 	                    			<div class="col-md-12 mb-3">
@@ -187,6 +184,18 @@
 				                    <!-- 결제 수단 선택 -->
 				                    <div class="col-md-12 mt-3">
 		                                결제 수단<hr>
+		                            </div>
+		                            
+		                            
+		                            <div class="col-md-12 mb-3">
+		                            </div>
+				                    <!-- 개인정보 및 결제 동의 -->
+				                    <div class="col-md-12 mt-3">
+		                                개인정보 및 결제 동의<hr>
+		                            </div>
+		                            <div class="col-md-12">
+		                                개인정보 수집∙이용 및 처리 동의<br>
+		                                위 내용을 확인 하였으며 결제에 동의합니다.
 		                            </div>
 				                    
 				                    <div class="col-md-12 mb-3">

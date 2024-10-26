@@ -12,14 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.shopping.model.CartProductDto;
 
-@WebServlet("/order")
+@WebServlet("/order/checkout")
 public class OrderController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private List<CartProductDto> cartItems;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		List<CartProductDto> cartItems = new ArrayList<CartProductDto>();
+	
+		// List<CartProductDto> cartItems = new ArrayList<CartProductDto>();
+		cartItems = new ArrayList<CartProductDto>();
 		
 		// 테스트 데이터 생성
 		CartProductDto cartProduct = new CartProductDto();
@@ -57,11 +59,19 @@ public class OrderController extends HttpServlet {
 		
 		request.setAttribute("cartItems", cartItems);
 		
-		request.getRequestDispatcher("/WEB-INF/views/order/order.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/order/checkout.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		
+		// OrderService 객체를 통해 주문 진행
+		
+		String orderNo = "";
+		
+		request.getSession().setAttribute("cartItems", cartItems);
+		
+		// 주문 확인 페이지로 이동
+		response.sendRedirect("/ShoppingMallProject/order/completed");
 	}
 
 }

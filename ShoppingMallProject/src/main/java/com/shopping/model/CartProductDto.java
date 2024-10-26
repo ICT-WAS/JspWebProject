@@ -1,5 +1,7 @@
 package com.shopping.model;
 
+import java.text.DecimalFormat;
+
 public class CartProductDto {
 	private Long cartProductId;			// 장바구니상품고유ID
 	private Long cartId;				// 장바구니고유ID
@@ -8,7 +10,11 @@ public class CartProductDto {
 	private Integer quantity;			// 장바구니 수량
 	private Integer price;				// 상품 단가
 	private Integer total;				// 항목 가격
-
+	
+	private String formattedPrice;
+	private String formattedTotal;
+	
+	DecimalFormat df = new DecimalFormat("#,###");
 	
 	public Long getCartProductId() {
 		return cartProductId;
@@ -33,7 +39,9 @@ public class CartProductDto {
 	}
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
-		total = price == null ? 0 : price * quantity;
+		
+		Integer _total = quantity == null ? 0 : price * quantity;
+		setTotal(_total);
 	}
 	public String getName() {
 		return name;
@@ -47,10 +55,24 @@ public class CartProductDto {
 	}
 	public void setPrice(Integer price) {
 		this.price = price;
-		total = quantity == null ? 0 : price * quantity;
+		formattedPrice = df.format(price);
+		
+		Integer _total = quantity == null ? 0 : price * quantity;
+		setTotal(_total);
 	}
 	public Integer getTotal() {
 		return total;
+	}
+	// 내부적으로만 사용(계산에 의해서만 정해짐. 외부에서 직접 정의 불가)
+	private void setTotal(Integer total) {
+		this.total = total;
+		formattedTotal = df.format(total);
+	}
+	public String getFormattedPrice() {
+		return formattedPrice;
+	}
+	public String getFormattedTotal() {
+		return formattedTotal;
 	}
 	
 	public CartProductDto(Long cartProductId, Long cartId, Long productId, String name, Integer quantity, Integer price) {
@@ -60,9 +82,7 @@ public class CartProductDto {
 		this.productId = productId;
 		this.name = name;
 		this.quantity = quantity;
-		this.price = price;
-		
-		total = price * quantity;
+		setPrice(price);
 	}
 	public CartProductDto() {
 		super();
