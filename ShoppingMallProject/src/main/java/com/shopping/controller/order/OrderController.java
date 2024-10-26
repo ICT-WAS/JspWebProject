@@ -11,12 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.shopping.model.CartProductDto;
+import com.shopping.model.Order;
+import com.shopping.service.OrderService;
 
 @WebServlet("/order/checkout")
 public class OrderController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private List<CartProductDto> cartItems;
+	private OrderService orderService = new OrderService();
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// List<CartProductDto> cartItems = new ArrayList<CartProductDto>();
@@ -67,6 +70,19 @@ public class OrderController extends HttpServlet {
 		
 		String orderNo = "";
 		
+		Order order = new Order();
+		order.setMemberId(1L);
+		order.setOrderNumber("12123423");
+		order.setTotalAmount(14000);
+		order.setUsedPoints(1000);
+		order.setPaymentMethod("결제안했지롱");
+		order.setExpectedRewardAmount(10);
+		order.setFinalPaymentAmount(13000);
+		
+		
+		// 여기서부터가 진짜.
+		
+		boolean success = orderService.processOrder(order, null);
 		request.getSession().setAttribute("cartItems", cartItems);
 		
 		// 주문 확인 페이지로 이동

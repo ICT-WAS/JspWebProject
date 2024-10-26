@@ -1,8 +1,11 @@
 package com.shopping.model;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
-public class CartProductDto {
+public class CartProductDto implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
 	private Long cartProductId;			// 장바구니상품고유ID
 	private Long cartId;				// 장바구니고유ID
 	private Long productId;				// 상품고유ID
