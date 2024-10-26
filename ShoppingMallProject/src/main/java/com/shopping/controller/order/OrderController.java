@@ -1,33 +1,24 @@
 package com.shopping.controller.order;
 
 import java.io.IOException;
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 
-=======
->>>>>>> bc5306b8daf57ce438ef379915e71d4a0ed97397
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-<<<<<<< HEAD
 import com.shopping.model.CartProductDto;
 
 @WebServlet("/order/checkout")
-=======
-@WebServlet("/order")
->>>>>>> bc5306b8daf57ce438ef379915e71d4a0ed97397
 public class OrderController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private List<CartProductDto> cartItems;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-<<<<<<< HEAD
-	
 		// List<CartProductDto> cartItems = new ArrayList<CartProductDto>();
 		cartItems = new ArrayList<CartProductDto>();
 		
@@ -68,9 +59,6 @@ public class OrderController extends HttpServlet {
 		request.setAttribute("cartItems", cartItems);
 		
 		request.getRequestDispatcher("/WEB-INF/views/order/checkout.jsp").forward(request, response);
-=======
-		response.getWriter().append("Served at: ").append(request.getContextPath());
->>>>>>> bc5306b8daf57ce438ef379915e71d4a0ed97397
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
