@@ -9,7 +9,7 @@
                         <div class="col-xl-3 col-lg-2 col-md-3 col-sm-5">
                             <div class="header-logo_area">
                                 <a href="/ShoppingMallProject/main">
-                                    <img src="static/template_assets/images/menu/logo/2.png" alt="Uren's Logo">
+                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/2.png" alt="Uren's Logo">
                                 </a>
                             </div>
                         </div>
@@ -595,7 +595,7 @@
                         <div class="col-sm-3 d-block d-lg-none">
                             <div class="header-logo_area header-sticky_logo">
                                 <a href="index.html">
-                                    <img src="static/template_assets/images/menu/logo/3.png" alt="Uren's Logo">
+                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/3.png" alt="Uren's Logo">
                                 </a>
                             </div>
                         </div>
@@ -640,7 +640,7 @@
                                 <a class="product-item_remove" href="javascript:void(0)"><i
                                     class="ion-android-close"></i></a>
                                 <div class="product-item_img">
-                                    <img src="static/template_assets/images/product/small-size/1.jpg" alt="Uren's Product Image">
+                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/1.jpg" alt="Uren's Product Image">
                                 </div>
                                 <div class="product-item_content">
                                     <a class="product-item_title" href="shop-left-sidebar.html">Autem ipsa ad</a>
@@ -651,7 +651,7 @@
                                 <a class="product-item_remove" href="javascript:void(0)"><i
                                     class="ion-android-close"></i></a>
                                 <div class="product-item_img">
-                                    <img src="static/template_assets/images/product/small-size/2.jpg" alt="Uren's Product Image">
+                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/2.jpg" alt="Uren's Product Image">
                                 </div>
                                 <div class="product-item_content">
                                     <a class="product-item_title" href="shop-left-sidebar.html">Tenetur illum amet</a>
@@ -662,7 +662,7 @@
                                 <a class="product-item_remove" href="javascript:void(0)"><i
                                     class="ion-android-close"></i></a>
                                 <div class="product-item_img">
-                                    <img src="static/template_assets/images/product/small-size/3.jpg" alt="Uren's Product Image">
+                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/3.jpg" alt="Uren's Product Image">
                                 </div>
                                 <div class="product-item_content">
                                     <a class="product-item_title" href="shop-left-sidebar.html">Non doloremque placeat</a>
