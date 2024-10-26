@@ -22,7 +22,7 @@
                                 <div class="inner-slide">
                                     <div class="single-product">
                                         <a href="javascript:void(0)">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/brand/1.jpg" alt="Uren's Brand Image">
+                                            <img src="static/template_assets/images/brand/1.jpg" alt="Uren's Brand Image">
                                         </a>
                                     </div>
                                 </div>
@@ -31,7 +31,7 @@
                                 <div class="inner-slide">
                                     <div class="single-product">
                                         <a href="javascript:void(0)">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/brand/2.jpg" alt="Uren's Brand Image">
+                                            <img src="static/template_assets/images/brand/2.jpg" alt="Uren's Brand Image">
                                         </a>
                                     </div>
                                 </div>
@@ -40,7 +40,7 @@
                                 <div class="inner-slide">
                                     <div class="single-product">
                                         <a href="javascript:void(0)">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/brand/3.jpg" alt="Uren's Brand Image">
+                                            <img src="static/template_assets/images/brand/3.jpg" alt="Uren's Brand Image">
                                         </a>
                                     </div>
                                 </div>
@@ -49,7 +49,7 @@
                                 <div class="inner-slide">
                                     <div class="single-product">
                                         <a href="javascript:void(0)">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/brand/4.jpg" alt="Uren's Brand Image">
+                                            <img src="static/template_assets/images/brand/4.jpg" alt="Uren's Brand Image">
                                         </a>
                                     </div>
                                 </div>
@@ -58,7 +58,7 @@
                                 <div class="inner-slide">
                                     <div class="single-product">
                                         <a href="javascript:void(0)">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/brand/5.jpg" alt="Uren's Brand Image">
+                                            <img src="static/template_assets/images/brand/5.jpg" alt="Uren's Brand Image">
                                         </a>
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@
                                 <div class="inner-slide">
                                     <div class="single-product">
                                         <a href="javascript:void(0)">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/brand/6.jpg" alt="Uren's Brand Image">
+                                            <img src="static/template_assets/images/brand/6.jpg" alt="Uren's Brand Image">
                                         </a>
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                                 <div class="inner-slide">
                                     <div class="single-product">
                                         <a href="javascript:void(0)">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/brand/1.jpg" alt="Uren's Brand Image">
+                                            <img src="static/template_assets/images/brand/1.jpg" alt="Uren's Brand Image">
                                         </a>
                                     </div>
                                 </div>
@@ -85,7 +85,7 @@
                                 <div class="inner-slide">
                                     <div class="single-product">
                                         <a href="javascript:void(0)">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/brand/7.jpg" alt="Uren's Brand Image">
+                                            <img src="static/template_assets/images/brand/7.jpg" alt="Uren's Brand Image">
                                         </a>
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@
                                 <div class="inner-slide">
                                     <div class="single-product">
                                         <a href="javascript:void(0)">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/brand/2.jpg" alt="Uren's Brand Image">
+                                            <img src="static/template_assets/images/brand/2.jpg" alt="Uren's Brand Image">
                                         </a>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                                 <div class="inner-slide">
                                     <div class="blog-img img-hover_effect">
                                         <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/1.jpg" alt="Uren's Blog Image">
+                                            <img src="static/template_assets/images/blog/large-size/1.jpg" alt="Uren's Blog Image">
                                         </a>
                                         <span class="post-date">12-09-19</span>
                                     </div>
@@ -143,7 +143,7 @@
                                 <div class="inner-slide">
                                     <div class="blog-img img-hover_effect">
                                         <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/2.jpg" alt="Uren's Blog Image">
+                                            <img src="static/template_assets/images/blog/large-size/2.jpg" alt="Uren's Blog Image">
                                         </a>
                                         <span class="post-date">15-09-19</span>
                                     </div>
@@ -157,7 +157,7 @@
                                 <div class="inner-slide">
                                     <div class="blog-img img-hover_effect">
                                         <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/3.jpg" alt="Uren's Blog Image">
+                                            <img src="static/template_assets/images/blog/large-size/3.jpg" alt="Uren's Blog Image">
                                         </a>
                                         <span class="post-date">19-09-19</span>
                                     </div>
@@ -171,7 +171,7 @@
                                 <div class="inner-slide">
                                     <div class="blog-img img-hover_effect">
                                         <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/4.jpg" alt="Uren's Blog Image">
+                                            <img src="static/template_assets/images/blog/large-size/4.jpg" alt="Uren's Blog Image">
                                         </a>
                                         <span class="post-date">16-09-19</span>
                                     </div>
@@ -185,7 +185,7 @@
                                 <div class="inner-slide">
                                     <div class="blog-img img-hover_effect">
                                         <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/5.jpg" alt="Uren's Blog Image">
+                                            <img src="static/template_assets/images/blog/large-size/5.jpg" alt="Uren's Blog Image">
                                         </a>
                                         <span class="post-date">20-09-19</span>
                                     </div>
@@ -199,7 +199,7 @@
                                 <div class="inner-slide">
                                     <div class="blog-img img-hover_effect">
                                         <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/6.jpg" alt="Uren's Blog Image">
+                                            <img src="static/template_assets/images/blog/large-size/6.jpg" alt="Uren's Blog Image">
                                         </a>
                                         <span class="post-date">25-09-19</span>
                                     </div>
@@ -248,7 +248,7 @@
                             <div class="footer-widgets_info">
                                 <div class="footer-widgets_logo">
                                     <a href="#">
-                                        <img src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/1.png" alt="Uren's Footer Logo">
+                                        <img src="static/template_assets/images/menu/logo/1.png" alt="Uren's Footer Logo">
                                     </a>
                                 </div>
                                 <div class="widget-short_desc">
@@ -366,7 +366,7 @@
                             <div class="col-lg-6 col-md-6">
                                 <div class="payment">
                                     <a href="#">
-                                        <img src="${pageContext.request.contextPath}/static/template_assets/images/footer/payment/1.png" alt="Uren's Payment Method">
+                                        <img src="static/template_assets/images/footer/payment/1.png" alt="Uren's Payment Method">
                                     </a>
                                 </div>
                             </div>
@@ -396,22 +396,22 @@
                                     "asNavFor": ".sp-img_slider-nav"
                                     }'>
                                         <div class="single-slide red">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/large-size/1.jpg" alt="Uren's Product Image">
+                                            <img src="static/template_assets/images/product/large-size/1.jpg" alt="Uren's Product Image">
                                         </div>
                                         <div class="single-slide orange">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/large-size/2.jpg" alt="Uren's Product Image">
+                                            <img src="static/template_assets/images/product/large-size/2.jpg" alt="Uren's Product Image">
                                         </div>
                                         <div class="single-slide brown">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/large-size/3.jpg" alt="Uren's Product Image">
+                                            <img src="static/template_assets/images/product/large-size/3.jpg" alt="Uren's Product Image">
                                         </div>
                                         <div class="single-slide umber">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/large-size/4.jpg" alt="Uren's Product Image">
+                                            <img src="static/template_assets/images/product/large-size/4.jpg" alt="Uren's Product Image">
                                         </div>
                                         <div class="single-slide black">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/large-size/5.jpg" alt="Uren's Product Image">
+                                            <img src="static/template_assets/images/product/large-size/5.jpg" alt="Uren's Product Image">
                                         </div>
                                         <div class="single-slide golden">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/large-size/6.jpg" alt="Uren's Product Image">
+                                            <img src="static/template_assets/images/product/large-size/6.jpg" alt="Uren's Product Image">
                                         </div>
                                     </div>
                                     <div class="sp-img_slider-nav slick-slider-nav uren-slick-slider slider-navigation_style-3" data-slick-options='{
@@ -427,22 +427,22 @@
                                     {"breakpoint":575, "settings": {"slidesToShow": 2}}
                                 ]'>
                                         <div class="single-slide red">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/1.jpg" alt="Uren's Product Thumnail">
+                                            <img src="static/template_assets/images/product/small-size/1.jpg" alt="Uren's Product Thumnail">
                                         </div>
                                         <div class="single-slide orange">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/2.jpg" alt="Uren's Product Thumnail">
+                                            <img src="static/template_assets/images/product/small-size/2.jpg" alt="Uren's Product Thumnail">
                                         </div>
                                         <div class="single-slide brown">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/3.jpg" alt="Uren's Product Thumnail">
+                                            <img src="static/template_assets/images/product/small-size/3.jpg" alt="Uren's Product Thumnail">
                                         </div>
                                         <div class="single-slide umber">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/4.jpg" alt="Uren's Product Thumnail">
+                                            <img src="static/template_assets/images/product/small-size/4.jpg" alt="Uren's Product Thumnail">
                                         </div>
                                         <div class="single-slide black">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/5.jpg" alt="Uren's Product Thumnail">
+                                            <img src="static/template_assets/images/product/small-size/5.jpg" alt="Uren's Product Thumnail">
                                         </div>
                                         <div class="single-slide golden">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/6.jpg" alt="Uren's Product Thumnail">
+                                            <img src="static/template_assets/images/product/small-size/6.jpg" alt="Uren's Product Thumnail">
                                         </div>
                                     </div>
                                 </div>

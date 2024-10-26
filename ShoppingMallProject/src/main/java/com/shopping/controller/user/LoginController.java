@@ -1,4 +1,4 @@
-package com.shopping.controller.order;
+package com.shopping.controller.user;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,10 +7,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/order")
-public class OrderController extends HttpServlet {
+@WebServlet("/UserLoginController")
+public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+    public LoginController() {
+        super();
+    }
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}

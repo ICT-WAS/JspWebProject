@@ -9,7 +9,7 @@
                         <div class="col-xl-3 col-lg-2 col-md-3 col-sm-5">
                             <div class="header-logo_area">
                                 <a href="/ShoppingMallProject/main">
-                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/2.png" alt="Uren's Logo">
+                                    <img src="static/template_assets/images/menu/logo/2.png" alt="Uren's Logo">
                                 </a>
                             </div>
                         </div>
@@ -369,10 +369,10 @@
                                 <div class="ht-menu">
                                     <ul>
                                         <li><a href="my-account.html"><span class="fa fa-user"></span> 
-                                        <span>로그인</span><i class="fa fa-chevron-down"></i></a>
+                                        <span>회원가입/로그인</span><i class="fa fa-chevron-down"></i></a>
                                             <ul class="ht-dropdown ht-my_account">
-                                            	<li><a href="/ShoppingMallProject/login">로그인</a></li>
-                                                <li><a href="/ShoppingMallProject/signup">회원가입</a></li>
+                                                <li><a href="/ShoppingMallProject/join">회원가입</a></li>
+                                                <li><a href="/ShoppingMallProject/login">로그인</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -595,7 +595,7 @@
                         <div class="col-sm-3 d-block d-lg-none">
                             <div class="header-logo_area header-sticky_logo">
                                 <a href="index.html">
-                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/3.png" alt="Uren's Logo">
+                                    <img src="static/template_assets/images/menu/logo/3.png" alt="Uren's Logo">
                                 </a>
                             </div>
                         </div>
@@ -640,7 +640,7 @@
                                 <a class="product-item_remove" href="javascript:void(0)"><i
                                     class="ion-android-close"></i></a>
                                 <div class="product-item_img">
-                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/1.jpg" alt="Uren's Product Image">
+                                    <img src="static/template_assets/images/product/small-size/1.jpg" alt="Uren's Product Image">
                                 </div>
                                 <div class="product-item_content">
                                     <a class="product-item_title" href="shop-left-sidebar.html">Autem ipsa ad</a>
@@ -651,7 +651,7 @@
                                 <a class="product-item_remove" href="javascript:void(0)"><i
                                     class="ion-android-close"></i></a>
                                 <div class="product-item_img">
-                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/2.jpg" alt="Uren's Product Image">
+                                    <img src="static/template_assets/images/product/small-size/2.jpg" alt="Uren's Product Image">
                                 </div>
                                 <div class="product-item_content">
                                     <a class="product-item_title" href="shop-left-sidebar.html">Tenetur illum amet</a>
@@ -662,7 +662,7 @@
                                 <a class="product-item_remove" href="javascript:void(0)"><i
                                     class="ion-android-close"></i></a>
                                 <div class="product-item_img">
-                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/3.jpg" alt="Uren's Product Image">
+                                    <img src="static/template_assets/images/product/small-size/3.jpg" alt="Uren's Product Image">
                                 </div>
                                 <div class="product-item_content">
                                     <a class="product-item_title" href="shop-left-sidebar.html">Non doloremque placeat</a>
