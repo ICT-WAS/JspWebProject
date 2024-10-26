@@ -1,5 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Begin Uren's Header Main Area -->
         <header class="header-main_area header-main_area-2 header-main_area-3">
         	<!-- 로고 영역 시작 -->
@@ -369,11 +369,16 @@
                                 <div class="ht-menu">
                                     <ul>
                                         <li><a href="my-account.html"><span class="fa fa-user"></span> 
-                                        <span>회원가입/로그인</span><i class="fa fa-chevron-down"></i></a>
-                                            <ul class="ht-dropdown ht-my_account">
-                                                <li><a href="/ShoppingMallProject/join">회원가입</a></li>
-                                                <li><a href="/ShoppingMallProject/login">로그인</a></li>
-                                            </ul>
+                                        <span>로그인</span><i class="fa fa-chevron-down"></i></a>
+                                        	<ul class="ht-dropdown ht-my_account">
+                                            		<c:if test="${sessionScope.id == null}">
+                                            			<li><a href="/ShoppingMallProject/login">로그인</a></li>
+                                               			<li><a href="/ShoppingMallProject/signup">회원가입</a></li>
+                                            		</c:if>
+                                            		<c:if test="${sessionScope.id != null}">
+								<li><a href="/ShoppingMallProject/logout">로그아웃</a></li>
+							<c:if>
+						</ul>
                                         </li>
                                     </ul>
                                 </div>
