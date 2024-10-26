@@ -37,9 +37,12 @@ public class Product {
 		this.status = status;
 	}
 
-	//productId는 getter만 존재
 	public long getProductId() {
 		return productId;
+	}
+	
+	public void setProductId(long productId) {
+		this.productId = productId;
 	}
 
 	public Long getCategoryId() {
@@ -137,4 +140,9 @@ public class Product {
 				+ ", quantity=" + quantity + ", registrationDate=" + registrationDate + ", brand=" + brand + ", status="
 				+ status + "]";
 	}
+	
+	
+	
+	
+	
 }
