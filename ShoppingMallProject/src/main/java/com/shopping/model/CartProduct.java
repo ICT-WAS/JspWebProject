@@ -10,6 +10,7 @@ public class CartProduct {
 	private Integer quantity;			// 장바구니 수량
 	private LocalDateTime addedDate;	// 상품추가날짜
 	private String note;				// 추가설명
+
 	
 	public Long getCartProductId() {
 		return cartProductId;

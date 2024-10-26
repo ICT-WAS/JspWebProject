@@ -45,7 +45,7 @@
 	    cursor: pointer;
 	}
 	
-	input[type="number"], input[type="text"] {
+	.point-input {
 	    background: #ffffff;
 	    border: 1px solid #e5e5e5;
 	    border-radius: 0;
@@ -145,12 +145,9 @@
 		                                		<tr>
 		                                            <td><img class="img-thumbnail" src="static/template_assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></td>
 		                                            <td class="uren-product-name"><a href="javascript:void(0)">${cartItem.name}</a></td>
-		                                            <td class="uren-product-price"><span class="amount">${cartItem.price}</span></td>
-		                                            <td class="quantity"><span class="amount">${cartItem.quantity}</span></td>
-		                                            <td class="product-subtotal"><span class="amount">
-		                                            <c:set var="total" value="${cartItem.price * cartItem.quantity}" />
-		                                            ${total}
-		                                            </span></td>
+		                                            <td class="uren-product-price"><span class="amount">${cartItem.price}원</span></td>
+		                                            <td class="quantity"><span class="amount">x${cartItem.quantity}</span></td>
+		                                            <td class="product-subtotal"><span class="amount">${cartItem.total}원</span></td>
 		                                        </tr>
 		                                	</c:forEach>
                                     	<tr>
@@ -159,14 +156,6 @@
                                             <td class="uren-product-price"><span class="amount">$46.80</span></td>
                                             <td class="quantity"><span class="amount">1</span></td>
                                             <td class="product-subtotal"><span class="amount">$46.80</span></td>
-                                        </tr>
-                                        	
-                                        <tr>
-                                            <td class="uren-product-thumbnail"><img class="img-thumbnail" src="static/template_assets/images/product/small-size/2.jpg" alt="Uren's Cart Thumbnail"></td>
-                                            <td class="uren-product-name"><a href="javascript:void(0)">Bag Goodscol model</a></td>
-                                            <td class="uren-product-price"><span class="amount">$71.80</span></td>
-                                            <td class="quantity"><span class="amount">1</span></td>
-                                            <td class="product-subtotal"><span class="amount">$71.80</span></td>
                                         </tr>
                                 </table>
                                 
@@ -183,7 +172,7 @@
 		                            </div>
 		                            <div class="col-md-3">
 		                                <div class="checkout-form-list">
-                                            <input placeholder="" type="number">
+                                            <input placeholder="" type="number" class="point-input">
                                         </div>
 		                            </div>
 		                            <div class="col-md-2">
