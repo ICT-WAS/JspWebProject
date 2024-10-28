@@ -18,7 +18,7 @@ public class MemberDao extends SuperDao{
 		PreparedStatement pstmt = null ;
 		ResultSet rs = null ;		
 		String sql = " select * from members " ;
-		sql += " where id = ?  " ;
+		sql += " where signup_id = ?  " ;
 		
 		try {
 			conn = super.getConnection() ;
