@@ -1,8 +1,26 @@
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.util.List"%>
+<%@page import="com.shopping.model.CartProductDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
 <%@ taglib prefix="ui" tagdir="/WEB-INF/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%
+	Integer total = 0;
+	
+	List<CartProductDto> cartItems = (List<CartProductDto>)request.getAttribute("cartItems");
+	
+	for(CartProductDto cartItem : cartItems) {
+		total += cartItem.getTotal();
+	}
+	
+	DecimalFormat df = new DecimalFormat("#,###");
+	String payment_total = df.format(total);
+	
+	
+%>
 	
 <!doctype html>
 <html class="no-js" lang="zxx">
@@ -15,6 +33,40 @@
     <meta charset="UTF-8">
 	
 	<!-- 스크립트 -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript">
+    $(document).ready(function() {
+    	const input = $('#point');
+	    const output = $('#used-point');
+
+	    
+	    // 사용 적립금 필드 변경시
+	    input.on('change', function() {
+	    	var point = Number(input.val()) || 0;
+	    	
+	    	// 적립금할인금액, 할인금액, 적립금 input 태그 값 변경
+	    	var formattedPoint = getFormattedPrice(point);
+	    	input.val(formattedPoint);
+	    	output.text(formattedPoint + `원`);
+	    	$('#discounted-total').text('-' + formattedPoint + `원`);
+	    	
+	    	// 최종 결제 금액 변경
+	    	var total = "<%=total%>";
+	    	var total_payment = total - point;
+	    	var formattedTotal = getFormattedPrice(total_payment);
+	    	
+	    	$('#total-payment').text(formattedTotal + '원');
+	    	$('.total-payment-button').val(formattedTotal + '원 결제하기');
+	    });
+    });
+    
+    
+    // 한국 통화 형태로 숫자->문자 변환
+    function getFormattedPrice(value) {
+    	return new Intl.NumberFormat('ko-KR').format(value);
+    }
+    </script>
+	
 	
 	<style>
 		.button {
@@ -66,6 +118,14 @@
 	        .img-thumbnail {
 			    width: 60px; /* 원하는 너비 */
 			    height: auto; /* 비율 유지 */
+			}
+			.right-align {
+			    text-align: right;
+			}
+			
+			.discount-price {
+			    color: #999999;
+			    font-size: 14px;
 			}
 	
 	</style>
@@ -169,7 +229,7 @@
 		                            </div>
 		                            <div class="col-md-3">
 		                                <div class="checkout-form-list">
-                                            <input name="point" placeholder="" type="number" class="point-input">
+                                            <input id="point" type="text" class="point-input">
                                         </div>
 		                            </div>
 		                            <div class="col-md-2">
@@ -203,13 +263,15 @@
 				                    <!-- 결제하기 버튼 -->
 				                    <div class="col-md-12 mt-3">
 		                                <div class="order-button-payment">
-                                        <input value="${payment_total}원 결제하기" type="submit">
+                                        <input class="total-payment-button" value="<%=payment_total%>원 결제하기" type="submit">
                                     </div>
 		                            </div>
                                 </div>
                             </div>
                         </form>
                     </div>
+                    
+                    
                     <!-- 결제 정보 요약 -->
                     <div class="col-6 col-lg-4">
                     	<h3>결제 금액</h3>
@@ -218,35 +280,68 @@
                                 <div class="payment-accordion">
                                     <div id="accordion">
                                         <div class="card">
-                                            <div class="card-header" id="#payment-1">
-                                                주문 금액
-                                            </div>
-                                            <div class="card-header" id="#payment-1">
-                                                할인 금액
-                                            </div>
-                                            <div id="collapseOne" class="collapse show" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <p>
-                                                    └ 상품 할인 금액<br>
-                                                    └ 적립금 할인 금액
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-header" id="#payment-2">
-                                            	<div class="row">
-                                            		<div class="col-6 col-lg-8">
-		                                                <h5 class="panel-title">
-		                                                    최종 결제 금액
-		                                                </h5>
+	                                            <div class="card-header" id="#payment-1">
+	                                            	<div class="row">
+		                                            	<div class="col-md-6">
+		                                                	주문 금액
+		                                                </div>
+		                                                <div class="col-md-6 right-align">
+		                                                	<%=payment_total %>원
+		                                                </div>
+		                                            </div>
+	                                            </div>
+	                                            <div class="card-header" id="#payment-1">
+	                                                <div class="row">
+		                                            	<div class="col-md-6">
+		                                                	할인 금액
+		                                                </div>
+		                                                <div class="col-md-6 right-align" id="discounted-total">
+		                                                	-0원
+		                                                </div>
+		                                            </div>
+	                                            </div>
+	                                            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+	                                                <div class="card-body">
+	                                                	<div class="row">
+			                                            	<div class="col-md-6 discount-price">
+			                                                	└ 상품 할인 금액
+			                                                </div>
+			                                                <div class="col-md-6 discount-price right-align">
+			                                                	0원
+			                                                </div>
+			                                            	<div class="col-md-6 discount-price">
+			                                                	└ 적립금 할인 금액
+			                                                </div>
+			                                                <div class="col-md-6 discount-price right-align" id="used-point">
+			                                                	0원
+			                                                </div>
+			                                            </div>
 	                                                </div>
-                                                </div>
-                                            </div>
-                                        </div>
+	                                            </div>
+	                                        </div>
+	                                        
+	                                        
+	                                        
+	                                        <div class="col-6 col-lg-12 mt-3"></div>
+	                                        <div class="card">
+	                                            <div class="card-header" id="#payment-2">
+	                                            	<div class="row">
+	                                            		<div class="col-6 col-lg-6">
+			                                                <h5 class="panel-title">
+			                                                    최종 결제 금액
+			                                                </h5>
+		                                                </div>
+		                                                <div class="col-6 col-lg-6 right-align">
+			                                                <h5 class="panel-title" id="total-payment">
+			                                                    <%=payment_total%>원
+			                                                </h5>
+		                                                </div>
+		                                            </div>
+	                                            </div>
+	                                        </div>
                                     </div>
                                     <div class="order-button-payment">
-                                        <input value="${payment_total}원 결제하기" type="submit">
+                                        <input class="total-payment-button" value="<%=payment_total%>원 결제하기" type="submit">
                                     </div>
                                 </div>
                             </div>
