@@ -40,6 +40,10 @@
 	<script type="text/JavaScript">
 		$(document).ready(function() {
 			defaultScript();
+			var fail = "${fail}"; 
+        	if (fail) {
+            	alert(fail);
+        	}
    	 	});
 		function defaultScript() {
 			
