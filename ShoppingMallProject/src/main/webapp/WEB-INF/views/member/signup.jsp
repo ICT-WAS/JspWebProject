@@ -44,6 +44,9 @@
         	if (fail) {
             	alert(fail);
         	}
+        	<% 
+        	request.removeAttribute("fail");
+        	%>
    	 	});
 		function defaultScript() {
 			
@@ -92,7 +95,7 @@
 	
 	            $.ajax({
 	                type:"GET",
-	                url: "ShoppingMallProject/signup?m=checkId&id=" + id,
+	                url: "/ShoppingMallProject/signup?m=checkId&id=" + id,
 	                success : function(data) {
 	                    let result = data.substr(4);
 	
@@ -103,9 +106,12 @@
 	                    } else {
 	                        showErrorMsg(oMsg, "아이디: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.");
 	                        oDiv.addClass("error");
+	                        idFlag=false;
+	                        return false;
 	                    }
 	                }
 	            });
+	            
 	            return true;
 	        }
 	        // id 종료
@@ -114,7 +120,7 @@
 	        let phoneFlag = false;
 			
 			$("#phoneNumber").blur(function() {
-				phoneNumberFlag = false;
+				phoneFlag = false;
 		        checkPhoneNumber();
 		    });
 			
@@ -124,7 +130,7 @@
 	            let oMsg = $("#phoneNumberMsg");
 	            let oDiv = $("#phoneNumber");
 	
-	            if(phoneNumberFlag) {
+	            if(phoneFlag) {
 	                oMsg.hide();
 	                return true;
 	            }
@@ -355,26 +361,24 @@
 
 	        
 	        function validCheck(){
-	        	idFlag = checkId();
-	        	phoneFlag = checkPhoneNumber();
-	        	pwFlag = checkPw();
-	        	nickFlag = checkNickName();
-	        	nameFlag = checkName();
-	        	birthFlag = checkBirth();
-	        	emFlag = checkEmail();
-				
-				if(idFlag && phoneFlag && pwFlag && nickFlag && nameFlag && birthFlag && emFlag){
-					return true;
-				}else{
-					return false;
-				}
-			}
+	            idFlag = checkId();
+	            phoneFlag = checkPhoneNumber();
+	            pwFlag = checkPw();
+	            nickFlag = checkNickName();
+	            nameFlag = checkName();
+	            birthFlag = checkBirth();
+	            emFlag = checkEmail();
+
+	            console.log("Flags: ", {idFlag, phoneFlag, pwFlag, nickFlag, nameFlag, birthFlag, emFlag}); // 각 플래그 출력
+
+	            return idFlag && phoneFlag && pwFlag && nickFlag && nameFlag && birthFlag && emFlag;
+	        }
 	        $(".btn-signup").click(function(event){
 	        	event.preventDefault()
 	        	let bool = validCheck();
+	        	console.log("Validation Result:", bool);
 	        	if(bool){
 	        		$(this).closest('form').submit();
-	        		
 	        	}else{
 	        		alert("유효하지 않은 입력입니다. 다시 확인해 주세요.");
 	        	}
@@ -444,7 +448,8 @@
 		                              
 		                              <div class="col-md-3"></div>
 		                              <div class="col-md-6">
-		                              	<button class="uren-register_btn btn-signup" >회원가입하기</button>
+		                              	<button class="btn-signup" >회원가입하기</button>
+		                              	<input type="submit" class="btn-signup" value="회원가입하기">
 		                              </div>
 		                              <div class="col-md-3"></div>
 		                          </div>

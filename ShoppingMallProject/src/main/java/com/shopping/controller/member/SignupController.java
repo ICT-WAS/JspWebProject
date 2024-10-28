@@ -26,7 +26,7 @@ public class SignupController extends HttpServlet {
 			response.sendRedirect("main");
 			return;
 		}
-		
+
 	    String m = request.getParameter("m");
 	    
 	    if("checkId".equals(m)) {
@@ -65,6 +65,7 @@ public class SignupController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		MemberDao dao = new MemberDao();
 		Member bean = new Member();
 		String id = request.getParameter("id");
@@ -92,7 +93,7 @@ public class SignupController extends HttpServlet {
 			// 1. 다시 회원가입으로 돌려보내고 alert 띄운다.
 			// 2. 메인으로 보낸다.
 			request.setAttribute("fail", "회원가입에 실패 했습니다. 오류가 반복될 경우 문의하세요.");
-			doGet(request, response);
+			response.sendRedirect("signup");
 		}
 	}
 
