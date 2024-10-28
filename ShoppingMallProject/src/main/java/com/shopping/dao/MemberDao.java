@@ -87,4 +87,100 @@ public class MemberDao extends SuperDao{
 		
 		return cnt;
 	}
+	
+	public Member getMemberById(String id) {
+		Member member = null;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from members " ;
+		sql += " where id = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				member = makeBean(rs);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return member;
+	}
+
+	public Member login(String id, String pw) {
+		Member member = null;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from members " ;
+		sql += " where signup_id = ? and password = ?" ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				member = makeBean(rs);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		if(member!=null && member.getStatus()==0) {
+			// 비활성일 때 처리
+		}
+		
+		return member;
+	}
+	
+	private Member makeBean(ResultSet rs) {
+		Member member = new Member();
+		
+		try {
+			member.setMember_id(rs.getLong("MEMBER_ID"));
+			member.setId(rs.getString("SIGNUP_ID"));
+			member.setName(rs.getString("MEMBER_NAME"));
+			member.setNickname(rs.getString("MEMBER_NICKNAME"));
+			member.setPassword(rs.getString("PASSWORD"));
+			member.setEmail(rs.getString("MEMBER_EMAIL"));
+			member.setPhoneNumber(rs.getString("PHONE_NUMBER"));
+			member.setCreatedAt(rs.getString("CREATED_AT"));
+			member.setUpdatedAt(rs.getString("UPDATED_AT"));
+			member.setLastLogin(rs.getString("LAST_LOGIN"));
+			member.setStatus(rs.getInt("STATUS"));
+			member.setBirthday(rs.getString("BIRTHDAY"));
+			member.setPoint(rs.getLong("POINTS")); 
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}		
+		
+		return member;
+	}
+
 }

@@ -39,10 +39,102 @@
 	<script type="text/JavaScript">
 		$(document).ready(function() {
 			defaultScript();
+			
+			var fail = "${fail}"; 
+        	if (fail) {
+            	alert(fail);
+        	}
 	 	});
 		
 		function defaultScript() {
 			
+			
+			function showErrorMsg(obj, msg) {
+		        obj.attr("class", "error_text item_style");
+		        obj.html(msg);
+		        obj.show();
+		    }
+			
+			// Id 시작
+			let idFlag = false;
+			
+			$("#id").blur(function() {
+		        idFlag = false;
+		        checkId();
+		    });
+			
+			
+	        function checkId() {
+	            let id = $("#id").val();
+	            let oMsg = $("#idMsg");
+	            let oDiv = $("#id");
+	
+	            if(idFlag) {
+	                oMsg.hide();
+	                return true;
+	            }
+	
+	            if (id == "") {
+	                showErrorMsg(oMsg,"아이디를 입력해주세요.");
+	                oDiv.addClass("error");
+	                return false;
+	            }else{
+	            	oDiv.removeClass("error");
+	            	oMsg.hide();
+	            }
+	            return true;
+	        }
+	        // id 종료
+	        let pwFlag = false;
+			
+			$("#pw").blur(function() {
+		        pwFlag = false;
+		        checkPw();
+		    });
+			
+			
+	        function checkPw() {
+	            let pw = $("#pw").val();
+	            let oMsg = $("#pwMsg");
+	            let oDiv = $("#pw");
+	
+	            if(pwFlag) {
+	                oMsg.hide();
+	                return true;
+	            }
+	
+	            if (pw == "") {
+	                showErrorMsg(oMsg,"비밀번호를 입력해주세요.");
+	                oDiv.addClass("error");
+	                return false;
+	            }else{
+	            	oDiv.removeClass("error");
+	            	oMsg.hide();
+	            }
+	            
+	            return true;
+	        }
+	        
+	        function validCheck(){
+	        	idFlag = checkId();
+	        	pwFlag = checkPw();
+				
+				if(idFlag && pwFlag){
+					return true;
+				}else{
+					return false;
+				}
+			}
+	        
+	        $(".btn-login").click(function(event){
+	        	event.preventDefault()
+	        	let bool = validCheck();
+	        	if(bool){
+	        		$(this).closest('form').submit();
+	        	}else{
+	        		alert("유효하지 않은 입력입니다. 다시 확인해 주세요.");
+	        	}
+	        });
 		}
 	</script>
 </head>
@@ -63,10 +155,12 @@
 		                              <div class="col-md-12 col-12 mb--20">
 		                                  <label>아이디*</label>
 		                                  	<input id="id" name="id" type="text" placeholder="아이디를 입력해주세요." maxlength="20">
+		                                  	<div class="error_text" id="idMsg" style="display:none;color:red;"></div>
 		                              </div>
 		                              <div class="col-md-12 col-12 mb--20">
 		                                  <label>비밀번호*</label>
 		                                  	<input id="pw" name="pw" type="password" placeholder="비밀번호를 입력해주세요." maxlength="16">
+		                                  	<div class="error_text" id="pwMsg" style="display:none;color:red;"></div>
 		                              </div>
 		                              
 		                              <div class="col-md-3"></div>

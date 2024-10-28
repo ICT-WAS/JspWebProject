@@ -23,7 +23,8 @@ public class SignupController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getSession().getAttribute("id") != null) {
-			response.sendRedirect("/main");
+			response.sendRedirect("main");
+			return;
 		}
 		
 	    String m = request.getParameter("m");
@@ -85,11 +86,12 @@ public class SignupController extends HttpServlet {
 		
 		if(cnt==1) {
 			request.getSession().setAttribute("id", id);
-			response.sendRedirect("/main");
+			response.sendRedirect("main");
 		}else {
 			// 실패 시 처리 방안
 			// 1. 다시 회원가입으로 돌려보내고 alert 띄운다.
 			// 2. 메인으로 보낸다.
+			request.setAttribute("fail", "회원가입에 실패 했습니다. 오류가 반복될 경우 문의하세요.");
 			doGet(request, response);
 		}
 	}
