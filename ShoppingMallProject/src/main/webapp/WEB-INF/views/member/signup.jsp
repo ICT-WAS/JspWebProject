@@ -100,8 +100,6 @@
 	                url: "/ShoppingMallProject/signup?m=checkId&id=" + id,
 	                success : function(data) {
 	                    let result = data.substr(4);
-	                    console.log("ajax Result:", data);
-	                    console.log("ajax Result2:", result);
 	                    if (result == "Y") {
 	                        idFlag = true;
 	                        oMsg.hide();
@@ -365,7 +363,35 @@
 	            	oMsg.hide();
 	                oDiv.removeClass("error");
 	            }
-	
+				
+				let _emFlag = false;
+	            
+	            $.ajax({
+	                type:"GET",
+	                url: "/ShoppingMallProject/signup?m=checkEm&em=" + email,
+	                success : function(data) {
+	                    let result = data.substr(4);
+	                    if (result == "Y") {
+	                        emFlag = true;
+	                        oMsg.hide();
+	                        oDiv.removeClass("error");
+	                    } else {
+	                        showErrorMsg(oMsg, "이메일: 사용할 수 없는 이메일입니다. 다른 이메일를 입력해 주세요.");
+	                        oDiv.addClass("error");
+	                        emFlag = false;
+	                        _emFlag = false;
+	                    }
+	                }
+	            });
+	            
+	            if(!_emFlag){
+	            	
+	            	return false;
+	            }else{
+	            	oMsg.hide();
+                    oDiv.removeClass("error");
+	            	return true;	
+	            }
 	            return true;
 	        }
 	        // 이메일 종료
@@ -460,7 +486,6 @@
 		                              <div class="col-md-3"></div>
 		                              <div class="col-md-6">
 		                              	<button class="btn-signup" >회원가입하기</button>
-		                              	<input type="submit" class="btn-signup" value="회원가입하기">
 		                              </div>
 		                              <div class="col-md-3"></div>
 		                          </div>

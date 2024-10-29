@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.shopping.dao.CartDao;
 import com.shopping.dao.MemberDao;
 import com.shopping.model.Member;
 
@@ -108,20 +109,23 @@ public class SignupController extends HttpServlet {
 		String name = request.getParameter("name");
 		bean.setName(name);
 		String birth = request.getParameter("birth");
-		bean.setBirthday(birth);
+		bean.setBirthday(birth); 
 		String email = request.getParameter("email");
 		bean.setEmail(email);
 		
 		int cnt = dao.signUp(bean);
 		
 		if(cnt==1) {
+			Member member = dao.getMemberById(id);
+			Long member_id = member.getMember_id();
+			new CartDao().createCart(member_id);
 			request.getSession().setAttribute("id", id);
 			response.sendRedirect("main");
 		}else {
 			// 실패 시 처리 방안
 			// 1. 다시 회원가입으로 돌려보내고 alert 띄운다.
 			// 2. 메인으로 보낸다.
-			request.setAttribute("fail", "회원가입에 실패 했습니다. 오류가 반복될 경우 문의하세요.");
+			request.setAttribute("fail", "회원가입에 실패 했습니다. 오류가 반복될 경우 문의하세요. (회원생성오류)");
 			response.sendRedirect("signup");
 		}
 	}
