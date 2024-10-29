@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.shopping.dao.MemberDao;
 import com.shopping.model.CartProductDto;
+import com.shopping.model.Member;
 import com.shopping.model.Order;
 import com.shopping.service.OrderService;
 
@@ -28,7 +30,6 @@ public class OrderController extends HttpServlet {
 		// 테스트 데이터 생성
 		CartProductDto cartProduct = new CartProductDto();
 		
-		cartProduct.setCartId(1L);
 		cartProduct.setProductId(1L);
 		cartProduct.setPrice(100);
 		cartProduct.setName("상품A");
@@ -38,7 +39,6 @@ public class OrderController extends HttpServlet {
 		
 		CartProductDto cartProduct2 = new CartProductDto();
 		
-		cartProduct2.setCartId(1L);
 		cartProduct2.setProductId(3L);
 		cartProduct2.setPrice(1000);
 		cartProduct2.setName("상품2");
@@ -48,7 +48,6 @@ public class OrderController extends HttpServlet {
 		
 		CartProductDto cartProduct3 = new CartProductDto();
 		
-		cartProduct3.setCartId(1L);
 		cartProduct3.setProductId(2L);
 		cartProduct3.setPrice(2400);
 		cartProduct3.setName("상품3");
@@ -56,37 +55,43 @@ public class OrderController extends HttpServlet {
 		
 		cartItems.add(cartProduct3);
 		
+		Member member = new Member();
+		member.setPoint(2000);
+		
 		
 		// ==== 실제 로직 ====
 		
 		request.setAttribute("cartItems", cartItems);
+		request.setAttribute("member", member);
 		
 		request.getRequestDispatcher("/WEB-INF/views/order/checkout.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// OrderService 객체를 통해 주문 진행
+		// MemberDao memberDao = new MemberDao();
+		// Long id = memberDao.getMemberById((String)request.getSession().getAttribute("id")).getMember_id();
 		
-		String orderNo = "";
+		// OrderService 객체를 통해 주문 진행
+		String orderNo = orderService.generateOrderNumber(10);
 		
 		Order order = new Order();
 		order.setMemberId(1L);
-		order.setOrderNumber("12123423");
-		order.setTotalAmount(14000);
-		order.setUsedPoints(1000);
+		order.setOrderNumber(orderNo);
+		order.setTotalAmount(Integer.parseInt((String)request.getParameter("total")));
+		order.setUsedPoints(Integer.parseInt((String)request.getParameter("usedPoint")));
 		order.setPaymentMethod("결제안했지롱");
 		order.setExpectedRewardAmount(10);
-		order.setFinalPaymentAmount(13000);
+		order.setFinalPaymentAmount(Integer.parseInt((String)request.getParameter("totalAmount")));
 		
 		
 		// 여기서부터가 진짜.
-		
 		boolean success = orderService.processOrder(order, null);
 		request.getSession().setAttribute("cartItems", cartItems);
 		
+
 		// 주문 확인 페이지로 이동
-		response.sendRedirect("/ShoppingMallProject/order/completed");
+		response.sendRedirect("/ShoppingMallProject/order/completed?orderNo=" + orderNo);
 	}
 
 }

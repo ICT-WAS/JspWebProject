@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 //import com.shopping.dao.CartDao;
 import com.shopping.dao.MemberDao;
@@ -29,15 +30,27 @@ public class OrderService {
 		orderDao = new OrderDao();
 	}
 	
+	public static String generateOrderNumber(int length) {
+        // 0-9 숫자만 포함
+        StringBuilder orderNumber = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int digit = random.nextInt(10); // 0부터 9까지의 숫자 생성
+            orderNumber.append(digit);
+        }
+
+        return orderNumber.toString();
+    }
+	
 	// Long 은 상품id
 	public boolean processOrder(Order orderData, Map<Long, CartProduct> cartItems) {
 		
 		//  =========== 주문 데이터 저장  ===========
 		orderData.setOrderStatus(OrderStatus.PENDING);
-		try {
-			orderDao.saveOrder(orderData);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		int result = orderDao.saveOrder(orderData);
+		
+		if(result != 1) {
 			System.out.println("주문 저장 실패");
 			return false;
 		}
