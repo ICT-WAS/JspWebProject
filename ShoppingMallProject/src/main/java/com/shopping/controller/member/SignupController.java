@@ -58,6 +58,35 @@ public class SignupController extends HttpServlet {
             } else {
                 out.print("RES:Y"); // 사용할 수 있는 경우
             }
+	    }else if("checkEm".equals(m)) {
+	    	MemberDao dao = new MemberDao();
+
+	    	String email = request.getParameter("em");
+		    
+		    response.setContentType("text/plain");
+	        PrintWriter out = response.getWriter();
+	        
+	    	if (email == null || email.isEmpty()) {
+                out.print("ERR: No Email provided");
+                return;
+            }
+	    	
+	    	// 아이디가 이미 존재하는지 확인
+            boolean emExists = false;
+            
+            try {
+                emExists = dao.checkEmail(email);
+            } catch (Exception e) {
+                out.print("ERR: Database error");
+                e.printStackTrace(); // 로그에 기록
+                return;
+            }
+            
+            if (emExists) {
+                out.print("ERR: Email already exists"); // 사용할 수 없는 경우
+            } else {
+                out.print("RES:Y"); // 사용할 수 있는 경우
+            }
 	    }else{
 	    	request.getRequestDispatcher("WEB-INF/views/member/signup.jsp").forward(request, response);
         }
