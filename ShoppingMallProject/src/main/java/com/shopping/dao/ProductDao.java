@@ -8,19 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.shopping.model.Product;
+import com.shopping.model.ProductOption;
+import com.shopping.model.ProductOptionDTO;
+import com.shopping.model.ProductPage;
 
 
 public class ProductDao extends SuperDao{
 	
-	//(수정중)전체 상품 리스트
+	//전체 상품 리스트
 	public List<Product> getProductList(){
 		List<Product> productList = new ArrayList<>();
 		
-		String sql = " SELECT * FROM PRODUCTS";
+		String sql = " SELECT * FROM PRODUCT";
 		
 		PreparedStatement pstmt = null ;
 		ResultSet rs = null;
-		
 		
 		try{
 			
@@ -32,6 +34,8 @@ public class ProductDao extends SuperDao{
 			while (rs.next()) {
 				productList.add(getBeanData(rs));
 			}
+			
+			System.out.println(productList);
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -73,9 +77,9 @@ public class ProductDao extends SuperDao{
 				return product;  //조회된 상품 반환, 찾지 못하면 null
 			}
 	
-	//(수정중)productId에 매칭되는 상품 한 개 가져오기
-	public Product getProductById(long productId) {
-		Product product = null;
+	//productId에 매칭되는 상품 한 개 가져오기 - 옵션 포함
+	public ProductOptionDTO getProductById(long productId) {
+		Product product = new Product();
 		String sql = " SELECT * FROM PRODUCT WHERE PRODUCT_ID = ?";
 		
 		PreparedStatement pstmt = null ;
@@ -87,14 +91,12 @@ public class ProductDao extends SuperDao{
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, productId);
 			
-			System.out.println("pstmt="+ pstmt);
-			
 			rs = pstmt.executeQuery();
 			
 			if (rs.isBeforeFirst()) {
-			    System.out.println("ResultSet has data.");
+			    System.out.println("resultSet에 데이터가 없습니다.");
 			} else {
-			    System.out.println("No data found in ResultSet.");
+			    System.out.println("resultSet을 찾을 수 없습니다.");
 			}
 			
 			if(rs.next()) {
@@ -109,10 +111,118 @@ public class ProductDao extends SuperDao{
 			closeResources(conn, pstmt, rs);
 		}
 		
+		// 상품에 맞는 옵션 가져오기
 		
-		System.out.println("productID="+ productId);
-		return product;  //조회된 상품 반환, 찾지 못하면 null
+		sql = " SELECT * FROM PRODUCT_OPTION WHERE PRODUCT_ID = ?";
+		
+		pstmt = null ;  //초기화
+		rs = null;  //초기화
+		List<ProductOption> OptionList= new ArrayList<>();
+		
+		try{
+			
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, productId);
+			
+			rs = pstmt.executeQuery();
+			
+		while (rs.next()) {
+			OptionList.add(getOptionBeanData(rs));
+		}
+		
+		
+		
+		}catch(SQLException e) {
+			System.err.println("SQL Error: " + e.getMessage());
+			e.printStackTrace();
+			
+		}finally {
+			closeResources(conn, pstmt, rs);
+		}
+
+		return new ProductOptionDTO(product, OptionList);  //조회된 상품 반환, 찾지 못하면 null
 	}
+	
+	//필터링된 리스트 + 총 카운트 가져오기
+    public ProductPage getFilteredProductPage(Integer categoryId, String name, Double minPrice, Double maxPrice, String brand, int page, int pageSize) {
+        System.out.println(categoryId);
+    	int totalCount = 0;
+        Product product = new Product();
+        List<Product> productList = new ArrayList<>();
+
+        String countSql = "SELECT COUNT(*) FROM PRODUCT WHERE 1=1";
+
+        //필터링 조건 추가
+        countSql += setConditionSql(categoryId, name, minPrice, maxPrice, brand);
+
+        PreparedStatement countPstmt = null;
+        ResultSet countRs = null;
+        try {
+            conn = super.getConnection();
+            countPstmt = conn.prepareStatement(countSql);
+
+            int paramIndex = 1;
+            //플레이스 홀더 세팅
+            setConditionPlaceHolder(countPstmt, paramIndex, categoryId, name, minPrice, maxPrice, brand);
+
+            countRs = countPstmt.executeQuery();
+            if (countRs.next()) {
+                totalCount = countRs.getInt(1);  //첫번째 칼럼의 값을 가져올 수 있음, sql 문 실행 시 count 숫자 단독 반환함
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(conn, countPstmt, countRs);
+        }
+
+        //----- 리스트 가져오기 -------
+        String sql = "SELECT * FROM ( " +
+                " SELECT p.*, ROWNUM rnum " +
+                " FROM ( " +
+                " SELECT * FROM PRODUCT WHERE 1=1 ";
+
+        // 필터링 조건 추가
+        sql += setConditionSql(categoryId, name, minPrice, maxPrice, brand);
+
+        sql += " ORDER BY PRODUCT_ID DESC"+
+        		" ) p " +
+                " WHERE ROWNUM <= ? " +  //endRow
+                ") " +
+                " WHERE rnum >= ?";  //startRow
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = super.getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            int paramIndex = 1;
+            //플레이스 홀더 세팅 및 paramIndex 가져오기
+            paramIndex= setConditionPlaceHolder(pstmt, paramIndex, categoryId, name, minPrice, maxPrice, brand);
+
+            // 페이지 크기 및 행 설정
+            int endRow = (page * pageSize) ;
+            int startRow = endRow - pageSize + 1;
+
+            pstmt.setInt(paramIndex++, endRow);
+            pstmt.setInt(paramIndex++, startRow);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                product = getBeanData(rs);
+                productList.add(product);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(conn, pstmt, rs);
+        }
+
+        return new ProductPage(productList, totalCount);
+    }
 	
 	
 	//예외처리 받아서 처리하는 곳
@@ -134,13 +244,71 @@ public class ProductDao extends SuperDao{
 		     product.setBrand(rs.getString("BRAND"));
 		     product.setStatus(rs.getString("STATUS"));
 		 }catch (Exception e) {
-			 System.out.println("product="+product);
 			 e.printStackTrace();
 			 return null;
 		 }
-		 System.out.println("product="+product);
 		 return product;
 	}
+	
+	private ProductOption getOptionBeanData(ResultSet rs) throws SQLException{
+		ProductOption productOption = new ProductOption();
+		try {
+			productOption.setOptionId(rs.getLong("OPTION_ID"));
+			productOption.setProductId(rs.getLong("PRODUCT_ID"));
+			productOption.setOptionType(rs.getString("OPTION_TYPE"));
+			productOption.setOptionName(rs.getString("OPTION_NAME"));
+			productOption.setAdditionalPrice(rs.getDouble("ADDITIONAL_PRICE"));
+			productOption.setOptionStockquantity(rs.getDouble("OPTION_STOCK_QUANTITY"));
+		}catch (Exception e) {
+			 e.printStackTrace();
+			 return null;
+		 }
+		return productOption;
+		
+	}
+	
+	//조건에 맞는 sql 문장 설정
+    private String setConditionSql(Integer categoryId, String name, Double minPrice, Double maxPrice, String brand) {
+        String sql = "";
+        if (name != null && !name.isEmpty()) {
+            sql += " AND PRODUCT_NAME LIKE ?";
+        }
+        if (categoryId != null) {
+            sql += " AND CATEGORY_ID = ?";
+        }
+        if (minPrice != null && maxPrice != null) {
+            sql += " AND PRICE BETWEEN ? AND ?";
+        } else if (minPrice != null) {
+            sql += " AND PRICE >= ?";
+        } else if (maxPrice != null) {
+            sql += " AND PRICE <= ?";
+        }
+        if (brand != null && !brand.isEmpty()) {
+            sql += " AND BRAND = ?";
+        }
+        return sql;
+    }
+
+    //조건에 맞는 place holder 설정
+    private int setConditionPlaceHolder(PreparedStatement pstmt, int index, Integer categoryId, String name, Double minPrice, Double maxPrice, String brand) throws SQLException {
+        int paramIndex = index;
+        if (name != null && !name.isEmpty()) {
+            pstmt.setString(paramIndex++, "%" + name + "%");
+        }
+        if (categoryId != null) {
+            pstmt.setInt(paramIndex++, categoryId);
+        }
+        if (minPrice != null) {
+            pstmt.setDouble(paramIndex++, minPrice);
+        }
+        if (maxPrice != null) {
+            pstmt.setDouble(paramIndex++, maxPrice);
+        }
+        if (brand != null && !brand.isEmpty()) {
+            pstmt.setString(paramIndex++, brand);
+        }
+        return paramIndex;
+    }
 	
 	//리소스 닫기
 	private void closeResources(Connection conn, PreparedStatement pstmt, ResultSet rs) {

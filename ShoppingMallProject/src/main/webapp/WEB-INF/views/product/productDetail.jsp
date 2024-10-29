@@ -51,7 +51,7 @@
                                 		</c:when>
                                 		<c:otherwise>
                                 			<div class="single-slide">
-                                				<img src="static/template_assets/images/product/no-image.png" alt="이미지 없음" />
+                                				<img src="${pageContext.request.contextPath}/static/template_assets/images/product/no-image.png" alt="이미지 없음" />
                                 			</div>
                                 		</c:otherwise>
                                 	</c:choose>  	
@@ -82,7 +82,7 @@
                                 		</c:when>
                                 		<c:otherwise>
                                 			<div class="single-slide red">
-                                				<img src="static/template_assets/images/product/no-image.png" alt="이미지 없음" />
+                                				<img src="${pageContext.request.contextPath}/static/template_assets/images/product/no-image.png" alt="이미지 없음" />
                                 			</div>
                                 		</c:otherwise>
                                 	</c:choose>
@@ -93,35 +93,31 @@
                         <!-- 상품 상세 텍스트 -->
                         <div class="col-lg-8">
                             <div class="sp-content">
+                            <c:set var="product" value="${productDTO.product}" />
                                 <div class="sp-heading">
                                     <h5><a href="#">${product.name}</a></h5>
                                 </div>
                                 <span class="reference">한 줄 추가 정보</span>
-                                <div class="rating-box">
-                                    <ul>
-                                        <li><i class="ion-android-star"></i></li>
-                                        <li><i class="ion-android-star"></i></li>
-                                        <li><i class="ion-android-star"></i></li>
-                                        <li class="silver-color"><i class="ion-android-star"></i></li>
-                                        <li class="silver-color"><i class="ion-android-star"></i></li>
-                                    </ul>
-                                </div>
                                 <div class="sp-essential_stuff">
                                     <ul>
-                                        <li>브랜드 <a href="javascript:void(0)">${product.brand}</a></li>
+                                        <li>브랜드: <a href="javascript:void(0)">${product.brand}</a></li>
                                         <li>재고 수량: <a href="javascript:void(0)">${product.quantity}</a></li>
                                         <li>상품 가격: <a href="javascript:void(0)">${product.price}원</a></li>
                                     </ul>
                                 </div>
-                                <div class="product-size_box">
-                                    <span>Size</span>
-                                    <select class="myniceselect nice-select">
-                                        <option value="1">S</option>
-                                        <option value="2">M</option>
-                                        <option value="3">L</option>
-                                        <option value="4">XL</option>
-                                    </select>
-                                </div>
+                                <c:if test="${not empty optionTree}" >
+                                	<c:forEach var="entry" items="${optionTree}">
+		                                <div class="product-size_box">
+		                                    <span>${entry.key}</span>
+		                                    <select name="${entry.key}Options" id="${entry.key}Options" class="myniceselect nice-select">
+		                                    	<option value="옵션을 선택해주세요">옵션을 선택해주세요</option>
+		                                    	<c:forEach var="option" items="${entry.value}">
+		                                        <option value="${option}">${option}</option>
+		                                        </c:forEach>
+		                                    </select>
+		                                </div>
+	                                </c:forEach>
+                                </c:if>
                                 <div class="quantity">
                                     <label>Quantity</label>
                                     <div class="cart-plus-minus">
