@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.shopping.dao.CartDao;
 import com.shopping.dao.MemberDao;
 import com.shopping.model.Member;
 
@@ -26,7 +27,7 @@ public class SignupController extends HttpServlet {
 			response.sendRedirect("main");
 			return;
 		}
-		
+
 	    String m = request.getParameter("m");
 	    
 	    if("checkId".equals(m)) {
@@ -58,6 +59,35 @@ public class SignupController extends HttpServlet {
             } else {
                 out.print("RES:Y"); // 사용할 수 있는 경우
             }
+	    }else if("checkEm".equals(m)) {
+	    	MemberDao dao = new MemberDao();
+
+	    	String email = request.getParameter("em");
+		    
+		    response.setContentType("text/plain");
+	        PrintWriter out = response.getWriter();
+	        
+	    	if (email == null || email.isEmpty()) {
+                out.print("ERR: No Email provided");
+                return;
+            }
+	    	
+	    	// 아이디가 이미 존재하는지 확인
+            boolean emExists = false;
+            
+            try {
+                emExists = dao.checkEmail(email);
+            } catch (Exception e) {
+                out.print("ERR: Database error");
+                e.printStackTrace(); // 로그에 기록
+                return;
+            }
+            
+            if (emExists) {
+                out.print("ERR: Email already exists"); // 사용할 수 없는 경우
+            } else {
+                out.print("RES:Y"); // 사용할 수 있는 경우
+            }
 	    }else{
 	    	request.getRequestDispatcher("WEB-INF/views/member/signup.jsp").forward(request, response);
         }
@@ -65,6 +95,7 @@ public class SignupController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		MemberDao dao = new MemberDao();
 		Member bean = new Member();
 		String id = request.getParameter("id");
@@ -78,21 +109,24 @@ public class SignupController extends HttpServlet {
 		String name = request.getParameter("name");
 		bean.setName(name);
 		String birth = request.getParameter("birth");
-		bean.setBirthday(birth);
+		bean.setBirthday(birth); 
 		String email = request.getParameter("email");
 		bean.setEmail(email);
 		
 		int cnt = dao.signUp(bean);
 		
 		if(cnt==1) {
+			Member member = dao.getMemberById(id);
+			Long member_id = member.getMember_id();
+			new CartDao().createCart(member_id);
 			request.getSession().setAttribute("id", id);
 			response.sendRedirect("main");
 		}else {
 			// 실패 시 처리 방안
 			// 1. 다시 회원가입으로 돌려보내고 alert 띄운다.
 			// 2. 메인으로 보낸다.
-			request.setAttribute("fail", "회원가입에 실패 했습니다. 오류가 반복될 경우 문의하세요.");
-			doGet(request, response);
+			request.setAttribute("fail", "회원가입에 실패 했습니다. 오류가 반복될 경우 문의하세요. (회원생성오류)");
+			response.sendRedirect("signup");
 		}
 	}
 

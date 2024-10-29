@@ -3,7 +3,6 @@ package com.shopping.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import com.shopping.model.Member;
 
@@ -18,7 +17,7 @@ public class MemberDao extends SuperDao{
 		PreparedStatement pstmt = null ;
 		ResultSet rs = null ;		
 		String sql = " select * from members " ;
-		sql += " where id = ?  " ;
+		sql += " where signup_id = ?  " ;
 		
 		try {
 			conn = super.getConnection() ;
@@ -94,7 +93,7 @@ public class MemberDao extends SuperDao{
 		PreparedStatement pstmt = null ;
 		ResultSet rs = null ;		
 		String sql = " select * from members " ;
-		sql += " where id = ?  " ;
+		sql += " where signup_id = ?  " ;
 		
 		try {
 			conn = super.getConnection() ;
@@ -183,4 +182,72 @@ public class MemberDao extends SuperDao{
 		return member;
 	}
 
+	public boolean checkEmail(String email) {
+		boolean bool = false;
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from members " ;
+		sql += " where member_email = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setString(1, email);
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				bool = true;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return bool;
+	}
+
+	public int delete(Long memberId) {
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = super.getConnection();
+			conn.setAutoCommit(false);
+			String sql = "DELETE members ";
+			sql += " WHERE MEMBER_ID = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, memberId);
+			
+			cnt = pstmt.executeUpdate();
+			conn.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return cnt;
+	}
 }

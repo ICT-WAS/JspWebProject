@@ -44,6 +44,9 @@
         	if (fail) {
             	alert(fail);
         	}
+        	<% 
+        		request.removeAttribute("fail");
+        	%>
    	 	});
 		function defaultScript() {
 			
@@ -58,7 +61,7 @@
 			
 			$("#id").blur(function() {
 		        idFlag = false;
-		        checkId();
+		        idFlag = checkId();
 		    });
 			
 			
@@ -90,12 +93,13 @@
 	
 	            idFlag = false;
 	
+	            let _idFlag = false;
+	            
 	            $.ajax({
 	                type:"GET",
-	                url: "ShoppingMallProject/signup?m=checkId&id=" + id,
+	                url: "/ShoppingMallProject/signup?m=checkId&id=" + id,
 	                success : function(data) {
 	                    let result = data.substr(4);
-	
 	                    if (result == "Y") {
 	                        idFlag = true;
 	                        oMsg.hide();
@@ -103,10 +107,21 @@
 	                    } else {
 	                        showErrorMsg(oMsg, "아이디: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.");
 	                        oDiv.addClass("error");
+	                        idFlag = false;
+	                        _idFlag = false;
 	                    }
 	                }
 	            });
-	            return true;
+	            
+	            if(!_idFlag){
+	            	
+	            	return false;
+	            }else{
+	            	oMsg.hide();
+                    oDiv.removeClass("error");
+	            	return true;	
+	            }
+	            
 	        }
 	        // id 종료
 	        
@@ -114,8 +129,8 @@
 	        let phoneFlag = false;
 			
 			$("#phoneNumber").blur(function() {
-				phoneNumberFlag = false;
-		        checkPhoneNumber();
+				phoneFlag = false;
+		        phoneFlag = checkPhoneNumber();
 		    });
 			
 			
@@ -124,7 +139,7 @@
 	            let oMsg = $("#phoneNumberMsg");
 	            let oDiv = $("#phoneNumber");
 	
-	            if(phoneNumberFlag) {
+	            if(phoneFlag) {
 	                oMsg.hide();
 	                return true;
 	            }
@@ -154,7 +169,7 @@
 			
 			$("#password1, #password2").blur(function() {
 				pwFlag = false;
-		        checkPw();
+		        pwFlag = checkPw();
 		    });
 			
 	        function checkPw() {
@@ -209,7 +224,7 @@
 			
 			$("#nickname").blur(function() {
 				nickFlag = false;
-				checkNickName();
+				nickFlag = checkNickName();
 		    });
 			
 			
@@ -247,7 +262,7 @@
 			
 			$("#name").blur(function() {
 				nameFlag = false;
-				checkName();
+				nameFlag = checkName();
 		    });
 			
 			
@@ -279,7 +294,7 @@
 	        
 			$("#birth").blur(function() {
 				birthFlag = false;
-				checkBirth();
+				birthFlag = checkBirth();
 		    });
 			
 	        function checkBirth() {
@@ -320,7 +335,7 @@
 	        
 			$("#email").blur(function() {
 				emFlag = false;
-				checkEmail();
+				emFlag = checkEmail();
 		    });
 			
 	        function checkEmail() {
@@ -348,33 +363,59 @@
 	            	oMsg.hide();
 	                oDiv.removeClass("error");
 	            }
-	
+				
+				let _emFlag = false;
+	            
+	            $.ajax({
+	                type:"GET",
+	                url: "/ShoppingMallProject/signup?m=checkEm&em=" + email,
+	                success : function(data) {
+	                    let result = data.substr(4);
+	                    if (result == "Y") {
+	                        emFlag = true;
+	                        oMsg.hide();
+	                        oDiv.removeClass("error");
+	                    } else {
+	                        showErrorMsg(oMsg, "이메일: 사용할 수 없는 이메일입니다. 다른 이메일를 입력해 주세요.");
+	                        oDiv.addClass("error");
+	                        emFlag = false;
+	                        _emFlag = false;
+	                    }
+	                }
+	            });
+	            
+	            if(!_emFlag){
+	            	
+	            	return false;
+	            }else{
+	            	oMsg.hide();
+                    oDiv.removeClass("error");
+	            	return true;	
+	            }
 	            return true;
 	        }
 	        // 이메일 종료
 
 	        
 	        function validCheck(){
-	        	idFlag = checkId();
-	        	phoneFlag = checkPhoneNumber();
-	        	pwFlag = checkPw();
-	        	nickFlag = checkNickName();
-	        	nameFlag = checkName();
-	        	birthFlag = checkBirth();
-	        	emFlag = checkEmail();
-				
-				if(idFlag && phoneFlag && pwFlag && nickFlag && nameFlag && birthFlag && emFlag){
-					return true;
-				}else{
-					return false;
-				}
-			}
+	            idFlag = checkId();
+	            phoneFlag = checkPhoneNumber();
+	            pwFlag = checkPw();
+	            nickFlag = checkNickName();
+	            nameFlag = checkName();
+	            birthFlag = checkBirth();
+	            emFlag = checkEmail();
+
+	            console.log("Flags: ", {idFlag, phoneFlag, pwFlag, nickFlag, nameFlag, birthFlag, emFlag}); // 각 플래그 출력
+
+	            return idFlag && phoneFlag && pwFlag && nickFlag && nameFlag && birthFlag && emFlag;
+	        }
 	        $(".btn-signup").click(function(event){
 	        	event.preventDefault()
 	        	let bool = validCheck();
+	        	console.log("Validation Result:", bool);
 	        	if(bool){
 	        		$(this).closest('form').submit();
-	        		
 	        	}else{
 	        		alert("유효하지 않은 입력입니다. 다시 확인해 주세요.");
 	        	}
@@ -444,7 +485,7 @@
 		                              
 		                              <div class="col-md-3"></div>
 		                              <div class="col-md-6">
-		                              	<button class="uren-register_btn btn-signup" >회원가입하기</button>
+		                              	<button class="btn-signup" >회원가입하기</button>
 		                              </div>
 		                              <div class="col-md-3"></div>
 		                          </div>
