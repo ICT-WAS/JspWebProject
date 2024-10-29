@@ -45,7 +45,7 @@
             	alert(fail);
         	}
         	<% 
-        	request.removeAttribute("fail");
+        		request.removeAttribute("fail");
         	%>
    	 	});
 		function defaultScript() {
@@ -61,7 +61,7 @@
 			
 			$("#id").blur(function() {
 		        idFlag = false;
-		        checkId();
+		        idFlag = checkId();
 		    });
 			
 			
@@ -93,12 +93,15 @@
 	
 	            idFlag = false;
 	
+	            let _idFlag = false;
+	            
 	            $.ajax({
 	                type:"GET",
 	                url: "/ShoppingMallProject/signup?m=checkId&id=" + id,
 	                success : function(data) {
 	                    let result = data.substr(4);
-	
+	                    console.log("ajax Result:", data);
+	                    console.log("ajax Result2:", result);
 	                    if (result == "Y") {
 	                        idFlag = true;
 	                        oMsg.hide();
@@ -106,13 +109,21 @@
 	                    } else {
 	                        showErrorMsg(oMsg, "아이디: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.");
 	                        oDiv.addClass("error");
-	                        idFlag=false;
-	                        return false;
+	                        idFlag = false;
+	                        _idFlag = false;
 	                    }
 	                }
 	            });
 	            
-	            return true;
+	            if(!_idFlag){
+	            	
+	            	return false;
+	            }else{
+	            	oMsg.hide();
+                    oDiv.removeClass("error");
+	            	return true;	
+	            }
+	            
 	        }
 	        // id 종료
 	        
@@ -121,7 +132,7 @@
 			
 			$("#phoneNumber").blur(function() {
 				phoneFlag = false;
-		        checkPhoneNumber();
+		        phoneFlag = checkPhoneNumber();
 		    });
 			
 			
@@ -160,7 +171,7 @@
 			
 			$("#password1, #password2").blur(function() {
 				pwFlag = false;
-		        checkPw();
+		        pwFlag = checkPw();
 		    });
 			
 	        function checkPw() {
@@ -215,7 +226,7 @@
 			
 			$("#nickname").blur(function() {
 				nickFlag = false;
-				checkNickName();
+				nickFlag = checkNickName();
 		    });
 			
 			
@@ -253,7 +264,7 @@
 			
 			$("#name").blur(function() {
 				nameFlag = false;
-				checkName();
+				nameFlag = checkName();
 		    });
 			
 			
@@ -285,7 +296,7 @@
 	        
 			$("#birth").blur(function() {
 				birthFlag = false;
-				checkBirth();
+				birthFlag = checkBirth();
 		    });
 			
 	        function checkBirth() {
@@ -326,7 +337,7 @@
 	        
 			$("#email").blur(function() {
 				emFlag = false;
-				checkEmail();
+				emFlag = checkEmail();
 		    });
 			
 	        function checkEmail() {

@@ -183,4 +183,35 @@ public class MemberDao extends SuperDao{
 		return member;
 	}
 
+	public boolean checkEmail(String email) {
+		boolean bool = false;
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from members " ;
+		sql += " where member_email = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setString(1, email);
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				bool = true;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return bool;
+	}
 }
