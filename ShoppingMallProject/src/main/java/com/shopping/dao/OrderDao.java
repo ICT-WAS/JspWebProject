@@ -1,97 +1,119 @@
 package com.shopping.dao;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
+import com.shopping.enums.OrderStatus;
 import com.shopping.model.Order;
 
 public class OrderDao extends SuperDao{
 	
-	public int saveOrder(Order order) throws SQLException {
+	public int saveOrder(Order order) {
 		
 		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
 		
-		conn = getConnection();
-		conn.setAutoCommit(false);
-		
-		String sql = "INSERT INTO ORDERS (MEMBER_ID, ORDER_NUMBER, ORDER_DATE, TOTAL_AMOUNT, USED_POINTS, ORDER_STATUS, PAYMENT_METHOD, EXPECTED_REWARD_AMOUNT, FINAL_PAYMENT_AMOUNT, CREATED_AT, UPDATED_AT)";
-		sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-		PreparedStatement pstmt = null;		
-		ResultSet rs = null;
-		
-		try{
+		try {
+			conn = getConnection();
+			conn.setAutoCommit(false);
+			String sql = "INSERT INTO ORDERS (MEMBER_ID, ORDER_NUMBER, ORDER_DATE, TOTAL_AMOUNT, USED_POINTS, ORDER_STATUS, PAYMENT_METHOD, EXPECTED_REWARD_AMOUNT, FINAL_PAYMENT_AMOUNT, CREATED_AT, UPDATED_AT)";
+			sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setLong(1, order.getMemberId());			
-			pstmt.setString(2, order.getOrderNumber());
-			pstmt.setDate(3, Date.valueOf(LocalDate.now()));
-			pstmt.setDouble(4, order.getTotalAmount());
-			pstmt.setDouble(5, order.getUsedPoints());
-			pstmt.setString(6, order.getOrderStatus().toString());
-			pstmt.setString(7, order.getPaymentMethod());
-			pstmt.setDouble(8, order.getExpectedRewardAmount());
-			pstmt.setDouble(9, order.getFinalPaymentAmount());
-			pstmt.setDate(10, Date.valueOf(LocalDate.now()));
-			pstmt.setDate(11, Date.valueOf(LocalDate.now()));
+            pstmt.setLong(1, order.getMemberId());            
+            pstmt.setString(2, order.getOrderNumber());
+            pstmt.setDate(3, Date.valueOf(LocalDate.now()));
+            pstmt.setDouble(4, order.getTotalAmount());
+            pstmt.setDouble(5, order.getUsedPoints());
+            pstmt.setString(6, order.getOrderStatus().toString());
+            pstmt.setString(7, order.getPaymentMethod());
+            pstmt.setDouble(8, order.getExpectedRewardAmount());
+            pstmt.setDouble(9, order.getFinalPaymentAmount());
+            pstmt.setDate(10, Date.valueOf(LocalDate.now()));
+            pstmt.setDate(11, Date.valueOf(LocalDate.now()));
 			
-		
 			result = pstmt.executeUpdate();
-			
 			conn.commit();
-		
-		}catch(SQLException e) {
+		}catch (Exception e) {
 			e.printStackTrace();
-			conn.rollback();
-			
+			try {
+				conn.rollback();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
 		}finally {
 			try {
-				if (rs != null) {rs.close();}
-				
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				if (pstmt != null) {pstmt.close();}
-				
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				if (conn != null) {conn.close();}
-				
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		
+		
 		return result;
 	}
 	
-	private Order getBeanData(ResultSet rs) throws SQLException{
+	public Order findOrderByOrderNo(String orderNo) {
+		Order order = null;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from orders " ;
+		sql += " where ORDER_NUMBER = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setString(1, orderNo);
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				order = getBeanData(rs);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return order;
+	}
+	
+	private Order getBeanData(ResultSet rs){
 		 Order order = null;
-//		 
-//		 try {
-//			 order = new Order();
-//			 order.setProductId(rs.getLong("PRODUCT_ID"));
-//			 order.setCategoryId(rs.getLong("CATEGORY_ID"));
-//			 order.setName(rs.getString("PRODUCT_NAME"));
-//			 order.setImg1(rs.getString("IMG1"));
-//			 order.setImg2(rs.getString("IMG2"));
-//			 order.setImg3(rs.getString("IMG3"));
-//			 order.setDescription(rs.getString("PRODUCT_DESCRIPTION"));
-//			 order.setPrice(rs.getDouble("PRICE"));
-//			 order.setQuantity(rs.getDouble("STOCK_QUANTITY"));
-//			 order.setRegistrationDate(rs.getTimestamp("REGISTRATION_DATE").toLocalDateTime());
-//			 order.setBrand(rs.getString("BRAND"));
-//			 order.setStatus(rs.getString("STATUS"));
-//		 }catch (Exception e) {
-//			 e.printStackTrace();
-//			 return null;
-//		 }
+		 
+		 try {
+			 order = new Order();
+			 order.setOrderId(rs.getLong("ORDER_ID"));
+			 order.setMemberId(rs.getLong("MEMBER_ID"));
+			 order.setOrderNumber(rs.getString("ORDER_NUMBER"));
+			 order.setOrderDate(rs.getTimestamp("ORDER_DATE").toLocalDateTime());
+			 order.setTotalAmount(rs.getInt("TOTAL_AMOUNT"));
+			 order.setUsedPoints(rs.getInt("USED_POINTS"));
+			 order.setOrderStatus(OrderStatus.valueOf(rs.getString("ORDER_STATUS")));
+			 order.setPaymentMethod(rs.getString("PAYMENT_METHOD"));
+			 order.setExpectedRewardAmount(rs.getInt("EXPECTED_REWARD_AMOUNT"));
+			 order.setFinalPaymentAmount(rs.getInt("FINAL_PAYMENT_AMOUNT"));
+			 order.setCreatedAt(rs.getTimestamp("CREATED_AT").toLocalDateTime());
+			 order.setUpdatedAt(rs.getTimestamp("UPDATED_AT").toLocalDateTime());
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 return null;
+		 }
 		 return order;
 	}
 }

@@ -1,3 +1,5 @@
+<%@page import="com.shopping.model.Order"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
@@ -7,11 +9,28 @@
 <!doctype html>
 <html class="no-js" lang="zxx">
 
+
+<%
+	Order orderData = (Order)request.getAttribute("orderData");
+
+	DecimalFormat df = new DecimalFormat("#,###");
+
+	//orderData 객체에서 가져옴
+	int usedPoint = orderData.getUsedPoints();
+	int totalPayment = orderData.getFinalPaymentAmount();
+	int total = orderData.getTotalAmount();
+	
+	// 적립금할인금액 값 변경
+	String formattedPoint = df.format(usedPoint);
+	
+	// 최종 결제 금액 변경
+	String formattedTotal =  df.format(total);
+	String formattedTotalPayment = df.format(totalPayment);
+%>
+
 <head>
     <ui:css />
     <meta charset="UTF-8">
-	
-	<!-- 스크립트 -->
 	<style>
 		.button {
 		    background: #ffffff;
@@ -66,19 +85,20 @@
 	<ui:header />
 	
     <div class="main-wrapper">
+    
     	<!-- 메인 컨텐츠 -->
     	<div class="checkout-area">
             <div class="container-fluid">
             	<div class="container-xxl">
             		<div class="row">
-            		<div class="col-6 col-lg-1"></div>
-                    <div class="col-6 col-lg-10">
+            		<div class="col-6 col-lg-2"></div>
+                    <div class="col-6 col-lg-8">
                         <form action="javascript:void(0)">
                             <div class="checkbox-form">
                                 <h3>주문 완료</h3>
                                 <div class="row">
                                 	<div class="col-md-12">
-                                	주문번호 : 123148344<br>
+                                	주문번호 : ${orderData.orderNumber}<br>
                                 	주문이 완료되었습니다.
                                 	</div>
                                 	
@@ -91,22 +111,28 @@
                                 		결제 금액
                                 	</div>
                                 	<div class="col-md-8 right-align">
-                                		총 0원
+                                		총 <%=formattedTotalPayment %>원
                                 	</div>
                                 	<div class="col-md-4">
                                 		상품 금액
                                 	</div>
                                 	<div class="col-md-8 right-align">
-                                		13,300원
+                                		<%=formattedTotal %>원
                                 	</div>
                                 	<div class="col-md-4">
                                 		적립금 할인
                                 	</div>
                                 	<div class="col-md-8 right-align">
-                                		-13,300원
+                                		-<%=formattedPoint %>원
                                 	</div>
                                 	<div class="col-md-4">
                                 		결제수단명
+                                	</div>
+                                	<div class="col-md-8 right-align">
+                                		테스트
+                                	</div>
+                                	<div class="col-md-4">
+                                		적립 예정 금액
                                 	</div>
                                 	<div class="col-md-8 right-align">
                                 		0원
@@ -121,13 +147,13 @@
 		                            <div class="col-md-4">
 		                                <label>배송지</label>
 		                            </div>
-		                            <div class="col-md-8">
+		                            <div class="col-md-8 right-align">
 		                                <label>경기 광명시 하안동 650 어쩌고 저쩌고</label>
 		                            </div>
 		                            <div class="col-md-4">
 		                                <label>배송 요청 사항</label>
 		                            </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 right-align">
 		                                <label>부재 시 경비실에 맡겨주세요</label>
 		                            </div>
 		                            
@@ -142,9 +168,9 @@
 		                                		<tr>
 		                                            <td><img class="img-thumbnail" src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></td>
 		                                            <td class="uren-product-name"><a href="javascript:void(0)">${cartItem.name}</a></td>
-		                                            <td class="uren-product-price"><span class="amount">${cartItem.formattedPrice}원</span></td>
-		                                            <td class="quantity"><span class="amount">x${cartItem.quantity}</span></td>
-		                                            <td class="product-subtotal"><span class="amount">${cartItem.formattedTotal}원</span></td>
+		                                            <td class="uren-product-price right-align"><span class="amount">${cartItem.formattedPrice}원</span></td>
+		                                            <td class="quantity right-align"><span class="amount">x${cartItem.quantity}</span></td>
+		                                            <td class="product-subtotal right-align"><span class="amount">${cartItem.formattedTotal}원</span></td>
 		                                        </tr>
 		                                	</c:forEach>
                                 		</table>
@@ -163,12 +189,12 @@
                              </div>
                          </form>
                      </div>
+                   	<div class="col-6 col-lg2"></div>
                    </div>
                </div>
            </div>
        </div>
     </div>
-		<div class="col-6 col-lg-1"></div>
 	<ui:footer />
 	<ui:js />
 </body>

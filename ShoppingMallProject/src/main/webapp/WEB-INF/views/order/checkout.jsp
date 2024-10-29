@@ -1,3 +1,4 @@
+<%@page import="com.shopping.model.Member"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="com.shopping.model.CartProductDto"%>
@@ -19,7 +20,7 @@
 	DecimalFormat df = new DecimalFormat("#,###");
 	String payment_total = df.format(total);
 	
-	
+	Long point = (Long)((Member)request.getAttribute("member")).getPoint();
 %>
 	
 <!doctype html>
@@ -34,37 +35,75 @@
 	
 	<!-- 스크립트 -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
 	<script type="text/javascript">
     $(document).ready(function() {
     	const input = $('#point');
-	    const output = $('#used-point');
-
+	    const useAllPoint = $('#use-all-point');
 	    
-	    // 사용 적립금 필드 변경시
-	    input.on('change', function() {
+	    var memberPoint = Number("<%=point%>");
+	    $('#memberPoint').text('보유 적립금 : ' + getFormattedPrice(memberPoint) + '원');
+
+	    // 사용 적립금 필드 변경시 이벤트 바인딩
+	    input.on('change', function(e) {
 	    	var point = Number(input.val()) || 0;
 	    	
-	    	// 적립금할인금액, 할인금액, 적립금 input 태그 값 변경
-	    	var formattedPoint = getFormattedPrice(point);
-	    	input.val(formattedPoint);
-	    	output.text(formattedPoint + `원`);
-	    	$('#discounted-total').text('-' + formattedPoint + `원`);
+	    	// 적립금 1원 단위로 사용 시도
+	    	if (point % 10 != 0) {
+	    		$('.modal-body').text('적립금은 10원 단위로만 사용 가능합니다.');
+	    		$('#myModal').modal('show');
+	            point = point - point % 10;
+	        }
 	    	
-	    	// 최종 결제 금액 변경
-	    	var total = "<%=total%>";
-	    	var total_payment = total - point;
-	    	var formattedTotal = getFormattedPrice(total_payment);
-	    	
-	    	$('#total-payment').text(formattedTotal + '원');
-	    	$('.total-payment-button').val(formattedTotal + '원 결제하기');
+	    	setFormattedPrice(point);
+	    });
+	    
+	 	// 전액 사용 버튼 클릭 이벤트 바인딩
+	    useAllPoint.on('click', function(e) {
+	    	var usedPoints = memberPoint - memberPoint % 10;
+	    	setFormattedPrice(usedPoints);
+	    });
+	    
+	    // 결제하기 버튼 클릭시 이벤트 바인딩
+	    $('.process-payment').on('click', function(e) {
+	    	$('#total-hidden').val("<%=total %>");
+	    	$('#usedPoint-hidden').val(parseFormattedPrice($('#used-point').text()));
+	    	$('#totalAmount-hidden').val(parseFormattedPrice($('#total-payment').text()));
 	    });
     });
     
-    
+	function setFormattedPrice(point) {
+		var total = Number("<%=total%>");
+		var memberPoint = Number("<%=point%>");
+		
+		// 최대 사용 적립금 clamp
+    	var maxPoint = Math.min(memberPoint, total);
+		
+    	point = Math.min(maxPoint, point);
+		
+		// 적립금할인금액, 할인금액, 적립금 input 태그 값 변경
+    	var formattedPoint = getFormattedPrice(point);
+    	$('#point').val(formattedPoint);
+    	$('#used-point').text(formattedPoint + `원`);
+    	$('#discounted-total').text('-' + formattedPoint + `원`);
+    	
+    	// 최종 결제 금액 변경
+    	var total_payment = total - point;
+    	var formattedTotal = getFormattedPrice(total_payment);
+    	
+    	$('#total-payment').text(formattedTotal + '원');
+    	$('.total-payment-button').val(formattedTotal + '원 결제하기');
+	}
+	 
     // 한국 통화 형태로 숫자->문자 변환
     function getFormattedPrice(value) {
     	return new Intl.NumberFormat('ko-KR').format(value);
     }
+    
+    function parseFormattedPrice(formattedPrice) {
+    	return parseInt(formattedPrice.replace(',', ''));
+    }
+    
     </script>
 	
 	
@@ -127,6 +166,13 @@
 			    color: #999999;
 			    font-size: 14px;
 			}
+			
+			.order-rightside {
+			    position: -webkit-sticky; /* Safari 지원 */
+			    position: sticky;
+			    top: 120px; /* 상단에서 얼마나 떨어진 위치에 고정할지 설정 */
+			    z-index: 10; /* 다른 요소 위에 표시되도록 설정 */
+			}
 	
 	</style>
 	
@@ -136,14 +182,22 @@
 <body class="template-color-1">
 	<ui:header />
 	
+<!-- 	1. 오른쪽 결제하기 버튼 클릭시
+결제하기 버튼 클릭하는 이벤트 발생
+
+2. 회원 정보 가져오기.
+ -->
+
+	
+	
     <div class="main-wrapper">
     	<!-- 메인 컨텐츠 -->
         <div class="checkout-area">
             <div class="container-fluid">
             	<div class="container-xxl">
+            	<form method="post">
             		<div class="row">
                     <div class="col-6 col-lg-8">
-                        <form method="post">
                             <div class="checkbox-form">
                                 <h3>주문서</h3>
                                 <div class="row">
@@ -210,9 +264,9 @@
 		                                		<tr>
 		                                            <td><img class="img-thumbnail" src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></td>
 		                                            <td class="uren-product-name"><a href="javascript:void(0)">${cartItem.name}</a></td>
-		                                            <td class="uren-product-price"><span class="amount">${cartItem.formattedPrice}원</span></td>
-		                                            <td class="quantity"><span class="amount">x${cartItem.quantity}</span></td>
-		                                            <td class="product-subtotal"><span class="amount">${cartItem.formattedTotal}원</span></td>
+		                                            <td class="uren-product-price right-align"><span class="amount">${cartItem.formattedPrice}원</span></td>
+		                                            <td class="quantity right-align"><span class="amount">x${cartItem.quantity}</span></td>
+		                                            <td class="product-subtotal right-align"><span class="amount">${cartItem.formattedTotal}원</span></td>
 		                                        </tr>
 		                                	</c:forEach>
                                 		</table>
@@ -229,13 +283,13 @@
 		                            </div>
 		                            <div class="col-md-3">
 		                                <div class="checkout-form-list">
-                                            <input id="point" type="text" class="point-input">
+                                            <input id="point" type="text" class="point-input" value="0">
                                         </div>
 		                            </div>
 		                            <div class="col-md-2">
-		                            	<input type="button" value="전액 사용" class="button">
+		                            	<input type="button" value="전액 사용" class="button" id="use-all-point">
 		                            </div>
-		                            <div class="col-md-3 mt-3">
+		                            <div class="col-md-3 mt-3" id="memberPoint">
 		                                보유 적립금 : ${member.point}원
 		                            </div>
 	                    			
@@ -263,17 +317,17 @@
 				                    <!-- 결제하기 버튼 -->
 				                    <div class="col-md-12 mt-3">
 		                                <div class="order-button-payment">
-                                        <input class="total-payment-button" value="<%=payment_total%>원 결제하기" type="submit">
+                                        <input class="total-payment-button process-payment" value="<%=payment_total%>원 결제하기" type="submit">
                                     </div>
 		                            </div>
                                 </div>
                             </div>
-                        </form>
                     </div>
                     
                     
                     <!-- 결제 정보 요약 -->
                     <div class="col-6 col-lg-4">
+                    	<div class="order-rightside">
                     	<h3>결제 금액</h3>
                         <div class="your-order">
                             <div class="payment-method">
@@ -288,6 +342,7 @@
 		                                                <div class="col-md-6 right-align">
 		                                                	<%=payment_total %>원
 		                                                </div>
+		                                                <input type="hidden" name="total" id="total-hidden">
 		                                            </div>
 	                                            </div>
 	                                            <div class="card-header" id="#payment-1">
@@ -315,6 +370,7 @@
 			                                                <div class="col-md-6 discount-price right-align" id="used-point">
 			                                                	0원
 			                                                </div>
+			                                                <input type="hidden" name="usedPoint" id="usedPoint-hidden">
 			                                            </div>
 	                                                </div>
 	                                            </div>
@@ -335,13 +391,14 @@
 			                                                <h5 class="panel-title" id="total-payment">
 			                                                    <%=payment_total%>원
 			                                                </h5>
+			                                                <input type="hidden" name="totalAmount" id="totalAmount-hidden">
 		                                                </div>
 		                                            </div>
 	                                            </div>
 	                                        </div>
                                     </div>
                                     <div class="order-button-payment">
-                                        <input class="total-payment-button" value="<%=payment_total%>원 결제하기" type="submit">
+                                        <input class="total-payment-button process-payment" value="<%=payment_total%>원 결제하기" type="submit">
                                     </div>
                                 </div>
                             </div>
@@ -349,10 +406,31 @@
                     </div>
                 </div>
                 </div>
+                </form>
+                </div>
             </div>
         </div>
         <!-- 메인 컨텐츠 끝 -->
-    	
+        
+    	<!-- 모달 -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">적립금 사용 실패</h5>
+            </div>
+            <div class="modal-body">
+                유효하지 않은 값을 입력하셨습니다.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+            
+            
+            
     </div>
 	<ui:footer />
 	<ui:js />

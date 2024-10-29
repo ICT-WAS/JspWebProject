@@ -16,7 +16,7 @@ public class Order {
 	private Integer expectedRewardAmount;	// 적립예정금액
 	private Integer finalPaymentAmount;		// 최종결제금액
 	private LocalDateTime createdAt;		// 등록날짜
-	private LocalDateTime updateedAt;		// 수정날짜
+	private LocalDateTime updatedAt;		// 수정날짜
 	
 	public Long getOrderId() {
 		return orderId;
@@ -84,15 +84,15 @@ public class Order {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
-	public LocalDateTime getUpdateedAt() {
-		return updateedAt;
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
 	}
-	public void setUpdateedAt(LocalDateTime updateedAt) {
-		this.updateedAt = updateedAt;
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 	public Order(Long memberId, String orderNumber, LocalDateTime orderDate, Integer totalAmount,
 			Integer usedPoints, OrderStatus orderStatus, String paymentMethod, Integer expectedRewardAmount,
-			Integer finalPaymentAmount, LocalDateTime createdAt, LocalDateTime updateedAt) {
+			Integer finalPaymentAmount, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		super();
 		this.memberId = memberId;
 		this.orderNumber = orderNumber;
@@ -104,7 +104,7 @@ public class Order {
 		this.expectedRewardAmount = expectedRewardAmount;
 		this.finalPaymentAmount = finalPaymentAmount;
 		this.createdAt = createdAt;
-		this.updateedAt = updateedAt;
+		this.updatedAt = updatedAt;
 	}
 	public Order() {
 		super();
