@@ -30,7 +30,7 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="uren-product-remove">선택</th>
+                                            <th class="uren-product-remove"></th>
                                             <th class="uren-product-thumbnail">사진</th>
                                             <th class="cart-product-name">상품명</th>
                                             <th class="cart-product-option">옵션</th>
@@ -60,56 +60,9 @@
                                     			<td class="uren-product-price"><span class="amount">${product} 원</span></td>
                                     		</tr>
                                     	</c:forEach>
-                                    
-                                    
-                                    
-                                    	<tr>
-                                            <td class="uren-product-remove"><input type="checkbox" value="213"></td>
-                                            <td class="uren-product-thumbnail"><a href="javascript:void(0)"><img src="assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></a></td>
-                                            <td class="uren-product-name"><a href="javascript:void(0)">Juma rema pola</a></td>
-                                            <td class="uren-product-price"><span class="amount">$46.80</span></td>
-                                            <td class="quantity">
-                                                <label>Quantity</label>
-                                                <div class="cart-plus-minus">
-                                                    <input class="cart-plus-minus-box" value="1" type="text">
-                                                    <div class="dec qtybutton"><i class="fa fa-angle-down"></i></div>
-                                                    <div class="inc qtybutton"><i class="fa fa-angle-up"></i></div>
-                                                <div class="dec qtybutton"><i class="fa fa-angle-down"></i></div><div class="inc qtybutton"><i class="fa fa-angle-up"></i></div></div>
-                                            </td>
-                                            <td class="product-subtotal"><span class="amount">$46.80</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="uren-product-remove"><a href="javascript:void(0)"><i class="fa fa-trash" title="Remove"></i></a></td>
-                                            <td class="uren-product-thumbnail"><a href="javascript:void(0)"><img src="assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></a></td>
-                                            <td class="uren-product-name"><a href="javascript:void(0)">Juma rema pola</a></td>
-                                            <td class="uren-product-price"><span class="amount">$46.80</span></td>
-                                            <td class="quantity">
-                                                <label>Quantity</label>
-                                                <div class="cart-plus-minus">
-                                                    <input class="cart-plus-minus-box" value="1" type="text">
-                                                    <div class="dec qtybutton"><i class="fa fa-angle-down"></i></div>
-                                                    <div class="inc qtybutton"><i class="fa fa-angle-up"></i></div>
-                                                <div class="dec qtybutton"><i class="fa fa-angle-down"></i></div><div class="inc qtybutton"><i class="fa fa-angle-up"></i></div></div>
-                                            </td>
-                                            <td class="product-subtotal"><span class="amount">$46.80</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="uren-product-remove"><a href="javascript:void(0)"><i class="fa fa-trash" title="Remove"></i></a></td>
-                                            <td class="uren-product-thumbnail"><a href="javascript:void(0)"><img src="assets/images/product/small-size/2.jpg" alt="Uren's Cart Thumbnail"></a></td>
-                                            <td class="uren-product-name"><a href="javascript:void(0)">Bag Goodscol model</a></td>
-                                            <td class="uren-product-price"><span class="amount">$71.80</span></td>
-                                            <td class="quantity">
-                                                <label>Quantity</label>
-                                                <div class="cart-plus-minus">
-                                                    <input class="cart-plus-minus-box" value="1" type="text">
-                                                    <div class="dec qtybutton"><i class="fa fa-angle-down"></i></div>
-                                                    <div class="inc qtybutton"><i class="fa fa-angle-up"></i></div>
-                                                <div class="dec qtybutton"><i class="fa fa-angle-down"></i></div><div class="inc qtybutton"><i class="fa fa-angle-up"></i></div></div>
-                                            </td>
-                                            <td class="product-subtotal"><span class="amount">$71.80</span></td>
-                                        </tr>
                                     </tbody>
                                 </table>
+                                
                             </div>
                             <div class="row">
                                 <div class="col-12">
