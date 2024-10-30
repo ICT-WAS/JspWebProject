@@ -135,8 +135,7 @@ addressList = (List<Address>)request.getAttribute("addressList");
 		                                    	<h4 class="small-title">배송지</h4>
 		                                    </div> 
 		                                    <div class="col-sm-3 mb-3" style="padding-bottom: 1000">
-		                                    	<a href="#" id="openModal" class="uren-btn uren-btn_dark uren-btn_sm"> 
-												   <!-- onclick="window.open('/ShoppingMallProject/address/insert', '_blank', 'width=800,height=600');" --> 
+		                                    	<a href="#" id="openModal" class="uren-btn uren-btn_dark uren-btn_sm">  
 												   <span>추가하기</span>
 												</a>
 												
@@ -152,7 +151,7 @@ addressList = (List<Address>)request.getAttribute("addressList");
 												            </div>
 												            <div class="modal-body">
 												                <!-- 여기서 서블릿을 포함한 내용을 불러옵니다 -->
-												                <iframe id="modalIframe" src="" style="width: 100%; height: 400px; border: none;"></iframe>
+												                <iframe id="modalIframe" src="" style="width: 100%; height: 500px; border: none;"></iframe>
 												            </div>
 												            <div class="modal-footer">
 												                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>

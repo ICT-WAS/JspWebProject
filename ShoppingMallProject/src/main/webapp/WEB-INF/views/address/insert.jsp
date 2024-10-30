@@ -9,7 +9,19 @@
 <head>
     <ui:css />
     <meta charset="UTF-8">
-	
+	<style>
+	.park{
+		background-color: #ffc400;
+	    color: #ffffff;
+	    font-size: 17px;
+	    font-weight: 600;
+	    height: 40px;
+	    padding: 0;
+	    width: 100%;
+	    border: 1px solid transparent;
+	    cursor: pointer;
+	}
+	</style>
 	<!-- 스크립트 -->
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
@@ -112,7 +124,7 @@
 			      
 			    </div>
 			    <div class="col">
-			      <input type="button" class="btn btn-primary" onclick="sample4_execDaumPostcode()" value="주소 검색">
+			      <input type="button" class="park" onclick="sample4_execDaumPostcode()" value="주소 검색">
 			    </div>
 			    
 			</div>
@@ -121,7 +133,7 @@
 			      <input type="text" id="detailAddress" class="form-control" placeholder="상세 주소" name="detailAddress">
 			    </div>
 			</div>
-			<button type="submit" class="btn btn-primary">배송지 저장하기</button>
+			<button type="submit" class="park">배송지 저장하기</button>
 		</form>
 	</div>
     </div>
