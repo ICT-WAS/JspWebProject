@@ -10,10 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.shopping.dao.AddressDao;
 import com.shopping.dao.MemberDao;
+import com.shopping.model.Address;
 import com.shopping.model.CartProductDto;
 import com.shopping.model.Member;
 import com.shopping.model.Order;
+import com.shopping.model.Shipping;
 import com.shopping.service.OrderService;
 
 @WebServlet("/order/checkout")
@@ -23,6 +26,7 @@ public class OrderController extends HttpServlet {
 	private List<CartProductDto> cartItems;
 	private OrderService orderService = new OrderService();
 	private MemberDao memberDao = new MemberDao();
+	private AddressDao addressDao = new AddressDao();
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// List<CartProductDto> cartItems = new ArrayList<CartProductDto>();
@@ -56,14 +60,31 @@ public class OrderController extends HttpServlet {
 		
 		cartItems.add(cartProduct3);
 		
+		// 회원 정보 찾기
 		Member member = memberDao.getMemberById("회원가입_001");
 		//memberDao.getMemberById(request.getSession(false).getAttribute("id"));
+		
+		// 배송지 목록 찾기
+		List<Address> memberAddrs = addressDao.getAddressList(member.getMember_id());
+		
+		Shipping shipping = new Shipping();
+		// 기본배송지 찾기
+		for(Address addr : memberAddrs) {
+			if(addr.getIsDefault() == 1) {
+				shipping.setRecipientName(addr.getRecipientName());
+				shipping.setPhoneNumber(addr.getPhoneNumber());
+				shipping.setPostalCode(addr.getPostalCode());
+				shipping.setRoadNameAddress(addr.getRoadNameAddress());
+				shipping.setDetailAddress(addr.getDetailAddress());
+			}
+		}
 		
 		// ==== 실제 로직 ====
 		
 		request.setAttribute("cartItems", cartItems);
 		request.setAttribute("member", member);
-		//request.setAttribute("memberAddr", memberAddr);
+		request.setAttribute("shipping", shipping);
+		request.setAttribute("memberAddrs", memberAddrs);
 		
 		request.getRequestDispatcher("/WEB-INF/views/order/checkout.jsp").forward(request, response);
 	}
@@ -79,15 +100,38 @@ public class OrderController extends HttpServlet {
 		Order order = new Order();
 		order.setMemberId(1L);
 		order.setOrderNumber(orderNo);
-		order.setTotalAmount(Integer.parseInt((String)request.getParameter("total")));
-		order.setUsedPoints(Integer.parseInt((String)request.getParameter("usedPoint")));
+		order.setTotalAmount(Integer.parseInt(request.getParameter("total")));
+		order.setUsedPoints(Integer.parseInt(request.getParameter("usedPoint")));
 		order.setPaymentMethod("결제안했지롱");
 		order.setExpectedRewardAmount(10);
-		order.setFinalPaymentAmount(Integer.parseInt((String)request.getParameter("totalAmount")));
+		order.setFinalPaymentAmount(Integer.parseInt(request.getParameter("totalAmount")));
+
+		Order savedOrder = orderService.saveOrder(order, null);
+		if(savedOrder == null) {
+			return;
+		}
 		
+		// 배송 주소 정보 저장
+		Shipping shipping = new Shipping();
+		shipping.setOrderId(savedOrder.getOrderId());
+		shipping.setRecipientName(request.getParameter("recipient-name"));
+		shipping.setPhoneNumber(request.getParameter("phone-number"));
+		shipping.setPostalCode(request.getParameter("postal-code"));
+		shipping.setRoadNameAddress(request.getParameter("road-name-address"));
+		shipping.setDetailAddress(request.getParameter("detail-address"));
+		shipping.setShippingStatus("배송 전"); // ENUM으로 변경
+		shipping.setCourierName("대한통운");
 		
-		// 여기서부터가 진짜.
-		boolean success = orderService.processOrder(order, null);
+		String selectedOption = request.getParameter("message");
+		if(selectedOption.equals("aus")) {
+			selectedOption = request.getParameter("customMessage");
+		}
+		
+		shipping.setMessage(selectedOption);
+		
+		// ==================================================================================
+		// OrderService 객체를 통해 주문 진행
+		boolean success = orderService.processOrder(order, null, shipping);
 		
 		// 실패요
 		if(!success) {

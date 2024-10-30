@@ -153,13 +153,16 @@
 		                                <label>배송지</label>
 		                            </div>
 		                            <div class="col-md-8 right-align">
-		                                <label>경기 광명시 하안동 650 어쩌고 저쩌고</label>
+		                                <label>
+		                                	${shippingData.recipientName}&nbsp;&middot;&nbsp;${shippingData.phoneNumber}<br>
+		                                	(${shippingData.postalCode})&nbsp;${shippingData.roadNameAddress}&nbsp;${shippingData.detailAddress}
+		                                </label>
 		                            </div>
 		                            <div class="col-md-4">
 		                                <label>배송 요청 사항</label>
 		                            </div>
                                     <div class="col-md-8 right-align">
-		                                <label>부재 시 경비실에 맡겨주세요</label>
+		                                <label>${shippingData.message}</label>
 		                            </div>
 		                            
 		                            <div class="col-md-12 mb-3">
@@ -172,7 +175,10 @@
 		                                	<c:forEach var="cartItem" items="${cartItems}">
 		                                		<tr>
 		                                            <td><img class="img-thumbnail" src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></td>
-		                                            <td class="uren-product-name"><a href="javascript:void(0)">${cartItem.name}</a></td>
+		                                            <td class="uren-product-name">
+		                                            	<span class="amount">${cartItem.name}</span>
+		                                            	<p>옵션이름</p>
+		                                            </td>
 		                                            <td class="uren-product-price right-align"><span class="amount">${cartItem.formattedPrice}원</span></td>
 		                                            <td class="quantity right-align"><span class="amount">x${cartItem.quantity}</span></td>
 		                                            <td class="product-subtotal right-align"><span class="amount">${cartItem.formattedTotal}원</span></td>
