@@ -107,4 +107,46 @@ public class AddressDao extends SuperDao{
 		
 		return cnt;
 	}
+
+	public int insert(Address address) {
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = super.getConnection();
+			conn.setAutoCommit(false);
+			String sql = "INSERT INTO MEMBER_ADDRESS (MEMBER_ID, RECIPIENT_NAME, ROAD_NAME_ADDRESS, DETAIL_ADDRESS, POSTAL_CODE, PHONE_NUMBER, ADDRESS_ALIAS, IS_DEFAULT, CREATED_AT, UPDATED_AT) VALUES  ";
+			sql += "(?, ?, ?, ?, ?, ?, ?, 0, SYSDATE, SYSDATE)";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, address.getMemberId());
+			pstmt.setString(2, address.getRecipientName());
+			pstmt.setString(3, address.getRoadNameAddress());
+			pstmt.setString(4, address.getDetailAddress());
+			pstmt.setString(5, address.getPostalCode());
+			pstmt.setString(6, address.getPhoneNumber());
+			pstmt.setString(7, address.getAlias());
+			
+			cnt = pstmt.executeUpdate();
+			conn.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return cnt;
+	}
 }
