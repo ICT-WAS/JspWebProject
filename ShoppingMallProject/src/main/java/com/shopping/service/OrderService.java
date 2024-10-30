@@ -30,14 +30,18 @@ public class OrderService {
 		orderDao = new OrderDao();
 	}
 	
-	public static String generateOrderNumber(int length) {
+	public String generateOrderNumber(int length) {
+		
+		 Random random = new Random();
         // 0-9 숫자만 포함
         StringBuilder orderNumber = new StringBuilder();
-        Random random = new Random();
+        while(orderNumber.isEmpty() || !orderDao.canUseOrderNo(orderNumber.toString())) {
+        	orderNumber = new StringBuilder();
 
-        for (int i = 0; i < length; i++) {
-            int digit = random.nextInt(10); // 0부터 9까지의 숫자 생성
-            orderNumber.append(digit);
+            for (int i = 0; i < length; i++) {
+                int digit = random.nextInt(10); // 0부터 9까지의 숫자 생성
+                orderNumber.append(digit);
+            }
         }
 
         return orderNumber.toString();
@@ -58,7 +62,7 @@ public class OrderService {
 		// ========= 결제 진행중 ===========
 		
 		// 회원 정보 불러오기
-		// Member member = memberDao.findById(orderData.getMemberId());
+		Member member = memberDao.getMemberByPk(orderData.getMemberId());
 
 		// 주문 성공 상품 맵
 		Map<Long, CartProduct> orderedItems = new HashMap<Long, CartProduct>();
