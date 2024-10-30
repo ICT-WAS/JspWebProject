@@ -126,7 +126,7 @@ public class MemberDao extends SuperDao{
 		PreparedStatement pstmt = null ;
 		ResultSet rs = null ;		
 		String sql = " select * from members " ;
-		sql += " where member__id = ?  " ;
+		sql += " where member_id = ?  " ;
 		
 		try {
 			conn = super.getConnection() ;

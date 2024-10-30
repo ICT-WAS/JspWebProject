@@ -12,23 +12,29 @@ import javax.servlet.http.HttpServletResponse;
 import com.shopping.dao.OrderDao;
 import com.shopping.model.CartProductDto;
 import com.shopping.model.Order;
+import com.shopping.model.Shipping;
+import com.shopping.service.OrderService;
 
 @WebServlet("/order/completed")
 public class OrderCompletedController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private OrderService orderService;
 	private OrderDao orderDao = new OrderDao();
        
     public OrderCompletedController() {
         super();
+        orderService = new OrderService();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String orderNo = request.getParameter("orderNo");
 		
-		Order order = orderDao.findOrderByOrderNo(orderNo);
+		Order order = orderService.findOrderByOrderNo(orderNo);
+		Shipping shipping = orderService.findShippingByOrderNo(orderNo);
 		
 		request.setAttribute("orderData", order);
+		request.setAttribute("shippingData", shipping);
 		
 		List<CartProductDto> cartItems = (List<CartProductDto>)request.getSession().getAttribute("cartItems");
 		request.setAttribute("cartItems", cartItems);

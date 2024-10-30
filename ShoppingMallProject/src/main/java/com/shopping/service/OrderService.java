@@ -14,7 +14,7 @@ import com.shopping.enums.OrderStatus;
 import com.shopping.model.CartProduct;
 import com.shopping.model.Member;
 import com.shopping.model.Order;
-import com.shopping.model.Product;
+import com.shopping.model.Shipping;
 
 public class OrderService {
 	
@@ -28,6 +28,18 @@ public class OrderService {
 	public OrderService() {
 		memberDao = new MemberDao();
 		orderDao = new OrderDao();
+	}
+	
+	public Order findOrderByOrderNo(String orderNo) {
+		return orderDao.findOrderByOrderNo(orderNo);
+	}
+	
+	public Shipping findShippingByOrderId(Long orderId) {
+		return orderDao.findShippingByOrderId(orderId);
+	}
+	
+	public Shipping findShippingByOrderNo(String orderNo) {
+		return orderDao.findShippingByOrderId(orderDao.findOrderByOrderNo(orderNo).getOrderId());
 	}
 	
 	public String generateOrderNumber(int length) {
@@ -48,17 +60,9 @@ public class OrderService {
     }
 	
 	// Long 은 상품id
-	public boolean processOrder(Order orderData, Map<Long, CartProduct> cartItems) {
+	// Order 또는 OrderId를 반환..?
+	public boolean processOrder(Order orderData, Map<Long, CartProduct> cartItems, Shipping shipping) {
 		
-		//  =========== 주문 데이터 저장  ===========
-		orderData.setOrderStatus(OrderStatus.PENDING);
-		int result = orderDao.saveOrder(orderData);
-		
-		if(result != 1) {
-			System.out.println("주문 저장 실패");
-			return false;
-		}
-				
 		// ========= 결제 진행중 ===========
 		
 		// 회원 정보 불러오기
@@ -66,7 +70,6 @@ public class OrderService {
 
 		// 주문 성공 상품 맵
 		Map<Long, CartProduct> orderedItems = new HashMap<Long, CartProduct>();
-		System.out.println(orderedItems.size());
 		
 //		// 주문 상품 재고 확인
 //		for (Long orderItemId : cartItems.keySet()) {
@@ -88,7 +91,6 @@ public class OrderService {
 //			// 상품 재고 변경
 //		}
 		
-		
 
 // 		conn.setAutoCommit(false);
 //		// 회원 적립금 차감
@@ -107,7 +109,7 @@ public class OrderService {
 //		}
 //
 //		// 배송지 정보 저장
-//		orderDao.addShipping(memberDao.findByMemberId(memberId));
+		Shipping savedShipping = orderDao.saveShipping(shipping);
 //		
 //		// 카트에서 주문한 아이템 삭제
 //		for (Long orderItemId : cartItems.keySet()) {
@@ -115,5 +117,18 @@ public class OrderService {
 //		}
 		
 		return true;
+	}
+
+	// 
+	public Order saveOrder(Order orderData, Map<Long, CartProduct> cartItems) {
+		orderData.setOrderStatus(OrderStatus.PENDING);
+		int result = orderDao.saveOrder(orderData);
+		
+		if(result != 1) {
+			System.out.println("주문 저장 실패");
+			return null;
+		}
+		
+		return orderDao.findOrderByOrderNo(orderData.getOrderNumber());
 	}
 }
