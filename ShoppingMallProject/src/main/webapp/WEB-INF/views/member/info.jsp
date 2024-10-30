@@ -15,6 +15,30 @@
     <meta charset="UTF-8">
 	
 	<!-- 스크립트 -->
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+	    $(document).ready(function() {
+	        $('#openModal').click(function(e) {
+	            e.preventDefault();
+	            $('#modalIframe').attr('src', '/ShoppingMallProject/address/insert');
+	            $('#addressModal').modal('show');
+	        });
+	
+	        // 모달 내의 iframe에서 데이터 처리가 완료되면 호출되는 함수
+	        window.onMessageReceived = function(success) {
+	            if (success) {
+	                // 모달 닫기
+	                $('#addressModal').modal('hide');
+	                location.reload();
+	                alert('배송지가 정상적으로 저장되었습니다.');
+
+	                
+	            }
+	        }
+	    });
+	</script>
 </head>
 
 <%! 
@@ -111,7 +135,30 @@ addressList = (List<Address>)request.getAttribute("addressList");
 		                                    	<h4 class="small-title">배송지</h4>
 		                                    </div> 
 		                                    <div class="col-sm-3 mb-3" style="padding-bottom: 1000">
-		                                    	<a href="javascript:void(0)" class="uren-btn uren-btn_dark uren-btn_sm"><span>추가하기</span></a>
+		                                    	<a href="#" id="openModal" class="uren-btn uren-btn_dark uren-btn_sm">  
+												   <span>추가하기</span>
+												</a>
+												
+												<!-- 모달 구조 -->
+												<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+												    <div class="modal-dialog" role="document">
+												        <div class="modal-content">
+												            <div class="modal-header">
+												                <h5 class="modal-title" id="modalLabel">주소 추가</h5>
+												                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												                    <span aria-hidden="true">&times;</span>
+												                </button>
+												            </div>
+												            <div class="modal-body">
+												                <!-- 여기서 서블릿을 포함한 내용을 불러옵니다 -->
+												                <iframe id="modalIframe" src="" style="width: 100%; height: 500px; border: none;"></iframe>
+												            </div>
+												            <div class="modal-footer">
+												                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+												            </div>
+												        </div>
+												    </div>
+												</div>
 		                                    </div>
 	                                   	</div>
 	                                   	<br>
