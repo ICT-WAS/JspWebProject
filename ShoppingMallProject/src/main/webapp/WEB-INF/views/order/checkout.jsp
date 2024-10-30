@@ -182,6 +182,14 @@
 <body class="template-color-1">
 	<ui:header />
 	
+<!-- 	1. 오른쪽 결제하기 버튼 클릭시
+결제하기 버튼 클릭하는 이벤트 발생
+
+2. 회원 정보 가져오기.
+ -->
+
+	
+	
     <div class="main-wrapper">
     	<!-- 메인 컨텐츠 -->
         <div class="checkout-area">
