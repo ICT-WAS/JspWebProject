@@ -209,19 +209,19 @@
 		                                <label>주문자</label>
 		                            </div>
 		                            <div class="col-md-8">
-		                                <label>이현지</label>
+		                                <label>${member.name}</label>
 		                            </div>
 		                            <div class="col-md-4">
 		                                <label>휴대폰</label>
 		                            </div>
 		                            <div class="col-md-8">
-		                                <label>010-0000-0000</label>
+		                                <label>${member.phoneNumber}</label>
 		                            </div>
 		                            <div class="col-md-4">
 		                                <label>이메일</label>
 		                            </div>
 		                            <div class="col-md-8">
-		                                <label>padul1210@gmail.com</label>
+		                                <label>${member.email}</label>
 		                            </div>
 		                            
 		                            

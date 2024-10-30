@@ -22,6 +22,7 @@ public class OrderController extends HttpServlet {
 	
 	private List<CartProductDto> cartItems;
 	private OrderService orderService = new OrderService();
+	private MemberDao memberDao = new MemberDao();
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// List<CartProductDto> cartItems = new ArrayList<CartProductDto>();
@@ -55,14 +56,14 @@ public class OrderController extends HttpServlet {
 		
 		cartItems.add(cartProduct3);
 		
-		Member member = new Member();
-		member.setPoint(2000);
-		
+		Member member = memberDao.getMemberById("회원가입_001");
+		//memberDao.getMemberById(request.getSession(false).getAttribute("id"));
 		
 		// ==== 실제 로직 ====
 		
 		request.setAttribute("cartItems", cartItems);
 		request.setAttribute("member", member);
+		//request.setAttribute("memberAddr", memberAddr);
 		
 		request.getRequestDispatcher("/WEB-INF/views/order/checkout.jsp").forward(request, response);
 	}
@@ -87,6 +88,14 @@ public class OrderController extends HttpServlet {
 		
 		// 여기서부터가 진짜.
 		boolean success = orderService.processOrder(order, null);
+		
+		// 실패요
+		if(!success) {
+			// 메인 페이지로 이동(에러 페이지 보여줘야 함)
+			response.sendRedirect("/ShoppingMallProject/main");
+			return;
+		}
+		
 		request.getSession().setAttribute("cartItems", cartItems);
 		
 

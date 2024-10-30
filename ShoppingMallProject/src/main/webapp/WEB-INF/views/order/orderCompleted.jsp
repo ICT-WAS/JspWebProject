@@ -1,3 +1,4 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="com.shopping.model.Order"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -26,6 +27,9 @@
 	// 최종 결제 금액 변경
 	String formattedTotal =  df.format(total);
 	String formattedTotalPayment = df.format(totalPayment);
+	
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	String orderDate = orderData.getOrderDate().format(formatter);
 %>
 
 <head>
@@ -98,8 +102,9 @@
                                 <h3>주문 완료</h3>
                                 <div class="row">
                                 	<div class="col-md-12">
-                                	주문번호 : ${orderData.orderNumber}<br>
-                                	주문이 완료되었습니다.
+                                	<h6><%=orderDate %></h6>
+                                	<h6>주문이 완료되었습니다.</h6><br>
+                                	주문번호 : ${orderData.orderNumber}
                                 	</div>
                                 	
                                 	<div class="col-md-12 mt-3"></div>
@@ -108,10 +113,10 @@
 		                                결제 정보<hr>
 		                            </div>
                                 	<div class="col-md-4">
-                                		결제 금액
+                                		<h6>결제 금액</h6>
                                 	</div>
                                 	<div class="col-md-8 right-align">
-                                		총 <%=formattedTotalPayment %>원
+                                		<h6>총 <%=formattedTotalPayment %>원</h6>
                                 	</div>
                                 	<div class="col-md-4">
                                 		상품 금액
@@ -125,10 +130,10 @@
                                 	<div class="col-md-8 right-align">
                                 		-<%=formattedPoint %>원
                                 	</div>
-                                	<div class="col-md-4">
+                                	<div class="col-md-4 mt-3">
                                 		결제수단명
                                 	</div>
-                                	<div class="col-md-8 right-align">
+                                	<div class="col-md-8 right-align mt-3">
                                 		테스트
                                 	</div>
                                 	<div class="col-md-4">

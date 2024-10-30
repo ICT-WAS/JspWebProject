@@ -1,15 +1,48 @@
 package com.shopping.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import com.shopping.enums.OrderStatus;
 import com.shopping.model.Order;
 
 public class OrderDao extends SuperDao{
+	
+	public boolean canUseOrderNo(String orderNo) {
+		boolean result = false;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from orders " ;
+		sql += " where ORDER_NUMBER = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setString(1, orderNo);
+			rs = pstmt.executeQuery() ;
+			
+			if(!rs.next()) {
+				result = true;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
 	
 	public int saveOrder(Order order) {
 		
@@ -27,15 +60,15 @@ public class OrderDao extends SuperDao{
 			
             pstmt.setLong(1, order.getMemberId());            
             pstmt.setString(2, order.getOrderNumber());
-            pstmt.setDate(3, Date.valueOf(LocalDate.now()));
+            pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             pstmt.setDouble(4, order.getTotalAmount());
             pstmt.setDouble(5, order.getUsedPoints());
             pstmt.setString(6, order.getOrderStatus().toString());
             pstmt.setString(7, order.getPaymentMethod());
             pstmt.setDouble(8, order.getExpectedRewardAmount());
             pstmt.setDouble(9, order.getFinalPaymentAmount());
-            pstmt.setDate(10, Date.valueOf(LocalDate.now()));
-            pstmt.setDate(11, Date.valueOf(LocalDate.now()));
+            pstmt.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
 			
 			result = pstmt.executeUpdate();
 			conn.commit();

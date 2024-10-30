@@ -119,6 +119,39 @@ public class MemberDao extends SuperDao{
 		
 		return member;
 	}
+	
+	public Member getMemberByPk(Long id) {
+		Member member = null;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from members " ;
+		sql += " where member__id = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setLong(1, id);
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				member = makeBean(rs);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return member;
+	}
 
 	public Member login(String id, String pw) {
 		Member member = null;
