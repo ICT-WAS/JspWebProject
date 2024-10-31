@@ -1,7 +1,6 @@
 <%@page import="com.shopping.model.Member"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.List"%>
-<%@page import="com.shopping.enums.DeliveryRequest" %>
 <%@page import="com.shopping.model.CartProductDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>

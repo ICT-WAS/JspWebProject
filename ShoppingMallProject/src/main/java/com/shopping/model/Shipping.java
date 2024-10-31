@@ -2,6 +2,8 @@ package com.shopping.model;
 
 import java.time.LocalDateTime;
 
+import com.shopping.enums.ShippingStatus;
+
 public class Shipping {
 	private Long shippingId;			// 배송정보고유ID
 	private Long orderId; 				// 주문고유ID
@@ -10,7 +12,7 @@ public class Shipping {
 	private String detailAddress;		// 상세주소
 	private	String postalCode;			// 우편번호
 	private String phoneNumber;			// 전화번호
-	private String shippingStatus;		// 배송상태
+	private ShippingStatus shippingStatus;		// 배송상태
 	private String trackingNumber;		// 운송장번호
 	private String courierName;			// 택배사명
 	private LocalDateTime createdAt;	// 등록날짜
@@ -22,7 +24,7 @@ public class Shipping {
 	}
 	
 	public Shipping(Long shippingId, Long orderId, String recipientName, String roadNameAddress, String detailAddress,
-			String postalCode, String phoneNumber, String shippingStatus, String trackingNumber,
+			String postalCode, String phoneNumber, ShippingStatus shippingStatus, String trackingNumber,
 			String courierName, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		super();
 		this.shippingId = shippingId;
@@ -95,11 +97,11 @@ public class Shipping {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getShippingStatus() {
+	public ShippingStatus getShippingStatus() {
 		return shippingStatus;
 	}
 
-	public void setShippingStatus(String shippingStatus) {
+	public void setShippingStatus(ShippingStatus shippingStatus) {
 		this.shippingStatus = shippingStatus;
 	}
 

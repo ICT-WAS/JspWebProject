@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.shopping.dao.AddressDao;
 import com.shopping.dao.MemberDao;
+import com.shopping.enums.ShippingStatus;
 import com.shopping.model.Address;
 import com.shopping.model.CartProductDto;
 import com.shopping.model.Member;
@@ -119,7 +120,7 @@ public class OrderController extends HttpServlet {
 		shipping.setPostalCode(request.getParameter("postal-code"));
 		shipping.setRoadNameAddress(request.getParameter("road-name-address"));
 		shipping.setDetailAddress(request.getParameter("detail-address"));
-		shipping.setShippingStatus("배송 전"); // ENUM으로 변경
+		shipping.setShippingStatus(ShippingStatus.PREPARING_FOR_SHIPMENT);
 		shipping.setCourierName("대한통운");
 		
 		String selectedOption = request.getParameter("message");

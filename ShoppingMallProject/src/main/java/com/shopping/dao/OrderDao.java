@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import com.shopping.enums.OrderStatus;
+import com.shopping.enums.ShippingStatus;
 import com.shopping.model.Order;
 import com.shopping.model.Shipping;
 
@@ -108,7 +109,7 @@ public class OrderDao extends SuperDao{
 			
 			pstmt = conn.prepareStatement(sql);
 			
-            pstmt.setLong(1, order.getMemberId());            
+            pstmt.setString(1, order.getOrderStatus().toString());            
             pstmt.setString(2, order.getOrderNumber());
 			
 			result = pstmt.executeUpdate();
@@ -211,7 +212,7 @@ public class OrderDao extends SuperDao{
             pstmt.setString(4, shipping.getDetailAddress());
             pstmt.setString(5, shipping.getPostalCode());
             pstmt.setString(6, shipping.getPhoneNumber());
-            pstmt.setString(7, shipping.getShippingStatus());
+            pstmt.setString(7, shipping.getShippingStatus().toString());
             pstmt.setString(8, shipping.getTrackingNumber());
             pstmt.setString(9, shipping.getCourierName());
             pstmt.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
@@ -290,7 +291,7 @@ public class OrderDao extends SuperDao{
 			shipping.setDetailAddress(rs.getString("DETAIL_ADDRESS"));
 			shipping.setPostalCode(rs.getString("POSTAL_CODE"));
 			shipping.setPhoneNumber(rs.getString("PHONE_NUMBER"));
-			shipping.setShippingStatus(rs.getString("SHIPPING_STATUS"));
+			shipping.setShippingStatus(ShippingStatus.valueOf(rs.getString("SHIPPING_STATUS")));
 			shipping.setTrackingNumber(rs.getString("TRACKING_NUMBER"));
 			shipping.setCreatedAt(rs.getTimestamp("CREATED_AT").toLocalDateTime());
 			shipping.setUpdatedAt(rs.getTimestamp("UPDATED_AT").toLocalDateTime());
