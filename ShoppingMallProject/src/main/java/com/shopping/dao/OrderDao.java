@@ -105,7 +105,7 @@ public class OrderDao extends SuperDao{
 			conn.setAutoCommit(false);
 			String sql = "UPDATE ORDERS";
 			sql += " SET ORDER_STATUS = ?";
-			sql += " WHERE ORDER_ID = ?";
+			sql += " WHERE ORDER_NUMBER = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			
