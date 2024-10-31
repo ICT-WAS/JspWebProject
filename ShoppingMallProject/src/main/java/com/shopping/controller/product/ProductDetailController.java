@@ -2,7 +2,6 @@ package com.shopping.controller.product;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +31,8 @@ public class ProductDetailController extends HttpServlet {
 		}
 		
 		ProductOptionDTO productDTO = null;
-		Map<String, Set<String>> optionTree = new HashMap<>();
+		Map<String, Map<Long, ProductOption>> optionTree = new HashMap<>();
+		
 		try {
 			
 			Long id = Long.parseLong(productId);
@@ -41,23 +41,14 @@ public class ProductDetailController extends HttpServlet {
 			productDTO = dao.getProductById(id);
 			
 			//옵션 정보가 있을 때만 옵션을 맵에 세팅하기
-			
-			
-			
 			if (productDTO.getOptionList() != null) {
 				List<ProductOption> optionList = productDTO.getOptionList();
 				for (ProductOption option : optionList) {
 					String type = option.getOptionType();
-					String name = option.getOptionName();
-					
-					optionTree.computeIfAbsent(type, k -> new HashSet<>()).add(name);
-		        }
+					Long optionId = option.getOptionId();
+					optionTree.computeIfAbsent(type, k -> new HashMap<>()).put(optionId, option);
+				}
 			}
-			
-			for (Map.Entry<String, Set<String>> entry : optionTree.entrySet()) {
-			    System.out.println("Type: " + entry.getKey() + ", Names: " + entry.getValue());
-			}
-
 			
 			//상품 정보 없을 때 에러 처리 분기
 			if (productDTO == null) {
@@ -69,11 +60,9 @@ public class ProductDetailController extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "유효하지 않은 상품ID 형식입니다.");
 	        return;
 		}
-		
-		
         
         // 조회된 상품을 request 속성에 저장하여 JSP에 전달
-		request.setAttribute("optionTree", optionTree);  //옵션을 담은 맵 전달
+		request.setAttribute("optionTree", optionTree);
         request.setAttribute("productDTO", productDTO);
 
         // JSP 페이지로 포워딩

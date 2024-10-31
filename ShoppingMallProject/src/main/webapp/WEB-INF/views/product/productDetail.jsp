@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="ui" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 	
 <!doctype html>	
 <html class="no-js" lang="zxx">
@@ -10,17 +11,22 @@
     <ui:css />
     <meta charset="UTF-8">
 	
-	<!-- 스크립트 -->
+<!-- 스크립트 -->
+<style type="text/css">
+#enter-space {
+	padding: 15px 0px 0px 0px !important;
+}
+</style>
 	
 </head>
 
 <body class="template-color-1">
 	<ui:header />
 	
+	<!-- 메인 컨텐츠 시작 -->
     <div class="main-wrapper">
-    	<!-- 메인 컨텐츠 -->
-    	
-    	<!-- Begin Uren's Single Product Area -->
+    
+    	<!-- 상품 메인 시작 -->
         <div class="sp-area">
             <div class="container-fluid">
                 <div class="sp-nav">
@@ -94,84 +100,88 @@
                         <div class="col-lg-8">
                             <div class="sp-content">
                             <c:set var="product" value="${productDTO.product}" />
+                            
                                 <div class="sp-heading">
-                                    <h5><a href="#">${product.name}</a></h5>
+                                    <h5>
+                                    	<a href="#">${product.name}</a>
+                                    </h5>
                                 </div>
-                                <span class="reference">한 줄 추가 정보</span>
+                                
                                 <div class="sp-essential_stuff">
                                     <ul>
-                                        <li>브랜드: <a href="javascript:void(0)">${product.brand}</a></li>
-                                        <li>재고 수량: <a href="javascript:void(0)">${product.quantity}</a></li>
-                                        <li>상품 가격: <a href="javascript:void(0)">${product.price}원</a></li>
+                                        <li>브랜드: <a>${product.brand}</a></li>
+										<li>상품 가격: <a id="product-price">${product.price}</a></li>
                                     </ul>
                                 </div>
-                                <c:if test="${not empty optionTree}" >
-                                	<c:forEach var="entry" items="${optionTree}">
-		                                <div class="product-size_box">
-		                                    <span>${entry.key}</span>
-		                                    <select name="${entry.key}Options" id="${entry.key}Options" class="myniceselect nice-select">
-		                                    	<option value="옵션을 선택해주세요">옵션을 선택해주세요</option>
-		                                    	<c:forEach var="option" items="${entry.value}">
-		                                        <option value="${option}">${option}</option>
-		                                        </c:forEach>
-		                                    </select>
-		                                </div>
-	                                </c:forEach>
-                                </c:if>
-                                <div class="quantity">
-                                    <label>Quantity</label>
-                                    <div class="cart-plus-minus">
-                                        <input class="cart-plus-minus-box" value="1" type="text">
-                                        <div class="dec qtybutton"><i class="fa fa-angle-down"></i></div>
-                                        <div class="inc qtybutton"><i class="fa fa-angle-up"></i></div>
-                                    </div>
-                                </div>
+                                
+                               <c:if test="${not empty optionTree}">
+									<c:forEach var="entry" items="${optionTree}">
+										<div class="product-size_box">
+											<span>${entry.key}</span> 
+											<select name="${entry.key}Options" id="${entry.key}Options" class="myniceselect nice-select" onChange="show()">
+												<option value="옵션을 선택해주세요">옵션을 선택해주세요</option>
+												<c:forEach var="optionMap" items="${entry.value}">
+													<c:set var="optionDetails" value="${optionMap.value}" />
+													<option class="stock-quantity"
+														value="option-${optionDetails.optionId}"
+														data-stockQuantity="${optionDetails.optionName} (재고: ${optionDetails.optionStockquantity}">
+														${optionDetails.optionName} (재고: <fmt:formatNumber value='${optionDetails.optionStockquantity}' type='number' />)</option>
+												</c:forEach>
+											</select>
+										</div>
+									</c:forEach>
+								</c:if>
+				
+                                <div class="quantity" style="display:none;">
+									<label>수량</label>
+									<div class="cart-plus-minus">
+										<input onChange="validateStockQuantity()" id="input-quantity" class="cart-plus-minus-box" value="1" type="text" readonly>
+										<div class="dec qtybutton">
+											<i class="fa fa-angle-down"></i>
+										</div>
+										<div class="inc qtybutton">
+											<i class="fa fa-angle-up"></i>
+										</div>
+									</div>
+								</div>
+								
+								<div id="enter-space"></div>
+								
+								<div class="sp-heading">
+									<h5>상품 금액</h5>
+								</div>
+								<div class="sp-essential_stuff">
+									<ul>
+										<li>
+											<div class="sp-heading">
+												<h5>
+													<a id="total-amount">${product.price}</a>
+												</h5>
+											</div>
+										</li>
+									</ul>
+								</div>
+								
                                 <div class="qty-btn_area">
-                                    <ul>
-                                        <li><a class="qty-cart_btn" href="cart.html">Add To Cart</a></li>
-                                        <li><a class="qty-wishlist_btn" href="wishlist.html" data-toggle="tooltip" title="Add To Wishlist"><i class="ion-android-favorite-outline"></i></a>
-                                        </li>
-                                        <li><a class="qty-compare_btn" href="compare.html" data-toggle="tooltip" title="Compare This Product"><i class="ion-ios-shuffle-strong"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="uren-social_link">
-                                    <ul>
-                                        <li class="facebook">
-                                            <a href="https://www.facebook.com/" data-toggle="tooltip" target="_blank" title="Facebook">
-                                                <i class="fab fa-facebook"></i>
-                                            </a>
-                                        </li>
-                                        <li class="twitter">
-                                            <a href="https://twitter.com/" data-toggle="tooltip" target="_blank" title="Twitter">
-                                                <i class="fab fa-twitter-square"></i>
-                                            </a>
-                                        </li>
-                                        <li class="youtube">
-                                            <a href="https://www.youtube.com/" data-toggle="tooltip" target="_blank" title="Youtube">
-                                                <i class="fab fa-youtube"></i>
-                                            </a>
-                                        </li>
-                                        <li class="google-plus">
-                                            <a href="https://www.plus.google.com/discover" data-toggle="tooltip" target="_blank" title="Google Plus">
-                                                <i class="fab fa-google-plus"></i>
-                                            </a>
-                                        </li>
-                                        <li class="instagram">
-                                            <a href="https://rss.com/" data-toggle="tooltip" target="_blank" title="Instagram">
-                                                <i class="fab fa-instagram"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+									<ul>
+										<li><a class="qty-order_btn" href="cart.html">바로 구매</a></li>
+										<li><a class="qty-cart_btn" href="cart.html">카트 담기</a></li>
+										<li><a class="qty-wishlist_btn" href="wishlist.html"
+											data-toggle="tooltip" title="Add To Wishlist">
+												<i class="ion-android-favorite-outline"></i>
+											</a>
+										</li>
+									</ul>
+								</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Uren's Single Product Area End Here -->
+        <!-- 상품 메인 끝 -->
 
-        <!-- Begin Uren's Single Product Tab Area -->
+        <!-- 상품 상세 시작 -->
         <div class="sp-product-tab_area">
             <div class="container-fluid">
                 <div class="row">
@@ -291,9 +301,182 @@
                 </div>
             </div>
         </div>
+        <!-- 상품 상세 끝 -->
     </div>
+    <!-- 메인 컨텐츠 끝 -->
+    
+    <!-- 모달 영역 시작 -->
+	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="myModalLabel">경고: 잘못된 수량</h5>
+				</div>
+				<div class="modal-body">
+					유효하지 않은 값을 입력하셨습니다.
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 모달 영역 끝 -->
+	
+	
     
 	<ui:footer />
 	<ui:js />
+
+<!-- 스크립트 시작 -->	
+<script>
+//옵션 선택 이벤트
+function show(){
+	const select = document.querySelector('.myniceselect.nice-select');
+	
+	if (select){
+		const selectedValue = select.value; 
+
+		if (selectedValue !== "옵션을 선택해주세요") {
+			$(".quantity").show();
+			$(".cart-plus-minus-box").val(1);		
+		} else {
+			$(".quantity").hide();		
+			$(".cart-plus-minus-box").val(1);	
+		}
+	} else {
+		$(".quantity").show();
+		$(".cart-plus-minus-box").val(1);
+	}
+	
+	updateTotalAmount();
+
+}
+
+
+//수량 및 가격 포매팅
+function updateTotalAmount() {
+	const quantity = parseInt($('.cart-plus-minus-box').val(), 10);
+	const price = parseFloat(${product.price});
+	
+	//'금액'을 원화 표시
+	const formatCurrency = (value) => {
+		return new Intl.NumberFormat('ko-KR', {
+            style: 'currency', 
+            currency: 'KRW', 
+            minimumFractionDigits: 0, 
+            maximumFractionDigits: 0
+        }).format(value);
+	};
+	
+	//포맷된 상품 가격
+	const formattedPrice = formatCurrency(price);
+
+	const stockQuantity = parseFloat(${optionDetails.optionStockquantity});
+	//재고 등 '수량'을 정수 표시
+	const formatQuantity = (value) => {
+		return new Intl.NumberFormat('ko-KR', {
+            style: 'decimal', // 일반 숫자 형식
+            minimumFractionDigits: 0, 
+            maximumFractionDigits: 0
+        }).format(value);
+	}
+			
+	//포맷된 재고 수량
+	const formattedStockQuantity = formatQuantity(stockQuantity);
+	
+	//총 금액 원화로 포맷팅
+	const totalPrice = price * quantity;
+	const formattedTotalPrice = formatCurrency(totalPrice);
+
+	//포맷된 숫자 형식을 업데이트
+	$('#product-price').text(formattedPrice);
+	$('.stock-quantity').text(formattedStockQuantity);
+	$('#total-amount').text(formattedTotalPrice);
+			
+}
+
+//재고와 현재 수량 비교하기
+function validateStockQuantity(){
+	
+	const quantity = parseInt($('.cart-plus-minus-box').val(), 10);
+
+	const stockQuantities = document.querySelectorAll('.stock-quantity');
+	stockQuantities.forEach(option => {
+		const stockQuantityElement = option.getAttribute('data-stockQuantity');
+
+		stockQauntity = parseFloat(stockQuantityElement.split(' (재고: ')[1].trim());
+	});
+}
+
+
+//총 상품 금액이 해당 버튼을 클릭할 때마다 동적으로 변경됨
+function updateQuantityTotalAmount() {
+	const qtyInputs = document.querySelectorAll('.cart-plus-minus');
+	qtyInputs.forEach(qtyInput => {
+		
+		//수량 변경 버튼이 클릭될 시
+		qtyInput.addEventListener('click', function(){
+			//총 금액이 계산되기
+			updateTotalAmount();
+			
+			const select = document.querySelector('.myniceselect.nice-select');
+			
+			//옵션 창이 있는 경우
+			if(select){
+				const selectedOption = select.options[select.selectedIndex];
+				const selectedQuantity = selectedOption.getAttribute('data-stockQuantity');
+				
+				//고객이 선택한 옵션의 재고가 null이 아닐 경우
+				if(selectedQuantity !== null){
+					const stockQauntity = parseFloat(selectedQuantity.split(' (재고: ')[1].trim());
+					const quantity = parseInt($('.cart-plus-minus-box').val(), 10);
+					
+					//고객이 선택한 수량(quantity)이 실제 옵션의 재고(stockQauntity) 초과 시 실행되는 로직 
+					//모달 처리 및 수량은 총 재고 수량(stockQauntity)으로 변경
+					if(quantity > stockQauntity){
+						$('.modal-body').text('주문 수량은 해당 상품의 재고 수량(' + stockQauntity + ')을(를) 초과할 수 없습니다.');
+			    		$('#myModal').modal('show');
+						$('.cart-plus-minus-box').val(stockQauntity);
+					}
+				
+				//고객이 선택한 옵션의 재고가 null일 경우
+				} else {
+					$('.modal-body').text('해당 상품의 재고가 없습니다.');
+		    		$('#myModal').modal('show');
+				}
+			
+			//옵션이 없는 상품일 경우
+			} else {
+				const quantity = parseInt($('.cart-plus-minus-box').val(), 10);
+				if (quantity>${product.quantity}){
+					$('.modal-body').text('주문 수량은 해당 상품의 재고 수량(' + ${product.quantity} + ')을(를) 초과할 수 없습니다.');
+		    		$('#myModal').modal('show');
+					$('.cart-plus-minus-box').val(${product.quantity});
+				}
+			}
+		});
+	})
+	
+	
+}
+
+
+//페이지 로드 시 실행될 공간
+$(document).ready(function(){	
+	//초기 토탈 금액 상태 설정
+	updateTotalAmount();
+
+	//수량 변경 이벤트 발생 시 상품의 총 금액을 업데이트
+	updateQuantityTotalAmount();
+	
+	//옵션이 없는 상품의 경우 수량 선택 박스 표시
+	show();
+	
+});
+	
+</script>
+<!-- 스크립트 끝 -->	
+
 </body>
 </html>
