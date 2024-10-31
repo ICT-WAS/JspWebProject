@@ -330,6 +330,7 @@
 		                            <div class="col-md-8">
 		                                <label>
 		                                	<span class="recipient-name">${shipping.recipientName}</span>&nbsp;&middot;&nbsp;
+		                                	<span class="recipient-name">${shipping.recipientName}</span>&nbsp;&middot;&nbsp;
 										    <span class="phone-number selected-phoneNumber">${shipping.phoneNumber}</span><br>
 										    <span class="postal-code">(${shipping.postalCode})</span>&nbsp;
 										    <span class="road-name-address">${shipping.roadNameAddress}</span>&nbsp;
@@ -562,7 +563,7 @@
 									<c:if test="${memberAddr.isDefault == 1}">
 										<span class="badge rounded-pill bg-secondary">기본배송지</span><br>
 									</c:if>
-										${memberAddr.recipientName}&nbsp;&middot;&nbsp;<span class="phoneNumber">${memberAddr.phoneNumber}</span><br>
+										<b>${memberAddr.alias}</b><br>${memberAddr.recipientName}&nbsp;&middot;&nbsp;<span class="phoneNumber">${memberAddr.phoneNumber}</span><br>
 		                                	(${memberAddr.postalCode})&nbsp;${memberAddr.roadNameAddress}&nbsp;${memberAddr.detailAddress}
 									</span></td>
 								</tr>
