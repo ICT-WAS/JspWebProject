@@ -330,7 +330,6 @@
 		                            <div class="col-md-8">
 		                                <label>
 		                                	<span class="recipient-name">${shipping.recipientName}</span>&nbsp;&middot;&nbsp;
-		                                	<span class="recipient-name">${shipping.recipientName}</span>&nbsp;&middot;&nbsp;
 										    <span class="phone-number selected-phoneNumber">${shipping.phoneNumber}</span><br>
 										    <span class="postal-code">(${shipping.postalCode})</span>&nbsp;
 										    <span class="road-name-address">${shipping.roadNameAddress}</span>&nbsp;
@@ -560,10 +559,11 @@
 									<td class="uren-product-name member-address-list" onclick="setShipping('${memberAddr.recipientName}', '${memberAddr.phoneNumber}', '${memberAddr.postalCode}', '${memberAddr.roadNameAddress}', '${memberAddr.detailAddress}', '${memberAddr.isDefault}')">
 									<span class="amount">
 									
+									<b>${memberAddr.alias}</b>
 									<c:if test="${memberAddr.isDefault == 1}">
-										<span class="badge rounded-pill bg-secondary">기본배송지</span><br>
+										<span class="badge rounded-pill bg-secondary">기본배송지</span>
 									</c:if>
-										<b>${memberAddr.alias}</b><br>${memberAddr.recipientName}&nbsp;&middot;&nbsp;<span class="phoneNumber">${memberAddr.phoneNumber}</span><br>
+										<br>${memberAddr.recipientName}&nbsp;&middot;&nbsp;<span class="phoneNumber">${memberAddr.phoneNumber}</span><br>
 		                                	(${memberAddr.postalCode})&nbsp;${memberAddr.roadNameAddress}&nbsp;${memberAddr.detailAddress}
 									</span></td>
 								</tr>
