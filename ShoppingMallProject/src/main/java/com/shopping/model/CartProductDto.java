@@ -11,6 +11,13 @@ public class CartProductDto implements Serializable {
 	private Integer quantity;			// 장바구니 수량
 	private Integer price;				// 상품 단가
 	private Integer total;				// 항목 가격
+	private String image;				// 상품 이미지
+	
+	private Long optionId; 				// 옵션고유ID
+	private String optionName; 			// 옵션명
+	private Integer optionPrice;		// 옵션 단가
+	
+	private Long cartProductId;			// 카트상품고유ID
 	
 	private String formattedPrice;
 	private String formattedTotal;
@@ -74,4 +81,11 @@ public class CartProductDto implements Serializable {
 	public CartProductDto() {
 		super();
 	}
+	
+	
+
+
+
+
+	
 }

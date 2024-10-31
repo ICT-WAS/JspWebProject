@@ -154,8 +154,8 @@ addressList = (List<Address>)request.getAttribute("addressList");
 												                <iframe id="modalIframe" src="" style="width: 100%; height: 500px; border: none;"></iframe>
 												            </div>
 												            <div class="modal-footer">
-												                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-												            </div>
+												                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#addressModal').modal('hide');">닫기</button>
+												            </div> 
 												        </div>
 												    </div>
 												</div>
