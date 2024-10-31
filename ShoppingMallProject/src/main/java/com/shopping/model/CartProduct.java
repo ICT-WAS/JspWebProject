@@ -10,8 +10,22 @@ public class CartProduct {
 	private Integer quantity;			// 장바구니 수량
 	private LocalDateTime addedDate;	// 상품추가날짜
 	private String note;				// 추가설명
-
+	private Long optionId; 				// 옵션고유ID
 	
+	public CartProduct(Long cartProductId, Long cartId, Long productId, Integer quantity, LocalDateTime addedDate,
+			String note, Long optionId) {
+		super();
+		this.cartProductId = cartProductId;
+		this.cartId = cartId;
+		this.productId = productId;
+		this.quantity = quantity;
+		this.addedDate = addedDate;
+		this.note = note;
+		this.optionId = optionId;
+	}
+	public CartProduct() {
+		super();
+	}
 	public Long getCartProductId() {
 		return cartProductId;
 	}
@@ -48,16 +62,19 @@ public class CartProduct {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	public CartProduct(Long cartId, Long productId, Integer quantity, LocalDateTime addedDate, String note) {
-		super();
-		this.cartId = cartId;
-		this.productId = productId;
-		this.quantity = quantity;
-		this.addedDate = addedDate;
-		this.note = note;
+	public Long getOptionId() {
+		return optionId;
 	}
+	public void setOptionId(Long optionId) {
+		this.optionId = optionId;
+	}
+	@Override
+	public String toString() {
+		return "CartProduct [cartProductId=" + cartProductId + ", cartId=" + cartId + ", productId=" + productId
+				+ ", quantity=" + quantity + ", addedDate=" + addedDate + ", note=" + note + ", optionId=" + optionId
+				+ "]";
+	}
+
 	
-	public CartProduct() {
-		
-	}
+
 }

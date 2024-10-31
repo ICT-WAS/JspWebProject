@@ -1,3 +1,4 @@
+<%@page import="com.shopping.model.CartProductDto"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -7,7 +8,14 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html class="no-js" lang="zxx">
+<%!  
+List<CartProductDto> cartProducts;
+%>
 
+<%
+cartProducts = (List<CartProductDto>) request.getAttribute("cartProducts");
+
+%>
 <head>
     <ui:css />
     <meta charset="UTF-8">
@@ -39,13 +47,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<% 
-										    List<Integer> myList = Arrays.asList(1, 2, 3, 4, 5);
-										    request.setAttribute("myList", myList); 
-										%>
-                                    	<c:forEach var="product" items="${myList}">
+                                    	<%-- <c:forEach var="product" items="${cartProducts}">
                                     		<tr>
-                                    			<td class="uren-product-check"><input type="checkbox" checked="checked" value="${product }"></td>
+                                    			<td class="uren-product-check"><input type="checkbox" checked="checked" value="${product}"></td>
                                     			<td class="uren-product-thumbnail"><a href="javascript:void(0)"><img src="assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></a></td>
                                     			<td class="uren-product-name"><a href="javascript:void(0)">${product} 이름</a></td>
                                     			<td class="uren-product-option"><a href="javascript:void(0)">${product} 옵션</a></td>
@@ -59,7 +63,7 @@
                                             	</td>
                                     			<td class="uren-product-price"><span class="amount">${product} 원</span></td>
                                     		</tr>
-                                    	</c:forEach>
+                                    	</c:forEach> --%>
                                     </tbody>
                                 </table>
                                 

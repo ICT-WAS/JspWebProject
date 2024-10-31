@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.shopping.model.Member;
 import com.shopping.model.Product;
 import com.shopping.model.ProductOption;
 import com.shopping.model.ProductOptionDTO;
@@ -331,5 +332,72 @@ public class ProductDao extends SuperDao{
 			e.printStackTrace();
 		}
 	}
+
+	public ProductOption getOption(Long optionId) {
+		ProductOption option = null;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from PRODUCT_OPTION " ;
+		sql += " where OPTION_ID = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setLong(1, optionId);
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				option = getOptionBeanData(rs);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return option;
+	}
+
+	public Product getProduct(Long productId) {
+		Product product = null;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from PRODUCT " ;
+		sql += " where PRODUCT_ID = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setLong(1, productId);
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				product = getBeanData(rs);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return product;
+	}
+
 
 }
