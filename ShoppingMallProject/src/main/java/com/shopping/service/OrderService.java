@@ -100,8 +100,8 @@ public class OrderService {
 //		// ========= 결제 완료 ===========
 //		
 //		// 주문 데이터 저장
-//		orderData.setOrderStatus(OrderStatus.COMPLETED);
-//		orderDao.updateOrder(orderData.getOrderId(), orderData);
+		orderData.setOrderStatus(OrderStatus.COMPLETED);
+		orderDao.updateOrderStatus(orderData);
 //		
 //		// 주문 아이템 데이터 저장
 //		for (Long orderItemId : cartItems.keySet()) {
