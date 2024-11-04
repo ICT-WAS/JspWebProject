@@ -38,10 +38,14 @@ public class OrderController extends HttpServlet {
 	CartService cartService = new CartService();
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// List<CartProductDto> cartItems = new ArrayList<CartProductDto>();
+
+		// 회원 정보 찾기
+		String id = (String) request.getSession().getAttribute("id");
+		Member member = memberDao.getMemberById(id);
+		Long memberId = member.getMember_id();
+		
 		cartItems = new ArrayList<CartProductDto>();
 		
-		Long memberId = 1L;
 		Cart cart = cartDao.getCart(memberId);
 		Long cartId = cart.getCartId();
 		
@@ -71,10 +75,6 @@ public class OrderController extends HttpServlet {
 		
 		cartItems = cartService.getCartProductList(cartId);
 		
-		// 회원 정보 찾기
-		Member member = memberDao.getMemberById("회원가입_001");
-		//memberDao.getMemberById(request.getSession(false).getAttribute("id"));
-		
 		// 배송지 목록 찾기
 		List<Address> memberAddrs = addressDao.getAddressList(member.getMember_id());
 		
@@ -101,10 +101,10 @@ public class OrderController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// MemberDao memberDao = new MemberDao();
-		// Long id = memberDao.getMemberById((String)request.getSession().getAttribute("id")).getMember_id();
-		
-		Long memberId = 1L;
+		// 회원 정보 찾기
+		String id = (String) request.getSession().getAttribute("id");
+		Member member = memberDao.getMemberById(id);
+		Long memberId = member.getMember_id();
 		
 		// OrderService 객체를 통해 주문 진행
 		String orderNo = orderService.generateOrderNumber(10);
