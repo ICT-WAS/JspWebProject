@@ -54,7 +54,7 @@ cartProducts = (List<CartProductDto>) request.getAttribute("cartProducts");
     </thead>
     <tbody>
         <c:forEach var="product" items="${cartProducts}">
-            <tr class="${product.cartProductId}">
+            <tr class="${product.cartProductId} product-row">
                 <td class="uren-product-check"><input type="checkbox" checked="checked" value="${product.cartProductId}"></td>
                 <td class="uren-product-thumbnail thumbnail"><img src="${product.image}" alt="Uren's Cart Thumbnail"></td>
                 <td class="uren-product-name"><a href="/ShoppingMallProject/product/detail?id=${product.productId}">${product.name}</a></td>
@@ -73,40 +73,30 @@ cartProducts = (List<CartProductDto>) request.getAttribute("cartProducts");
     </tbody>
 </table>
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-document.querySelectorAll('.cart-plus-minus-box').forEach(function(input) {
-    input.addEventListener('input', function() { // 'change' 대신 'input' 사용
-    	console.log("Input changed to:", input.value);
-        const quantity = parseInt(input.value);
-        const pricePerUnit = parseFloat(input.getAttribute('data-price'));
-        const totalPrice = quantity * pricePerUnit; // 소수점 없이 계산
+$(document).ready(function() {
+	
+	$('.product-row').each(function() {
+        const row = $(this); // 현재 행을 jQuery 객체로 설정
 
-        // 숫자 포맷팅
-        const formattedPrice = new Intl.NumberFormat('ko-KR').format(totalPrice);
+        // 증가 버튼 클릭 이벤트 리스너 추가
+        row.find('.qtybutton').on('click', function() {
+            const input = row.find('.cart-plus-minus-box'); // 해당 입력 필드 선택
+            let quantity = parseInt(input.val()); // 현재 수량 가져오기
 
-        const row = input.closest('tr');
-        const priceCell = row.querySelector('.uren-product-price .amount');
-        priceCell.textContent = formattedPrice + ' 원'; // 포맷된 가격 표시
+            const pricePerUnit = parseFloat(input.data('price')); // jQuery로 data-price 가져오기
+            const totalPrice = quantity * pricePerUnit; // 총 가격 계산
+
+            const formattedPrice = new Intl.NumberFormat('ko-KR').format(totalPrice);
+        
+            const priceCell = row.find('.uren-product-price .amount');
+            priceCell.text(formattedPrice + ' 원'); // 포맷된 가격 표시
+        });
     });
 });
 
-// 수량 증가/감소 버튼 이벤트 처리
-document.querySelectorAll('.qtybutton').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const input = button.closest('.cart-plus-minus').querySelector('.cart-plus-minus-box');
-        console.log("Input changed to:", input.value);
-        let quantity = parseInt(input.value);
-
-        if (button.classList.contains('inc')) {
-            quantity++;
-        } else {
-            if (quantity > 1) quantity--; // 최소 수량 제한
-        }
-
-        input.value = quantity;
-        input.dispatchEvent(new Event('input')); // 수량 변경 이벤트 발생
-    });
-});
 </script>
 
                                 
