@@ -1,8 +1,7 @@
 package com.shopping.service;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +36,29 @@ public class OrderService {
 		memberDao = new MemberDao();
 		orderDao = new OrderDao();
 		productDao = new ProductDao();
+		
+		String driver = "oracle.jdbc.driver.OracleDriver" ;
+		try {
+			Class.forName(driver) ;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+	
+	private Connection getConnection() {
+		try {
+			String url = "jdbc:oracle:thin:@localhost:1521:xe" ;
+			String id = "projectV2" ;
+			String password = "oracle" ;
+			
+			this.conn = DriverManager.getConnection(url, id, password) ;
+			if(conn == null) {System.out.println("접속 실패");} 			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return conn ;
+	}	
 	
 	public Order findOrderByOrderNo(String orderNo) {
 		return orderDao.findOrderByOrderNo(orderNo);
@@ -70,61 +91,74 @@ public class OrderService {
 	
 	// Long 은 상품id
 	// Order 또는 OrderId를 반환..?
-	public boolean processOrder(Order orderData, List<OrderDetail> orderDetails, Shipping shipping) {
-		
+	public boolean processOrder(Long memberId, Order orderData, List<OrderDetail> orderDetails, Shipping shipping) {
 		// ========= 결제 진행중 ===========
+		
+		conn = getConnection();
 		
 		// 회원 정보 불러오기
 		Member member = memberDao.getMemberByPk(orderData.getMemberId());
+		
+		try {
+			conn.setAutoCommit(false);
+			
+			// 옵션별 업데이트될 재고
+			Map<Long, Integer> optionIdAndQuantity = new HashMap<Long, Integer>();
+			boolean success = true;
+			// 주문 상품 재고 확인
+			for (OrderDetail orderDetail : orderDetails) {
+				ProductOption option = productDao.getOption(orderDetail.getOptionId());
 
-		// 주문 성공 상품 맵
-		Map<Long, CartProduct> orderedItems = new HashMap<Long, CartProduct>();
-		
-//		// 주문 상품 재고 확인
-//		for (Long orderItemId : cartItems.keySet()) {
-//			CartProduct cartItem = cartItems.get(orderItemId);
-//			Product product = productDao.getProductById(cartItem.getProductId());
-//			int quantity = cartItem.getQuantity();
-//			
-//			// 재고 부족
-//			if(product.getQuantity() < quantity) {
-//				// 상품의 재고가 없습니다.
-//				orderData.setOrderStatus(OrderStatus.PAYMENT_FAILED);
-//				
-//				// 주문 데이터 삭제
-//				// orderedItems 의 모든 아이템들 재고 원래대로 변경
-//				
-//			}
-//			
-//			orderedItems.put(orderItemId, cartItem);
-//			// 상품 재고 변경
-//		}
-		
-
-// 		conn.setAutoCommit(false);
-//		// 회원 적립금 차감
-//		int point = member.getPoint() - orderData.getUsedPoints();
-//		member.updatePoint(point);
-//		
-//		// ========= 결제 완료 ===========
-//		
-//		// 주문 데이터 저장
-		orderData.setOrderStatus(OrderStatus.COMPLETED);
-		orderDao.updateOrderStatus(orderData);
-		
-		// 주문 아이템 데이터 저장
-		for (OrderDetail orderDetail : orderDetails) {
-			orderDao.saveOrderDetail(orderDetail);
+				int afterPaymentStock = (int)option.getOptionStockquantity() - orderDetail.getQuantity();
+				// 재고 부족
+				if(afterPaymentStock < 0) {
+					// 상품의 재고가 없습니다.
+					success &= false;
+				}
+				
+				optionIdAndQuantity.put(option.getOptionId(), afterPaymentStock);
+			}
+			
+			if(!success) {
+				orderData.setOrderStatus(OrderStatus.PAYMENT_FAILED);
+				System.out.println("재고없음");
+				return false;
+			}
+			
+			// 상품 재고 변경
+			productDao.updateQuantity(conn, optionIdAndQuantity);
+			
+			// 회원 적립금 차감
+			int point = (int)(member.getPoint() - orderData.getUsedPoints());
+			memberDao.updatePoint(conn, memberId, point);
+			
+			// ========= 결제 완료 ===========
+			
+			// 주문 데이터 저장
+			orderData.setOrderStatus(OrderStatus.COMPLETED);
+			orderDao.updateOrderStatus(conn, orderData);
+			
+			conn.commit();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				return false;
+			}
+			return false;
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}
 
-		// 배송지 정보 저장
-		Shipping savedShipping = orderDao.saveShipping(shipping);
-//		
-//		// 카트에서 주문한 아이템 삭제
-//		for (Long orderItemId : cartItems.keySet()) {
-//			cartDao.deleteByCartProductId(orderItemId);
-//		}
-		
 		return true;
 	}
 
@@ -177,5 +211,17 @@ public class OrderService {
 		dto.setQuantity(quantity);
 
 		return dto;
+	}
+
+	public boolean saveOrderDetails(List<OrderDetail> orderDetails) {
+		int result = 0;
+		for (OrderDetail orderDetail : orderDetails) {
+			result += orderDao.saveOrderDetail(orderDetail);
+		}
+		return result == orderDetails.size();
+	}
+
+	public boolean saveShipping(Shipping shipping) {
+		return orderDao.saveShipping(shipping) == 1;
 	}
 }

@@ -195,7 +195,7 @@ public class OrderDao extends SuperDao{
 		 return order;
 	}
 	
-	public Shipping saveShipping(Shipping shipping) {
+	public int saveShipping(Shipping shipping) {
 		
 		int result = 0;
 		Connection conn = null;
@@ -240,12 +240,7 @@ public class OrderDao extends SuperDao{
 			}
 		}
 		
-		// 예외 처리
-		if(result != 1) {
-			return null;
-		}
-		
-		return shipping;
+		return result;
 	}
 	
 	public int saveOrderDetail(OrderDetail orderDetail) {
@@ -407,6 +402,39 @@ public class OrderDao extends SuperDao{
 			}
 		}
 		return orderDetails;
+	}
+
+	public int updateOrderStatus(Connection conn, Order orderData) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "UPDATE ORDERS";
+			sql += " SET ORDER_STATUS = ?";
+			sql += " WHERE ORDER_NUMBER = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+            pstmt.setString(1, orderData.getOrderStatus().toString());            
+            pstmt.setString(2, orderData.getOrderNumber());
+			
+			result = pstmt.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			try {
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return result;
 	}
 
 }

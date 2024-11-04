@@ -23,14 +23,8 @@ public class CartService {
 	}
 	
 	// 장바구니 삭제
-	public boolean removeFromCart(List<Long> cartProductIdList) {
-		int result = 0;
-		
-		for(Long cartProductId : cartProductIdList) {
-			result += cartDao.removeCartProduct(cartProductId);
-		}
-		
-		return result == cartProductIdList.size();
+	public int removeFromCart(Long cartProductId) {
+		return cartDao.removeCartProduct(cartProductId);
 	}
 	
 	// 장바구니에 추가된 모든 아이템 반환

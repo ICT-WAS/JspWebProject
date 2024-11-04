@@ -283,4 +283,33 @@ public class MemberDao extends SuperDao{
 		
 		return cnt;
 	}
+
+	public int updatePoint(Connection conn, Long memberId, int point) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "UPDATE members ";
+			sql += " SET POINTS = ? ";
+			sql += " WHERE MEMBER_ID = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setDouble(1, point);
+			pstmt.setLong(2, memberId);
+			
+			result = pstmt.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return result;
+	}
 }
