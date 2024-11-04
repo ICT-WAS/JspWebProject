@@ -43,8 +43,8 @@ public class CartController extends HttpServlet {
 		List<CartProduct> _cartProducts = cDao.getCartProducts(cartId);
 		List<CartProductDto> cartProducts = new ArrayList<CartProductDto>();
 		// 여기서 상품, 옵션 정보를 나눠서 리퀘스트로 넘겨주기,
-		for(CartProduct product : _cartProducts) {
-			CartProductDto dto = cartProductToCartProductDto(product);
+		for(CartProduct cartProduct : _cartProducts) {
+			CartProductDto dto = cartProductToCartProductDto(cartProduct);
 			
 			cartProducts.add(dto);
 		}
@@ -67,6 +67,17 @@ public class CartController extends HttpServlet {
 		ProductDao pDao = new ProductDao();
 		ProductOption productOption = pDao.getOption(optionId);
 		Product product = pDao.getProduct(productId);
+		
+		dto.setCartProductId(cartProduct.getCartProductId());
+		dto.setProductId(productId);
+		dto.setImage(product.getImg1());
+		dto.setName(product.getName());
+		dto.setProductPrice((int)product.getPrice());
+		
+		dto.setOptionId(productOption.getOptionId());
+		dto.setOptionName(productOption.getOptionName());
+		dto.setOptionPrice((int)productOption.getAdditionalPrice());
+		dto.setQuantity(cartProduct.getQuantity());
 		
 		return dto;
 	}
