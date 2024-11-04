@@ -373,7 +373,7 @@
 		                                            <td class="uren-product-name">
 		                                            	<span class="amount">${cartItem.name}</span>
 		                                            	<c:if test="${cartItem.optionId != null}">
-			                                            	<p>옵션이름
+			                                            	<p>${cartItem.optionName}
 			                                            	<c:if test="${cartItem.optionPrice != 0}">
 			                                            		(${cartItem.formattedOptionPrice})
 			                                            	</c:if>
