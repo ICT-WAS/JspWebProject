@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import com.shopping.model.Member;
 import com.shopping.model.Product;
 import com.shopping.model.ProductOption;
 import com.shopping.model.ProductOptionDTO;
@@ -399,5 +399,39 @@ public class ProductDao extends SuperDao{
 		return product;
 	}
 
-
+	public int updateQuantity(Connection conn, Map<Long, Integer> optionIdAndQuantity) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		for(Long optionId : optionIdAndQuantity.keySet()) {
+			try {
+				String sql = "UPDATE PRODUCT_OPTION";
+				sql += " SET OPTION_STOCK_QUANTITY = ?";
+				sql += " WHERE OPTION_ID = ?";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+	            pstmt.setDouble(1, optionIdAndQuantity.get(optionId));            
+	            pstmt.setLong(2, optionId);
+				
+				result = pstmt.executeUpdate();
+			}catch (Exception e) {
+				e.printStackTrace();
+				try {
+					conn.rollback();
+				}catch(Exception e2) {
+					e2.printStackTrace();
+				}
+			}finally {
+				try {
+					if(pstmt!=null) {pstmt.close();}
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return result;
+		
+	}
 }

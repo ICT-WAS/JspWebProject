@@ -45,33 +45,6 @@ public class OrderController extends HttpServlet {
 		Cart cart = cartDao.getCart(memberId);
 		Long cartId = cart.getCartId();
 		
-		System.out.println("cartId : " + cartId);
-		
-		// 테스트 데이터 생성
-		CartProduct cartProduct = new CartProduct();
-		cartProduct.setCartId(cartId);
-		cartProduct.setProductId(203L);
-		cartProduct.setOptionId(3216L);
-		cartProduct.setQuantity(11);
-		
-		cartService.addToCart(cartProduct);
-		
-		CartProduct cartProduct2 = new CartProduct();
-		cartProduct2.setCartId(cartId);
-		cartProduct2.setProductId(203L);
-		cartProduct2.setOptionId(3217L);
-		cartProduct2.setQuantity(4);
-		
-		cartService.addToCart(cartProduct2);
-		
-		CartProduct cartProduct3 = new CartProduct();
-		cartProduct3.setCartId(cartId);
-		cartProduct3.setProductId(259L);
-		cartProduct3.setOptionId(3372L);
-		cartProduct3.setQuantity(6);
-		
-		cartService.addToCart(cartProduct3);
-		
 		cartItems = cartService.getCartProductList(cartId);
 		
 		// 회원 정보 찾기
@@ -93,7 +66,6 @@ public class OrderController extends HttpServlet {
 			}
 		}
 		
-		// ==== 실제 로직 ====
 		
 		request.setAttribute("cartItems", cartItems);
 		request.setAttribute("member", member);
@@ -108,11 +80,13 @@ public class OrderController extends HttpServlet {
 		// MemberDao memberDao = new MemberDao();
 		// Long id = memberDao.getMemberById((String)request.getSession().getAttribute("id")).getMember_id();
 		
+		Long memberId = 1L;
+		
 		// OrderService 객체를 통해 주문 진행
 		String orderNo = orderService.generateOrderNumber(10);
 		
 		Order order = new Order();
-		order.setMemberId(1L);
+		order.setMemberId(memberId);
 		order.setOrderNumber(orderNo);
 		order.setTotalAmount(Integer.parseInt(request.getParameter("total")));
 		order.setUsedPoints(Integer.parseInt(request.getParameter("usedPoint")));
@@ -157,15 +131,32 @@ public class OrderController extends HttpServlet {
 		
 		shipping.setMessage(selectedOption);
 		
+		// 주문 아이템 데이터 저장 (실패하든 안하든 데이터 남기기?)
+		if(!orderService.saveOrderDetails(orderDetails)) {
+			System.out.println("주문 아이템 저장 실패");
+			return;
+		}
+
+		// 배송지 정보 저장
+		if(!orderService.saveShipping(shipping)) {
+			System.out.println("배송지 저장 실패");
+			return;
+		}
+		
 		// ==================================================================================
 		// OrderService 객체를 통해 주문 진행
-		boolean success = orderService.processOrder(order, orderDetails, shipping);
+		boolean success = orderService.processOrder(memberId, order, orderDetails, shipping);
 		
 		// 실패요
 		if(!success) {
 			// 메인 페이지로 이동(에러 페이지 보여줘야 함)
 			response.sendRedirect("/ShoppingMallProject/main");
 			return;
+		}
+		
+		// 장바구니에서 아이템 삭제
+		for (CartProductDto cartItem : cartItems) {
+			cartService.removeFromCart(cartItem.getCartProductId());
 		}
 
 		// 주문 확인 페이지로 이동
