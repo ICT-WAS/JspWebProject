@@ -191,6 +191,7 @@ public class CartProductDto implements Serializable {
 
 	private void setFormattedOptionPrice(Integer optionPrice) {
 		formattedOptionPrice = df.format(optionPrice);
+		formattedOptionPrice = optionPrice > 0 ? ('+' + formattedOptionPrice) : formattedOptionPrice;
 	}
 	
 
