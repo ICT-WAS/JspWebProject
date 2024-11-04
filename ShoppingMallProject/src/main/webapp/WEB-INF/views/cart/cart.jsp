@@ -9,14 +9,18 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html class="no-js" lang="zxx">
-<%!  
-List<CartProductDto> cartProducts;
-%>
 
 <%
-cartProducts = (List<CartProductDto>) request.getAttribute("cartProducts");
-
+List<CartProductDto> cartProducts = (List<CartProductDto>) request.getAttribute("cartProducts");
+int total = 0 ;
+for(CartProductDto cart : cartProducts){
+	total += cart.getTotal(); 
+}
+String str = String.valueOf(total);
+DecimalFormat df = new DecimalFormat("#,###");
+str = df.format(total);
 %>
+
 <head>
     <ui:css />
     <meta charset="UTF-8">
@@ -80,19 +84,53 @@ $(document).ready(function() {
 	
 	$('.product-row').each(function() {
         const row = $(this); // 현재 행을 jQuery 객체로 설정
-
         // 증가 버튼 클릭 이벤트 리스너 추가
         row.find('.qtybutton').on('click', function() {
+        	const cartProductId = parseInt(row.attr('class').split(' ')[0]);
             const input = row.find('.cart-plus-minus-box'); // 해당 입력 필드 선택
             let quantity = parseInt(input.val()); // 현재 수량 가져오기
 
             const pricePerUnit = parseFloat(input.data('price')); // jQuery로 data-price 가져오기
             const totalPrice = quantity * pricePerUnit; // 총 가격 계산
 
+
             const formattedPrice = new Intl.NumberFormat('ko-KR').format(totalPrice);
-        
+ 
             const priceCell = row.find('.uren-product-price .amount');
             priceCell.text(formattedPrice + ' 원'); // 포맷된 가격 표시
+            
+            let totalValue = parseInt($('.hiddenTotal').val());
+            if ($(this).hasClass('inc')) {
+            	totalValue += pricePerUnit;
+            } else if ($(this).hasClass('dec')) {
+            	totalValue -= pricePerUnit;
+            }
+            
+            $('.hiddenTotal').val(totalValue);
+            
+            const formattedTotalPrice = new Intl.NumberFormat('ko-KR').format(totalValue);
+            const priceCell2 = $('.formattedTotal');
+            priceCell2.text(formattedTotalPrice + ' 원');
+            
+            $.ajax({
+                type: "POST",
+                url: "/ShoppingMallProject/cart",
+                data: {
+                    cartProductId: cartProductId,
+                    quantity: quantity
+                },
+                success: function(response) {
+                },
+                error: function(xhr) {
+                    if (xhr.status === 404) {
+                        alert("오~류 : 404");
+                    } else if (xhr.status === 400) {
+                        alert("오~류 : 400");
+                    } else {
+                        alert("오~류 : ?");
+                    }
+                }
+            });
         });
     });
 });
@@ -102,27 +140,14 @@ $(document).ready(function() {
                                 
                             </div>
                             <div class="row">
-                                <div class="col-12">
-                                    <div class="coupon-all">
-                                        <div class="coupon">
-                                            <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">
-                                            <input class="button" name="apply_coupon" value="Apply coupon" type="submit">
-                                        </div>
-                                        <div class="coupon2">
-                                            <input class="button" name="update_cart" value="Update cart" type="submit">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-5 ml-auto">
                                     <div class="cart-page-total">
-                                        <h2>Cart totals</h2>
+                                        <h2>총 가격</h2>
                                         <ul>
-                                            <li>Subtotal <span>$118.60</span></li>
-                                            <li>Total <span>$118.60</span></li>
+                                            <li >Total <span class="formattedTotal"><%=str %> 원</span></li>
                                         </ul>
-                                        <a href="javascript:void(0)">Proceed to checkout</a>
+                                        <input class="hiddenTotal" type="hidden" value="<%=total%>">
+                                        <a href="/ShoppingMallProject/order/checkout">결제하기</a>
                                     </div>
                                 </div>
                             </div>
