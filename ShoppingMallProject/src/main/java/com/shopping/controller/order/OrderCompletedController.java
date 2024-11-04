@@ -30,16 +30,13 @@ public class OrderCompletedController extends HttpServlet {
 		
 		Order order = orderService.findOrderByOrderNo(orderNo);
 		Shipping shipping = orderService.findShippingByOrderNo(orderNo);
+		List<CartProductDto> orderItems = orderService.findOrderDetailsToDto(order.getOrderId());
 		
 		request.setAttribute("orderData", order);
 		request.setAttribute("shippingData", shipping);
+		request.setAttribute("cartItems", orderItems);
 		
-		List<CartProductDto> cartItems = (List<CartProductDto>)request.getSession().getAttribute("cartItems");
-		request.setAttribute("cartItems", cartItems);
 		request.getRequestDispatcher("/WEB-INF/views/order/orderCompleted.jsp").forward(request, response);
-		
-		// 세션에서 객체 삭제
-		// request.getSession().removeAttribute("cartItems");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
