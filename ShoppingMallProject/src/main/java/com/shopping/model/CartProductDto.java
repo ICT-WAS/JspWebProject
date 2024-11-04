@@ -14,7 +14,7 @@ public class CartProductDto implements Serializable {
 	
 	private Long optionId; 				// 옵션고유ID
 	private String optionName; 			// 옵션명
-	private Integer optionPrice;		// 옵션 단가
+	private Integer optionPrice = 0;		// 옵션 단가
 	
 	private Long cartProductId;			// 카트상품고유ID
 	
