@@ -177,7 +177,13 @@
 		                                            <td><img class="img-thumbnail" src="${cartItem.image}" alt="${cartItem.name}"></td>
 		                                            <td class="uren-product-name">
 		                                            	<span class="amount">${cartItem.name}</span>
-		                                            	<p>옵션이름(${cartItem.formattedOptionPrice})</p>
+		                                            	<c:if test="${cartItem.optionId != null}">
+			                                            	<p>${cartItem.optionName}
+			                                            	<c:if test="${cartItem.optionPrice != 0}">
+			                                            		(${cartItem.formattedOptionPrice})
+			                                            	</c:if>
+			                                            	</p>
+		                                            	</c:if>
 		                                            </td>
 		                                            <td class="uren-product-price right-align"><span class="amount">${cartItem.formattedPrice}원</span></td>
 		                                            <td class="quantity right-align"><span class="amount">x${cartItem.quantity}</span></td>

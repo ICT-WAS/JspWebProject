@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.shopping.model.Address;
 import com.shopping.model.Cart;
 import com.shopping.model.CartProduct;
 
@@ -155,5 +154,157 @@ public class CartDao extends SuperDao{
 		}
 		
 		return cart;
+	}
+	
+	public int addCartProduct(CartProduct cartProduct) {
+		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = super.getConnection();
+			conn.setAutoCommit(false);
+			String sql = "insert into cart_product (CART_ID, PRODUCT_ID, OPTION_ID, QUANTITY)";
+					sql += " values ";
+					sql += " (?, ?, ?, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, cartProduct.getCartId());
+			pstmt.setLong(2, cartProduct.getProductId());
+			pstmt.setLong(3, cartProduct.getOptionId());
+			pstmt.setDouble(4, cartProduct.getQuantity());
+			
+			result = pstmt.executeUpdate();
+			conn.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
+	public int removeCartProduct(Long cartProductId) {
+		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = super.getConnection();
+			conn.setAutoCommit(false);
+			String sql = "delete from cart_product";
+					sql += " where CART_PRODUCT_ID = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, cartProductId);
+			
+			result = pstmt.executeUpdate();
+			conn.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
+	public int updateCartProduct(Long cartProductId, CartProduct cartProduct) {
+		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = super.getConnection();
+			conn.setAutoCommit(false);
+			String sql = "update cart_product";
+					sql += " set QUANTITY = ?, OPTION_ID = ?";
+					sql += " where CART_PRODUCT_ID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, cartProduct.getQuantity());
+			pstmt.setLong(2, cartProduct.getOptionId());
+			pstmt.setDouble(3, cartProduct.getProductId());
+			
+			result = pstmt.executeUpdate();
+			conn.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
+	public CartProduct getCartProductById(Long cartProductId) {
+		CartProduct cartProduct = new CartProduct();
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " SELECT * FROM CART_PRODUCT " ;
+		sql += " WHERE CART_PRODUCT_ID = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setLong(1, cartProductId);
+			
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				cartProduct = makeCartProduct(rs);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return cartProduct;
 	}
 }

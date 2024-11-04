@@ -11,13 +11,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.shopping.dao.AddressDao;
+import com.shopping.dao.CartDao;
 import com.shopping.dao.MemberDao;
 import com.shopping.enums.ShippingStatus;
 import com.shopping.model.Address;
+import com.shopping.model.Cart;
+import com.shopping.model.CartProduct;
 import com.shopping.model.CartProductDto;
 import com.shopping.model.Member;
 import com.shopping.model.Order;
 import com.shopping.model.Shipping;
+import com.shopping.service.CartService;
 import com.shopping.service.OrderService;
 
 @WebServlet("/order/checkout")
@@ -28,40 +32,46 @@ public class OrderController extends HttpServlet {
 	private OrderService orderService = new OrderService();
 	private MemberDao memberDao = new MemberDao();
 	private AddressDao addressDao = new AddressDao();
+	CartDao cartDao = new CartDao();
+	
+	CartService cartService = new CartService();
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// List<CartProductDto> cartItems = new ArrayList<CartProductDto>();
 		cartItems = new ArrayList<CartProductDto>();
 		
+		Long memberId = 1L;
+		Cart cart = cartDao.getCart(memberId);
+		Long cartId = cart.getCartId();
+		
+		System.out.println("cartId : " + cartId);
+		
 		// 테스트 데이터 생성
-		CartProductDto cartProduct = new CartProductDto();
+		CartProduct cartProduct = new CartProduct();
+		cartProduct.setCartId(cartId);
+		cartProduct.setProductId(203L);
+		cartProduct.setOptionId(3216L);
+		cartProduct.setQuantity(1);
 		
-		cartProduct.setProductId(1L);
-		cartProduct.setProductPrice(100);
-		cartProduct.setName("상품A");
-		cartProduct.setQuantity(3);
+		cartService.addToCart(cartProduct);
 		
-		cartItems.add(cartProduct);
-		
-		CartProductDto cartProduct2 = new CartProductDto();
-		
-		cartProduct2.setProductId(3L);
-		cartProduct2.setProductPrice(1000);
-		cartProduct2.setName("상품2");
+		CartProduct cartProduct2 = new CartProduct();
+		cartProduct2.setCartId(cartId);
+		cartProduct2.setProductId(203L);
+		cartProduct2.setOptionId(3217L);
 		cartProduct2.setQuantity(1);
 		
-		cartItems.add(cartProduct2);
+		cartService.addToCart(cartProduct2);
 		
-		CartProductDto cartProduct3 = new CartProductDto();
+		CartProduct cartProduct3 = new CartProduct();
+		cartProduct3.setCartId(cartId);
+		cartProduct3.setProductId(259L);
+		cartProduct3.setOptionId(3372L);
+		cartProduct3.setQuantity(1);
 		
-		cartProduct3.setProductId(2L);
-		cartProduct3.setProductPrice(2400);
-		cartProduct3.setOptionId(3216L);
-		cartProduct3.setOptionPrice(1000);
-		cartProduct3.setName("상품3");
-		cartProduct3.setQuantity(5);
+		cartService.addToCart(cartProduct3);
 		
-		cartItems.add(cartProduct3);
+		cartItems = cartService.getCartProductList(cartId);
 		
 		// 회원 정보 찾기
 		Member member = memberDao.getMemberById("회원가입_001");
