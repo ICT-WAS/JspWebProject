@@ -56,7 +56,7 @@
 	    	
 	    	// 적립금 1원 단위로 사용 시도
 	    	if (point % 10 != 0) {
-	    		$('.modal-body').text('적립금은 10원 단위로만 사용 가능합니다.');
+	    		$('.modal-body-point').text('적립금은 10원 단위로만 사용 가능합니다.');
 	    		$('#myModal').modal('show');
 	            point = point - point % 10;
 	        }
@@ -533,7 +533,7 @@
 		            <div class="modal-header">
 		                <h5 class="modal-title" id="myModalLabel">적립금 사용 실패</h5>
 		            </div>
-		            <div class="modal-body">
+		            <div class="modal-body modal-body-point">
 		                유효하지 않은 값을 입력하셨습니다.
 		            </div>
 		            <div class="modal-footer">

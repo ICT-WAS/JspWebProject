@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.shopping.dao.OrderDao;
 import com.shopping.model.CartProductDto;
 import com.shopping.model.Order;
 import com.shopping.model.Shipping;
@@ -19,7 +18,6 @@ import com.shopping.service.OrderService;
 public class OrderCompletedController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private OrderService orderService;
-	private OrderDao orderDao = new OrderDao();
        
     public OrderCompletedController() {
         super();
