@@ -20,6 +20,7 @@ import com.shopping.model.CartProduct;
 import com.shopping.model.CartProductDto;
 import com.shopping.model.Member;
 import com.shopping.model.Order;
+import com.shopping.model.OrderDetail;
 import com.shopping.model.Shipping;
 import com.shopping.service.CartService;
 import com.shopping.service.OrderService;
@@ -51,7 +52,7 @@ public class OrderController extends HttpServlet {
 		cartProduct.setCartId(cartId);
 		cartProduct.setProductId(203L);
 		cartProduct.setOptionId(3216L);
-		cartProduct.setQuantity(1);
+		cartProduct.setQuantity(11);
 		
 		cartService.addToCart(cartProduct);
 		
@@ -59,7 +60,7 @@ public class OrderController extends HttpServlet {
 		cartProduct2.setCartId(cartId);
 		cartProduct2.setProductId(203L);
 		cartProduct2.setOptionId(3217L);
-		cartProduct2.setQuantity(1);
+		cartProduct2.setQuantity(4);
 		
 		cartService.addToCart(cartProduct2);
 		
@@ -67,7 +68,7 @@ public class OrderController extends HttpServlet {
 		cartProduct3.setCartId(cartId);
 		cartProduct3.setProductId(259L);
 		cartProduct3.setOptionId(3372L);
-		cartProduct3.setQuantity(1);
+		cartProduct3.setQuantity(6);
 		
 		cartService.addToCart(cartProduct3);
 		
@@ -115,13 +116,27 @@ public class OrderController extends HttpServlet {
 		order.setOrderNumber(orderNo);
 		order.setTotalAmount(Integer.parseInt(request.getParameter("total")));
 		order.setUsedPoints(Integer.parseInt(request.getParameter("usedPoint")));
-		order.setPaymentMethod("결제안했지롱");
+		order.setPaymentMethod("테스트");
 		order.setExpectedRewardAmount(10);
 		order.setFinalPaymentAmount(Integer.parseInt(request.getParameter("totalAmount")));
 
 		Order savedOrder = orderService.saveOrder(order, null);
 		if(savedOrder == null) {
 			return;
+		}
+		
+		// 주문 상품 정보 저장
+		List<OrderDetail> orderDetails = new ArrayList<OrderDetail>();
+		for (CartProductDto cartItem : cartItems) {
+			OrderDetail orderDetail = new OrderDetail();
+			
+			orderDetail.setOrderId(savedOrder.getOrderId());
+			orderDetail.setProductId(cartItem.getProductId());
+			orderDetail.setQuantity(cartItem.getQuantity());
+			orderDetail.setUnitPrice(cartItem.getPrice());
+			orderDetail.setOptionId(cartItem.getOptionId());
+			
+			orderDetails.add(orderDetail);
 		}
 		
 		// 배송 주소 정보 저장
@@ -144,7 +159,7 @@ public class OrderController extends HttpServlet {
 		
 		// ==================================================================================
 		// OrderService 객체를 통해 주문 진행
-		boolean success = orderService.processOrder(order, null, shipping);
+		boolean success = orderService.processOrder(order, orderDetails, shipping);
 		
 		// 실패요
 		if(!success) {
@@ -152,9 +167,6 @@ public class OrderController extends HttpServlet {
 			response.sendRedirect("/ShoppingMallProject/main");
 			return;
 		}
-		
-		request.getSession().setAttribute("cartItems", cartItems);
-		
 
 		// 주문 확인 페이지로 이동
 		response.sendRedirect("/ShoppingMallProject/order/completed?orderNo=" + orderNo);

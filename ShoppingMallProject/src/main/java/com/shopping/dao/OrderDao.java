@@ -5,10 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.shopping.enums.OrderStatus;
 import com.shopping.enums.ShippingStatus;
 import com.shopping.model.Order;
+import com.shopping.model.OrderDetail;
 import com.shopping.model.Shipping;
 
 public class OrderDao extends SuperDao{
@@ -245,6 +248,47 @@ public class OrderDao extends SuperDao{
 		return shipping;
 	}
 	
+	public int saveOrderDetail(OrderDetail orderDetail) {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			conn.setAutoCommit(false);
+			String sql = "INSERT INTO ORDER_DETAIL (ORDER_ID, PRODUCT_ID, QUANTITY, UNIT_PRICE, TOTAL_PRICE, OPTION_ID)";
+			sql += " VALUES (?, ?, ?, ?, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+            pstmt.setLong(1, orderDetail.getOrderId());            
+            pstmt.setLong(2, orderDetail.getProductId());
+            pstmt.setDouble(3, orderDetail.getQuantity());
+            pstmt.setDouble(4, orderDetail.getUnitPrice());
+            pstmt.setDouble(5, orderDetail.getTotalPrice());
+            pstmt.setLong(6, orderDetail.getOptionId());
+			
+			result = pstmt.executeUpdate();
+			conn.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
 	public Shipping findShippingByOrderId(Long orderId) {
 		Shipping shipping = new Shipping();
 
@@ -301,6 +345,68 @@ public class OrderDao extends SuperDao{
 			return null;
 		}
 		return shipping;
+	}
+	
+	private OrderDetail makeOrderDetail(ResultSet rs){
+		OrderDetail orderDetail = null;
+		try {
+			orderDetail = new OrderDetail();
+			orderDetail.setOrderDetilId(rs.getLong("ORDER_DETAIL_ID"));
+			orderDetail.setOrderId(rs.getLong("ORDER_ID"));
+			orderDetail.setProductId(rs.getLong("PRODUCT_ID"));
+			orderDetail.setQuantity((int)rs.getDouble("QUANTITY"));
+			orderDetail.setUnitPrice((int)rs.getDouble("UNIT_PRICE"));
+			orderDetail.setCreatedAt(rs.getTimestamp("CREATED_AT").toLocalDateTime());
+			orderDetail.setUpdatedAt(rs.getTimestamp("UPDATED_AT").toLocalDateTime());
+			orderDetail.setOptionId(rs.getLong("OPTION_ID"));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return orderDetail;
+	}
+
+	
+	public List<OrderDetail> findOrderDetails(Long orderId) {
+		List<OrderDetail> orderDetails = new ArrayList<OrderDetail>();
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = " SELECT * FROM ORDER_DETAIL ";
+		sql += " WHERE ORDER_ID = ?  ";
+
+		try {
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, orderId);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				OrderDetail orderDetail = makeOrderDetail(rs);
+				if (orderDetail != null) {
+					orderDetails.add(orderDetail);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return orderDetails;
 	}
 
 }

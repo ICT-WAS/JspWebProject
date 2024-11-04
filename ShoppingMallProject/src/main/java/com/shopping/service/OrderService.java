@@ -1,8 +1,12 @@
 package com.shopping.service;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -12,8 +16,12 @@ import com.shopping.dao.OrderDao;
 import com.shopping.dao.ProductDao;
 import com.shopping.enums.OrderStatus;
 import com.shopping.model.CartProduct;
+import com.shopping.model.CartProductDto;
 import com.shopping.model.Member;
 import com.shopping.model.Order;
+import com.shopping.model.OrderDetail;
+import com.shopping.model.Product;
+import com.shopping.model.ProductOption;
 import com.shopping.model.Shipping;
 
 public class OrderService {
@@ -28,6 +36,7 @@ public class OrderService {
 	public OrderService() {
 		memberDao = new MemberDao();
 		orderDao = new OrderDao();
+		productDao = new ProductDao();
 	}
 	
 	public Order findOrderByOrderNo(String orderNo) {
@@ -61,7 +70,7 @@ public class OrderService {
 	
 	// Long 은 상품id
 	// Order 또는 OrderId를 반환..?
-	public boolean processOrder(Order orderData, Map<Long, CartProduct> cartItems, Shipping shipping) {
+	public boolean processOrder(Order orderData, List<OrderDetail> orderDetails, Shipping shipping) {
 		
 		// ========= 결제 진행중 ===========
 		
@@ -102,13 +111,13 @@ public class OrderService {
 //		// 주문 데이터 저장
 		orderData.setOrderStatus(OrderStatus.COMPLETED);
 		orderDao.updateOrderStatus(orderData);
-//		
-//		// 주문 아이템 데이터 저장
-//		for (Long orderItemId : cartItems.keySet()) {
-//			orderDao.saveOrderItem(new OrderProduct());
-//		}
-//
-//		// 배송지 정보 저장
+		
+		// 주문 아이템 데이터 저장
+		for (OrderDetail orderDetail : orderDetails) {
+			orderDao.saveOrderDetail(orderDetail);
+		}
+
+		// 배송지 정보 저장
 		Shipping savedShipping = orderDao.saveShipping(shipping);
 //		
 //		// 카트에서 주문한 아이템 삭제
@@ -130,5 +139,43 @@ public class OrderService {
 		}
 		
 		return orderDao.findOrderByOrderNo(orderData.getOrderNumber());
+	}
+	
+	public List<OrderDetail> findOrderDetails(Long orderId) {
+		
+		List<OrderDetail> orderDetails = orderDao.findOrderDetails(orderId);
+		return orderDetails;
+	}
+
+	public List<CartProductDto> findOrderDetailsToDto(Long orderId) {
+		
+		List<OrderDetail> orderDetails = findOrderDetails(orderId);
+		
+		List<CartProductDto> orderProducts = new ArrayList<CartProductDto>();
+		for(OrderDetail orderDetail : orderDetails) {
+			orderProducts.add(createCartProductDto(orderDetail.getProductId(), orderDetail.getOptionId(), orderDetail.getQuantity()));
+		}
+		
+		return orderProducts;
+	}
+	
+	// 카트 없이 cartProductDto 형식으로 만들어주는 메서드(주문내역에서 확인할 때 사용)
+	public CartProductDto createCartProductDto(Long productId, Long optionId, Integer quantity) {
+		CartProductDto dto = new CartProductDto();
+
+		ProductOption productOption = productDao.getOption(optionId);
+		Product product = productDao.getProduct(productId);
+
+		dto.setProductId(productId);
+		dto.setImage(product.getImg1());
+		dto.setName(product.getName());
+		dto.setProductPrice((int) product.getPrice());
+
+		dto.setOptionId(productOption.getOptionId());
+		dto.setOptionName(productOption.getOptionName());
+		dto.setOptionPrice((int) productOption.getAdditionalPrice());
+		dto.setQuantity(quantity);
+
+		return dto;
 	}
 }
