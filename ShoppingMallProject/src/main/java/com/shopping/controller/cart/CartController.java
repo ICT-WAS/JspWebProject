@@ -56,7 +56,18 @@ public class CartController extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		CartDao dao = new CartDao();
+		Long cartProductId = Long.parseLong(request.getParameter("cartProductId"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        boolean isUpdated = dao.updateQuantity(cartProductId, quantity);
+        response.setContentType("text/plain");
+        if(isUpdated) {
+        	response.getWriter().write("Quantity updated successfully.");
+            response.setStatus(HttpServletResponse.SC_OK); // 성공 상태 코드
+        }else {
+        	response.getWriter().write("Failed to update quantity. Product not found.");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404 상태 코드
+        }
 	}
  
 	private CartProductDto cartProductToCartProductDto(CartProduct cartProduct) {

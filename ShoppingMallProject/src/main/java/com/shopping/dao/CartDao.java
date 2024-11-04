@@ -307,4 +307,28 @@ public class CartDao extends SuperDao{
 		
 		return cartProduct;
 	}
+
+	public boolean updateQuantity(Long cartProductId, int quantity) {
+		PreparedStatement pstmt = null ;	
+		String sql = " update cart_product set quantity = ? where cart_product_id = ? " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setInt(1, quantity);
+			pstmt.setLong(2, cartProductId);
+			int rowsAffected = pstmt.executeUpdate();
+			return rowsAffected > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
 }

@@ -49,30 +49,6 @@ public class OrderController extends HttpServlet {
 		Cart cart = cartDao.getCart(memberId);
 		Long cartId = cart.getCartId();
 		
-		CartProduct cartProduct = new CartProduct();
-		cartProduct.setCartId(cartId);
-		cartProduct.setProductId(203L);
-		cartProduct.setOptionId(3216L);
-		cartProduct.setQuantity(1);
-
-		cartService.addToCart(cartProduct);
-
-		CartProduct cartProduct2 = new CartProduct();
-		cartProduct2.setCartId(cartId);
-		cartProduct2.setProductId(203L);
-		cartProduct2.setOptionId(3217L);
-		cartProduct2.setQuantity(4);
-
-		cartService.addToCart(cartProduct2);
-
-		CartProduct cartProduct3 = new CartProduct();
-		cartProduct3.setCartId(cartId);
-		cartProduct3.setProductId(259L);
-		cartProduct3.setOptionId(3372L);
-		cartProduct3.setQuantity(6);
-
-		cartService.addToCart(cartProduct3);
-		
 		cartItems = cartService.getCartProductList(cartId);
 		
 		// 배송지 목록 찾기
