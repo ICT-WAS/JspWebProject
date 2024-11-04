@@ -37,7 +37,7 @@ public class OrderController extends HttpServlet {
 		CartProductDto cartProduct = new CartProductDto();
 		
 		cartProduct.setProductId(1L);
-		cartProduct.setPrice(100);
+		cartProduct.setProductPrice(100);
 		cartProduct.setName("상품A");
 		cartProduct.setQuantity(3);
 		
@@ -46,7 +46,7 @@ public class OrderController extends HttpServlet {
 		CartProductDto cartProduct2 = new CartProductDto();
 		
 		cartProduct2.setProductId(3L);
-		cartProduct2.setPrice(1000);
+		cartProduct2.setProductPrice(1000);
 		cartProduct2.setName("상품2");
 		cartProduct2.setQuantity(1);
 		
@@ -55,7 +55,9 @@ public class OrderController extends HttpServlet {
 		CartProductDto cartProduct3 = new CartProductDto();
 		
 		cartProduct3.setProductId(2L);
-		cartProduct3.setPrice(2400);
+		cartProduct3.setProductPrice(2400);
+		cartProduct3.setOptionId(3216L);
+		cartProduct3.setOptionPrice(1000);
 		cartProduct3.setName("상품3");
 		cartProduct3.setQuantity(5);
 		
