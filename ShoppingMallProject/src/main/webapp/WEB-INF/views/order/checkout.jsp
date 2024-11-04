@@ -369,14 +369,20 @@
 		                                <table class="table">
 		                                	<c:forEach var="cartItem" items="${cartItems}">
 		                                		<tr>
-		                                            <td><img class="img-thumbnail" src="${pageContext.request.contextPath}/static/template_assets/images/product/small-size/1.jpg" alt="Uren's Cart Thumbnail"></td>
+		                                            <td><img class="img-thumbnail" src="${cartItem.image}" alt="${cartItem.name}"></td>
 		                                            <td class="uren-product-name">
 		                                            	<span class="amount">${cartItem.name}</span>
-		                                            	<p>옵션이름</p>
+		                                            	<c:if test="${cartItem.optionId != null}">
+			                                            	<p>옵션이름
+			                                            	<c:if test="${cartItem.optionPrice != 0}">
+			                                            		(${cartItem.formattedOptionPrice})
+			                                            	</c:if>
+			                                            	</p>
+		                                            	</c:if>
 		                                            </td>
 		                                            <td class="uren-product-price right-align"><span class="amount">${cartItem.formattedPrice}원</span></td>
 		                                            <td class="quantity right-align"><span class="amount">x${cartItem.quantity}</span></td>
-		                                            <td class="product-subtotal right-align"><span class="amount">${cartItem.formattedTotal}원</span></td>
+		                                            <td class="product-subtotal right-align"><span class="amount">${cartItem.formattedTotalPrice}원</span></td>
 		                                        </tr>
 		                                	</c:forEach>
                                 		</table>
