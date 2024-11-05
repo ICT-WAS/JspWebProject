@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.shopping.enums.OrderStatus;
 import com.shopping.enums.ShippingStatus;
@@ -435,6 +437,85 @@ public class OrderDao extends SuperDao{
 		
 		
 		return result;
+	}
+	
+	public List<Order> OrderList() {
+		List<Order> OrderList = new ArrayList<>();
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;	
+		
+	    String sql = " select * from orders " ;
+
+	    
+	    try {
+	        conn = super.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            Order order = getBeanData(rs);
+	            if (order != null) {
+	            	OrderList.add(order);
+	            }
+	        }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return OrderList;
+	}
+	
+	
+	public List<Map<String, Object>> MemberNameByOrderList() {
+		List<Map<String, Object>> MemberNameByOrderLists = new ArrayList<>();
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;	
+		
+	    String sql = " SELECT o.*, m.MEMBER_NAME " + 
+                " FROM orders o  " + 
+                " JOIN members m ON o.MEMBER_ID = m.MEMBER_ID " ;
+	    
+	    try {
+	        conn = super.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            Order order = getBeanData(rs);
+	            String memberName = rs.getString("MEMBER_NAME");
+	            
+	            if (order != null) {
+	            	Map<String, Object> map = new HashMap<>();
+	            	map.put("order", order);
+	            	map.put("memberName", memberName);
+	            	MemberNameByOrderLists.add(map);
+	            }
+	        }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return MemberNameByOrderLists;
 	}
 
 }
