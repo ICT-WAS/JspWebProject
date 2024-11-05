@@ -45,6 +45,9 @@ str = df.format(total);
                     <div class="col-12">
                         <form action="javascript:void(0)">
                             <div class="table-content table-responsive">
+                                   <% if (cartProducts.size() == 0){ %>
+       <h4>장바구니에 담긴 상품이 없습니다.</h4>
+       <%}else{%>
                                 <table class="table">
     <thead>
         <tr>
@@ -62,11 +65,20 @@ str = df.format(total);
                 <td class="uren-product-check"><input name="check" type="checkbox" checked="checked" value="${product.cartProductId}"></td>
                 <td class="uren-product-thumbnail thumbnail"><img src="${product.image}" alt="Uren's Cart Thumbnail"></td>
                 <td class="uren-product-name"><a href="/ShoppingMallProject/product/detail?id=${product.productId}">${product.name}</a></td>
-                <td class="uren-product-option">${product.optionName}</td>
+                <td class="uren-product-option">
+                <c:if test="${product.optionId != null}">
+                	${product.optionName}
+                	<br>
+                	(${product.formattedOptionPrice}원)
+                </c:if>
+                <c:if test="${product.optionId == null}">
+                	없음
+                </c:if>
+                </td>
                 <td class="quantity">
                     <label>수량</label>
                     <div class="cart-plus-minus">
-                        <input class="cart-plus-minus-box" value="${product.quantity}" type="text" data-price="${product.price}" data-product-id="${product.cartProductId}">
+                        <input class="cart-plus-minus-box" data-stock="${product.stock}" value="${product.quantity}" type="text" data-price="${product.price}" data-product-id="${product.cartProductId}">
                         <div class="dec qtybutton"><i class="fa fa-angle-down"></i></div>
                         <div class="inc qtybutton"><i class="fa fa-angle-up"></i></div>
                     </div>
@@ -76,7 +88,7 @@ str = df.format(total);
         </c:forEach>
     </tbody>
 </table>
-
+<%} %>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -86,10 +98,18 @@ $(document).ready(function() {
         const row = $(this); // 현재 행을 jQuery 객체로 설정
         // 증가 버튼 클릭 이벤트 리스너 추가
         row.find('.qtybutton').on('click', function() {
+        	const stock = row.find('.cart-plus-minus-box').data('stock');
+        	
         	const cartProductId = parseInt(row.attr('class').split(' ')[0]);
             const input = row.find('.cart-plus-minus-box'); // 해당 입력 필드 선택
             let quantity = parseInt(input.val()); // 현재 수량 가져오기
 
+            if(stock<quantity){
+            	alert('재고가 부족합니다. ' + stock + '개 이상 담을 수 없습니다.');
+            	location.reload();
+            	return;
+            }
+            
             const pricePerUnit = parseFloat(input.data('price')); // jQuery로 data-price 가져오기
             const totalPrice = quantity * pricePerUnit; // 총 가격 계산
 
@@ -142,12 +162,17 @@ $(document).ready(function() {
                             <div class="row">
                                 <div class="col-md-5 ml-auto">
                                     <div class="cart-page-total">
-                                        <h2>총 가격</h2>
+
+                                        <input class="hiddenTotal" type="hidden" value="<%=total%>">
+                                        <% if (cartProducts.size() == 0){ %>
+                                        <a href="/ShoppingMallProject/product/list">상품페이지 이동</a>
+                                        <%}else{ %>
+                                                                                <h2>총 가격</h2>
                                         <ul>
                                             <li >Total <span class="formattedTotal"><%=str %> 원</span></li>
                                         </ul>
-                                        <input class="hiddenTotal" type="hidden" value="<%=total%>">
                                         <a href="/ShoppingMallProject/order/checkout">결제하기</a>
+                                        <%} %>
                                     </div>
                                 </div>
                             </div>

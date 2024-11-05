@@ -21,6 +21,16 @@ public class CartProductDto implements Serializable {
 	private Integer price;				// 상품 단가 + 옵션가
 	private Integer total;				// 항목 가격 (상품 단가 + 옵션가) * 수량
 	
+	private int stock; // 옵션 또는 상품 재고
+	
+	public int getStock() {
+		return stock;
+	}
+
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
+
 	private String formattedProductPrice;
 	private String formattedOptionPrice;
 	private String formattedPrice;
