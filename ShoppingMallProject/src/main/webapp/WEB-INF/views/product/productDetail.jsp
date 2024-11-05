@@ -44,24 +44,19 @@
                                 "swipe": false,
                                 "asNavFor": ".sp-img_slider-nav"
                                 }'>
-                                	
-                                	<c:choose>
-                                		<c:when test="${not empty product.img1} || ${not empty product.img2} || ${not empty product.img3}">
-                                			<c:forEach var="i" begin="1" end="5">
-			                                	<c:if test="${not empty product['img'+i]}">
-			                                		<div class="single-slide red zoom">
-			                                			<img src="data:image/jpeg;base64,${product['img'+i]}" alt="${product.name}${i}" />
-			                                		</div>
-			                                	</c:if>     
-			                                </c:forEach>                           				                                	                               
-                                		</c:when>
-                                		<c:otherwise>
-                                			<div class="single-slide">
-                                				<img src="${pageContext.request.contextPath}/static/template_assets/images/product/no-image.png" alt="이미지 없음" />
-                                			</div>
-                                		</c:otherwise>
-                                	</c:choose>  	
-                                </div>
+									<div class="single-slide">
+										<c:choose>
+											<c:when test="${not empty productDTO.product.img1}">
+												<img src="${productDTO.product.img1 }" />
+											</c:when>
+											<c:otherwise>
+												<img
+													src="${pageContext.request.contextPath}/static/template_assets/images/product/no-image.png"
+													alt="이미지 없음" />
+											</c:otherwise>
+										</c:choose>
+									</div>
+								</div>
                             
                                 <!-- 상품 상세 이미지 -->
                                 <div class="sp-img_slider-nav slick-slider-nav uren-slick-slider slider-navigation_style-3" data-slick-options='{
@@ -77,15 +72,29 @@
                                         {"breakpoint":575, "settings": {"slidesToShow": 2}}
                                     ]'>
                                     <c:choose>
-                                		<c:when test="${not empty product.img1} || ${not empty product.img2} || ${not empty product.img3}">
-                                			<c:forEach var="i" begin="1" end="5">
-			                                	<c:if test="${not empty product['img'+i]}">
-			                                		<div class="single-slide red">
-			                                			<img src="data:image/jpeg;base64,${product['img'+i]}" alt="${product.name}${i}" />
-			                                		</div>
-			                                	</c:if>     
-			                                </c:forEach>                           				                                	                               
-                                		</c:when>
+                                		<c:when test="${not empty productDTO.product.img1}">
+											<c:if test="${not empty productDTO.product.img1}">
+												<div class="single-slide red">
+													<img
+														src="${productDTO.product.img1}"
+														alt="${product.name}" />
+												</div>
+											</c:if>
+											<c:if test="${not empty productDTO.product.img2}">
+												<div class="single-slide red">
+													<img
+														src="${productDTO.product.img2}"
+														alt="${product.name}" />
+												</div>
+											</c:if>
+											<c:if test="${not empty productDTO.product.img3}">
+												<div class="single-slide red">
+													<img
+														src="${productDTO.product.img3}"
+														alt="${product.name}" />
+												</div>
+											</c:if>
+										</c:when>
                                 		<c:otherwise>
                                 			<div class="single-slide red">
                                 				<img src="${pageContext.request.contextPath}/static/template_assets/images/product/no-image.png" alt="이미지 없음" />
