@@ -252,20 +252,18 @@
                                     </a>
                                 </div>
                                 <div class="widget-short_desc">
-                                    <p>We are a team of designers and developers that create high quality HTML Template &
-                                        Woocommerce, Shopify Theme.
+                                    <p>JSP연습삼아 만들어본 쇼핑몰 웹페이지 입니다. 
                                     </p>
                                 </div>
                                 <div class="widgets-essential_stuff">
                                     <ul>
-                                        <li class="uren-address"><span>Address:</span> The Barn,
-                                            Ullenhall, Henley
-                                            in
-                                            Arden B578 5CC, England</li>
+                                        <li class="uren-address"><span>Address:</span> 
+                                        <a href="https://ictedu.co.kr/index_new.php?main_page=home">서울 마포구 백범로 23, 3층
+                                        한국ICT인재개발원 신촌 2강의실</a></li>
                                         <li class="uren-phone"><span>Call
-                                        Us:</span> <a href="tel://+123123321345">+123 321 345</a>
+                                        Us:</span> <a href="tel://+821055700010">+82 10-5570-0010</a>
                                         </li>
-                                        <li class="uren-email"><span>Email:</span> <a href="mailto://info@yourdomain.com">info@yourdomain.com</a></li>
+                                        <li class="uren-email"><span>Email:</span> <a href="mailto://mmparksb@gmail.com">mmparksb@gmail.com</a></li>
                                     </ul>
                                 </div>
                                 <div class="uren-social_link">
@@ -290,6 +288,11 @@
                                                 <i class="fab fa-instagram"></i>
                                             </a>
                                         </li>
+                                        <li class="github">
+                                            <a href="https://github.com/ICT-WAS/JspWebProject" data-toggle="tooltip" target="_blank" title="Github">
+                                                <i class="fab fa-github"></i>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -299,26 +302,27 @@
                                 <div class="row">
                                     <div class="col-lg-3 col-md-6">
                                         <div class="footer-widgets_title">
-                                            <h3>Information</h3>
+                                            <h3>정보</h3>
                                         </div>
                                         <div class="footer-widgets">
                                             <ul>
-                                                <li><a href="javascript:void(0)">About Us</a></li>
-                                                <li><a href="javascript:void(0)">Delivery Information</a></li>
-                                                <li><a href="javascript:void(0)">Privacy Policy</a></li>
-                                                <li><a href="javascript:void(0)">Terms & Conditions</a></li>
+                                                <li><a href="javascript:void(0)">조원 소개(추가 예정)</a></li>
+                                                <li><a href="https://github.com/ICT-WAS/JspWebProject">깃허브</a></li>
+                                                <li><a href="https://www.templateshub.net/">부트스트랩 템플릿</a></li>
+                                                <li><a href="https://ictedu.co.kr/index_new.php?main_page=home">한국ICT인재개발원</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <div class="footer-widgets_title">
-                                            <h3>Customer Service</h3>
+                                            <h3>개발 과정</h3>
                                         </div>
                                         <div class="footer-widgets">
                                             <ul>
-                                                <li><a href="javascript:void(0)">Contact Us</a></li>
-                                                <li><a href="javascript:void(0)">Returns</a></li>
-                                                <li><a href="javascript:void(0)">Site Map</a></li>
+                                                <li><a href="https://miro.com/app/board/uXjVLQRFe_4=/?moveToWidget=3458764604263981844&cot=14">참고자료</a></li>
+                                                <li><a href="https://www.erdcloud.com/d/reujrP9ybDxSSHvo2">테이블 설계1</a></li>
+                                                <li><a href="https://docs.google.com/spreadsheets/d/17t8Lppm_wKqV4mi_W-lrew5vdrCWp3bQou6if-u2BvY/edit?gid=1524174810#gid=1524174810">테이블 설계2</a></li>
+                                                <li><a href="javascript:void(0)">발표자료(추가 예정)</a></li>
                                             </ul>
                                         </div>
                                     </div>
