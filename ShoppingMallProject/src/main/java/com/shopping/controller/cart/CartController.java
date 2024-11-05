@@ -85,10 +85,18 @@ public class CartController extends HttpServlet {
 		dto.setName(product.getName());
 		dto.setProductPrice((int)product.getPrice());
 		
-		dto.setOptionId(productOption.getOptionId());
-		dto.setOptionName(productOption.getOptionName());
-		dto.setOptionPrice((int)productOption.getAdditionalPrice());
+
 		dto.setQuantity(cartProduct.getQuantity());
+		if(productOption != null) {
+			dto.setOptionId(productOption.getOptionId());
+			dto.setOptionName(productOption.getOptionName());
+			dto.setOptionPrice((int)productOption.getAdditionalPrice());
+			int optionQuantity = (int)productOption.getOptionStockquantity();
+			dto.setStock(optionQuantity);
+		}else {
+			int productQuantity = (int)product.getQuantity();
+			dto.setStock(productQuantity);
+		}
 		
 		return dto;
 	}
