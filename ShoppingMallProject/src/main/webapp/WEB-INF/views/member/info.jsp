@@ -182,7 +182,16 @@ addressList = (List<Address>)request.getAttribute("addressList");
                                                     </tr>
                                                     <c:forEach var="address" items="${addressList}">
 									                    <tr>
-									                        <td>${address.alias}</td>
+									                        <td> 
+									                        <c:if test="${address.isDefault eq 1}">
+									                        <span class="badge rounded-pill bg-secondary" id="default-address-badge">기본배송지</span>
+									                        <br>
+									                        ${address.alias}
+									                        </c:if>
+									                        <c:if test="${address.isDefault eq 0}">
+									                        <a href="#" onclick="if(confirm('${address.alias} 배송지를 기본 배송지로 변경하시겠습니까?')) { window.location.href='/ShoppingMallProject/address/default?id=${address.addressId}'; } return false;">${address.alias}</a>
+									                        </c:if> 
+									                        </td>
 									                        <td>${address.roadNameAddress}<br>${address.detailAddress}</td>
 									                        <td>${address.recipientName}</td>
 									                        <td id="phone-${address.addressId}">${address.phoneNumber}</td>
