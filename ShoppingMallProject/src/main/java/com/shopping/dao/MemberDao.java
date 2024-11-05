@@ -3,6 +3,8 @@ package com.shopping.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.shopping.model.Member;
 
@@ -312,4 +314,68 @@ public class MemberDao extends SuperDao{
 		
 		return result;
 	}
+	public List<Member> memberList(){
+		 List<Member> memberList = new ArrayList<>();
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from members " ;
+		
+	    try {
+	        conn = super.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            Member member = makeBean(rs);
+	            if (member != null) {
+	                memberList.add(member); 
+	            }
+	        }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return memberList;
+	}	
+	
+	public int memberCount (){
+		int cnt = 0;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " SELECT COUNT (*) FROM members " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				cnt = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return cnt;
+	}	
 }
