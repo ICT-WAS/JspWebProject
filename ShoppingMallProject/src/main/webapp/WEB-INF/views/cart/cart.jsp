@@ -26,8 +26,8 @@ str = df.format(total);
     <meta charset="UTF-8">
 	<style>
 		.thumbnail{
-		width:200px;
-		height:200px;
+		width:100px;
+		height:100px;
 		}
 	</style>
 	<!-- 스크립트 -->

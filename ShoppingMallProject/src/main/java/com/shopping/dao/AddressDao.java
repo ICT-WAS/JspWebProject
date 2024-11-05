@@ -149,4 +149,87 @@ public class AddressDao extends SuperDao{
 		
 		return cnt;
 	}
+	
+	public Address getAddressById(Long addressId) {
+		Address address = null;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from MEMBER_ADDRESS " ;
+		sql += " where ADDRESS_ID = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setLong(1, addressId);
+			
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) { 
+				address = makeBean(rs);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return address;
+	}
+
+	public int update(Address address) {
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = super.getConnection();
+			conn.setAutoCommit(false);
+			String sql = "update MEMBER_ADDRESS set "; 
+			sql += " RECIPIENT_NAME = ?, "; 
+			sql += " ROAD_NAME_ADDRESS = ?, ";
+			sql += " DETAIL_ADDRESS = ?, "; 
+			sql += " POSTAL_CODE = ?, ";
+			sql += " PHONE_NUMBER = ? , ";
+			sql += " ADDRESS_ALIAS = ?, UPDATED_AT = sysdate ";
+			sql += " where ADDRESS_ID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, address.getRecipientName());
+			pstmt.setString(2, address.getRoadNameAddress());
+			pstmt.setString(3, address.getDetailAddress());
+			pstmt.setString(4, address.getPostalCode());
+			pstmt.setString(5, address.getPhoneNumber());
+			pstmt.setString(6, address.getAlias());
+			pstmt.setLong(7, address.getAddressId());
+			
+			cnt = pstmt.executeUpdate();
+			conn.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return cnt;
+	}
 }

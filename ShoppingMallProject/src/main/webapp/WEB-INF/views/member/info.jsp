@@ -20,6 +20,15 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
 	    $(document).ready(function() {
+	        $('.openModal2').click(function(e) {
+	        	var addressId = $(this).data('address-id');
+	        	console.log(addressId);
+	            e.preventDefault();
+	            $('#modalIframe2').attr('src', '/ShoppingMallProject/address/update?id=' + addressId);
+	            $('#addressModal2').modal('show');
+	            
+	        });
+	    	
 	        $('#openModal').click(function(e) {
 	            e.preventDefault();
 	            $('#modalIframe').attr('src', '/ShoppingMallProject/address/insert');
@@ -33,8 +42,6 @@
 	                $('#addressModal').modal('hide');
 	                location.reload();
 	                alert('배송지가 정상적으로 저장되었습니다.');
-
-	                
 	            }
 	        }
 	    });
@@ -178,11 +185,51 @@ addressList = (List<Address>)request.getAttribute("addressList");
 									                        <td>${address.alias}</td>
 									                        <td>${address.roadNameAddress}<br>${address.detailAddress}</td>
 									                        <td>${address.recipientName}</td>
-									                        <td>${address.phoneNumber}</td>
-						 			                        <td><a href="javascript:void(0)" class="uren-btn uren-btn_dark uren-btn_sm"><span>수정</span></a></td>
+									                        <td id="phone-${address.addressId}">${address.phoneNumber}</td>
+						 			                        <td><a href="javascript:void(0)" data-address-id="${address.addressId}" class="uren-btn uren-btn_dark uren-btn_sm openModal2"><span>수정</span></a></td>
 									                        <td><a href="#" onclick="if(confirm('정말 삭제하시겠습니까?')) { window.location.href='/ShoppingMallProject/address/delete?addressId=${address.addressId}'; } return false;" class="uren-btn uren-btn_dark uren-btn_sm"><span>삭제</span></a></td>
 									                    </tr>
 									                </c:forEach>
+									                <!-- 모달 구조 -->
+															<div class="modal fade" id="addressModal2" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+															    <div class="modal-dialog" role="document">
+															        <div class="modal-content">
+															            <div class="modal-header">
+															                <h5 class="modal-title" id="modalLabel">배송지 수정</h5>
+															                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															                    <span aria-hidden="true">&times;</span>
+															                </button>
+															            </div>
+															            <div class="modal-body">
+															                <!-- 여기서 서블릿을 포함한 내용을 불러옵니다 -->
+															                <iframe id="modalIframe2" src="" style="width: 100%; height: 500px; border: none;"></iframe>
+															            </div>
+															            <div class="modal-footer">
+															                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#addressModal2').modal('hide');">닫기</button>
+															            </div> 
+															        </div>
+															    </div>
+															</div>
+									                <script>
+													    // 전화번호를 ###-####-#### 형식으로 변환하는 함수
+													    function formatPhoneNumber(phoneNumber) {
+													        const phoneNumberStr = phoneNumber.toString();
+													        if (phoneNumberStr.length === 11) {
+													            return phoneNumberStr.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+													        }
+													        return phoneNumberStr; // 유효하지 않으면 그대로 반환
+													    }
+													
+													    // 페이지 로드 후 전화번호 포맷 적용
+													    window.onload = function() {
+													        const phoneElements = document.querySelectorAll('[id^="phone-"]');
+													        phoneElements.forEach(function(element) {
+													            const phoneNumber = element.textContent.trim(); // 전화번호 텍스트 가져오기
+													            const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+													            element.textContent = formattedPhoneNumber; // 포맷팅된 전화번호로 텍스트 변경
+													        });
+													    };
+													</script>
                                                 </tbody>
                                             </table>
                                         </div>
