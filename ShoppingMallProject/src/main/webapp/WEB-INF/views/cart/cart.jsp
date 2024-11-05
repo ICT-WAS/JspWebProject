@@ -59,7 +59,7 @@ str = df.format(total);
     <tbody>
         <c:forEach var="product" items="${cartProducts}">
             <tr class="${product.cartProductId} product-row">
-                <td class="uren-product-check"><input type="checkbox" checked="checked" value="${product.cartProductId}"></td>
+                <td class="uren-product-check"><input name="check" type="checkbox" checked="checked" value="${product.cartProductId}"></td>
                 <td class="uren-product-thumbnail thumbnail"><img src="${product.image}" alt="Uren's Cart Thumbnail"></td>
                 <td class="uren-product-name"><a href="/ShoppingMallProject/product/detail?id=${product.productId}">${product.name}</a></td>
                 <td class="uren-product-option">${product.optionName}</td>
