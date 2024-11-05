@@ -111,6 +111,16 @@
                                             </div>
                                         </a>
                                     </li>
+                                    <c:if test="${sessionScope.id == 'admin'}">
+                                    <li class="minicart-wrap">
+                                        <a href="/ShoppingMallProject/admin/usermanagement" class="">
+                                            <div class="minicart-count_area">
+                                                <span class="fa fa-user">관리자 메뉴</span>
+                                                
+                                            </div>
+                                        </a>
+                                    </li>
+                                    </c:if>
                                 </ul>
                             </div>
                         </div>
@@ -298,14 +308,10 @@
                             <div class="main-menu_area position-relative">
                                 <nav class="main-nav">
                                     <ul>
-                                        <li class="dropdown-holder active"><a href="index.html">Home</a>
-                                            <ul class="hm-dropdown">
-                                                <li><a href="index.html">Home One</a></li>
-                                                <li><a href="index-2.html">Home Two</a></li>
-                                                <li><a href="index-3.html">Home Three</a></li>
-                                            </ul>
+                                        <li class="dropdown-holder active"><a href="/ShoppingMallProject/main">Home</a>
+
                                         </li>
-                                        <li class="megamenu-holder "><a href="shop-left-sidebar.html">Shop <i
+                                        <li class="megamenu-holder "><a href="/ShoppingMallProject/product/list">Shop <i
                                                 class="ion-ios-arrow-down"></i></a>
                                             <ul class="hm-megamenu">
                                                 <li><span class="megamenu-title">Shop Page Layout</span>
@@ -360,11 +366,11 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li><a href="javascript:void(0)">Specials</a></li>
                                         </ul>
                                 </nav>
                             </div>
                         </div>
+
                         <div class="custom-setting_col col-12 d-none d-lg-block">
                             <div class="ht-right_area">
                                 <div class="ht-menu">
@@ -377,7 +383,8 @@
                                         <c:if test="${sessionScope.id != null}">
 										    <c:out value="${sessionScope.id}" /> &nbsp; 님
 										</c:if>
-                                        </span><i class="fa fa-chevron-down"></i></a>
+                                        </span>
+                                        <i class="fa fa-chevron-down"></i></a>
                                         	<ul class="ht-dropdown ht-my_account">
                                             	<c:if test="${sessionScope.id == null}">
                                             		<li><a href="/ShoppingMallProject/login">로그인</a></li>
@@ -385,6 +392,7 @@
                                             	</c:if>
                                             	<c:if test="${sessionScope.id != null}">
                                             		<li><a href="/ShoppingMallProject/member/info">내 정보</a></li>
+                                            		<li><a href="/ShoppingMallProject/cart">장바구니</a></li>
 													<li><a href="/ShoppingMallProject/logout">로그아웃</a></li>
 												</c:if>
 											</ul>
@@ -486,14 +494,9 @@
                             <div class="main-menu_area position-relative">
                                 <nav class="main-nav">
                                     <ul>
-                                        <li class="dropdown-holder active"><a href="index.html">Home</a>
-                                            <ul class="hm-dropdown">
-                                                <li><a href="index.html">Home One</a></li>
-                                                <li><a href="index-2.html">Home Two</a></li>
-                                                <li><a href="index-3.html">Home Three</a></li>
-                                            </ul>
+                                        <li class="dropdown-holder active"><a href="/ShoppingMallProject/main">Home</a>
                                         </li>
-                                        <li class="megamenu-holder "><a href="shop-left-sidebar.html">Shop
+                                        <li class="megamenu-holder "><a href="/ShoppingMallProject/product/list">Shop
                                                 <i class="ion-ios-arrow-down"></i></a>
                                             <ul class="hm-megamenu">
                                                 <li><span class="megamenu-title">Shop Page Layout</span>
@@ -548,60 +551,6 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li><a href="javascript:void(0)">Specials</a></li>
-                                        <li class=""><a href="javascript:void(0)">Pages <i
-                                                class="ion-ios-arrow-down"></i></a>
-                                            <ul class="hm-dropdown">
-                                                <li><a href="my-account.html">내 정보</a></li>
-                                                <li><a href="login-register.html">로그인 | 회원가입</a></li>
-                                                <li><a href="wishlist.html">Wishlist</a></li>
-                                                <li><a href="cart.html">장바구니</a></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                                <li><a href="compare.html">Compare</a></li>
-                                                <li><a href="faq.html">FAQ</a></li>
-                                                <li><a href="404.html">404 Error</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class=""><a href="about-us.html">About Us</a></li>
-                                        <li class=""><a href="contact.html">Contact</a></li>
-                                        <li class=""><a href="blog-left-sidebar.html">Blog <i
-                                                class="ion-ios-arrow-down"></i></a>
-                                            <ul class="hm-dropdown">
-                                                <li><a href="blog-left-sidebar.html">Grid View</a>
-                                                    <ul class="hm-dropdown hm-sub_dropdown">
-                                                        <li><a href="blog-2-column.html">Column Two</a></li>
-                                                        <li><a href="blog-3-column.html">Column Three</a></li>
-                                                        <li><a href="blog-left-sidebar.html">Left Sidebar</a></li>
-                                                        <li><a href="blog-right-sidebar.html">Right Sidebar</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="blog-list-left-sidebar.html">List View</a>
-                                                    <ul class="hm-dropdown hm-sub_dropdown">
-                                                        <li><a href="blog-list-fullwidth.html">List Fullwidth</a></li>
-                                                        <li><a href="blog-list-left-sidebar.html">List Left Sidebar</a>
-                                                        </li>
-                                                        <li><a href="blog-list-right-sidebar.html">List Right
-                                                                Sidebar</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="blog-details-left-sidebar.html">Blog Details</a>
-                                                    <ul class="hm-dropdown hm-sub_dropdown">
-                                                        <li><a href="blog-details-left-sidebar.html">Left Sidebar</a>
-                                                        </li>
-                                                        <li><a href="blog-details-right-sidebar.html">Right Sidebar</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="blog-gallery-format.html">Blog Format</a>
-                                                    <ul class="hm-dropdown hm-sub_dropdown">
-                                                        <li><a href="blog-gallery-format.html">Gallery Format</a></li>
-                                                        <li><a href="blog-audio-format.html">Audio Format</a></li>
-                                                        <li><a href="blog-video-format.html">Video Format</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
                                     </ul>
                                 </nav>
                             </div>
@@ -631,7 +580,7 @@
                                         </a>
                                     </li>
                                     <li class="contact-us_wrap">
-                                        <a href="tel://+123123321345"><i class="ion-android-call"></i>+123 321 345</a>
+                                        <a href="#"><i class="ion-android-call"></i>+82 10-5570-0010</a>
                                     </li>
                                 </ul>
                             </div>
