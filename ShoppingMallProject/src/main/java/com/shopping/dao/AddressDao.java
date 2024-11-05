@@ -3,6 +3,7 @@ package com.shopping.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class AddressDao extends SuperDao{
 		PreparedStatement pstmt = null ;
 		ResultSet rs = null ;		
 		String sql = " select * from MEMBER_ADDRESS " ;
-		sql += " where MEMBER_ID = ?  " ;
+		sql += " where MEMBER_ID = ? ORDER BY is_default DESC  " ;
 		
 		try {
 			conn = super.getConnection() ;
@@ -231,5 +232,53 @@ public class AddressDao extends SuperDao{
 		}
 		
 		return cnt;
+	}
+
+	public boolean setDefault(Long memberId, Long addressId) {
+		Connection conn = null;
+		String sql1 ="update member_address set is_default = 0 where member_id = ?";
+		String sql2 ="update member_address set is_default = 1 where address_id = ?";
+		Boolean bool = false;
+        try {
+        	conn = super.getConnection();
+            conn.setAutoCommit(false);
+
+            // 첫 번째 UPDATE: member_id에 해당하는 모든 address의 is_default를 0으로 설정
+            try (PreparedStatement ps1 = conn.prepareStatement(sql1)) {
+                ps1.setLong(1, memberId);
+                ps1.executeUpdate();
+            }
+
+            // 두 번째 UPDATE: 특정 address_id에 해당하는 is_default를 1로 설정
+            try (PreparedStatement ps2 = conn.prepareStatement(sql2)) {
+                ps2.setLong(1, addressId);
+                ps2.executeUpdate();
+            }
+
+            // 모든 작업이 성공적으로 끝났으면 commit
+            conn.commit();
+            bool = true;
+        } catch (SQLException e) {
+            // 예외가 발생하면 롤백
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                // AutoCommit을 true로 되돌리기 (트랜잭션 사용 후에는 반드시 리셋해야 합니다)
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+		
+		return bool;
 	}
 }

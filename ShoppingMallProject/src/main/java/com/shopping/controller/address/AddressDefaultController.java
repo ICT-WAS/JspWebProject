@@ -7,14 +7,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.shopping.controller.member.MemberInfoController;
 import com.shopping.dao.AddressDao;
+import com.shopping.dao.MemberDao;
+import com.shopping.model.Member;
 
-@WebServlet("/address/delete")
-public class AddressDeleteController extends HttpServlet {
+@WebServlet("/address/default")
+public class AddressDefaultController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public AddressDeleteController() {
+    public AddressDefaultController() {
         super();
     }
 
@@ -23,15 +24,18 @@ public class AddressDeleteController extends HttpServlet {
 			response.sendRedirect("/ShoppingMallProject/login");
 			return;
 		}
-		
-		Long addressId = Long.parseLong(request.getParameter("addressId"));
+		Long addressId = Long.parseLong(request.getParameter("id"));
+		String _memberId = (String)request.getSession().getAttribute("id");
+		MemberDao mDao = new MemberDao();
+		Member member = mDao.getMemberById(_memberId);
+		Long memberId = member.getMember_id();
 		AddressDao dao = new AddressDao();
-		int cnt = dao.delete(addressId);
+		boolean bool = dao.setDefault(memberId, addressId);
 		
-		if(cnt == 1) {
+		if(bool) {
 			response.sendRedirect("/ShoppingMallProject/member/info");
 		}else {
-			// 삭제 실패 시 (실패할 일이 없어서 그냥 똑같이 처리함)
+			// 실패
 			response.sendRedirect("/ShoppingMallProject/member/info");
 		}
 	}
