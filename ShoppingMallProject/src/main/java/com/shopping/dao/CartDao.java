@@ -331,4 +331,41 @@ public class CartDao extends SuperDao{
 			}
 		}
 	}
+
+	public boolean check(Long cartId, Long productId, Long optionId) {
+		boolean bool = false;
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from cart_product where cart_id = ? and product_id = ? ";
+		if(optionId != null) {
+			sql += " and option_id = ? " ;
+		}
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setLong(1, cartId);
+			pstmt.setLong(2, productId);
+			if(optionId != null) {
+				pstmt.setLong(3, optionId);
+			}
+			
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				bool = true;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return bool;
+	}
 }
