@@ -375,7 +375,14 @@
                             <div class="ht-right_area">
                                 <div class="ht-menu">
                                     <ul>
-                                        <li><a href="/ShoppingMallProject/member/info"><span class="fa fa-user"></span> 
+                                        <li>
+                                        <c:if test="${sessionScope.id == null}">
+                                        <a href="/ShoppingMallProject/login">
+                                        </c:if>
+                                        <c:if test="${sessionScope.id != null}">
+                                        <a href="/ShoppingMallProject/member/info">
+                                        </c:if>
+                                        <span class="fa fa-user"></span> 
                                         <span>
                                         <c:if test="${sessionScope.id == null}">
                                         	로그인
