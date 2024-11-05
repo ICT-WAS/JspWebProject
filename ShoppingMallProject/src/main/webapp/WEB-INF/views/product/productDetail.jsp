@@ -22,7 +22,10 @@
 
 <body class="template-color-1">
 	<ui:header />
-	
+	<% String msg = request.getParameter("msg"); %>
+	<% if (msg != null) { %>
+	    <div class="alert alert-info"><%= msg %></div>
+	<% } %>
 	<!-- 메인 컨텐츠 시작 -->
     <div class="main-wrapper">
     
@@ -174,7 +177,7 @@
                                 <div class="qty-btn_area">
 									<ul>
 										<li><a class="qty-order_btn" href="cart.html">바로 구매</a></li>
-										<li><a class="qty-cart_btn" href="cart.html">카트 담기</a></li>
+										<li><a class="qty-cart_btn" href="javascript:void(0)" onclick="addToCart(${product.productId})">카트 담기</a></li>
 										<li><a class="qty-wishlist_btn" href="wishlist.html"
 											data-toggle="tooltip" title="Add To Wishlist">
 												<i class="ion-android-favorite-outline"></i>
@@ -484,7 +487,27 @@ $(document).ready(function(){
 	
 });
 	
+	
+function addToCart(productId) {
+	var data = $('div.myniceselect > ul > li.option.selected').data('value');
+	
+	var quantity = $('#input-quantity').val();
+	console.log(data);
+	var optionId = null;
+	if(data){
+		optionId = data.split('-')[1];
+	}
+	// GET 방식으로 쿼리 스트링을 만들어서 이동
+    var url = '/ShoppingMallProject/addtocart?productId=' + productId + 
+    		  '&quantity=' + quantity +
+              '&optionId=' + optionId;
+    
+    // 페이지 이동
+    window.location.href = url;  // 지정한 URL로 GET 요청을 보내면서 페이지 이동
+    
+}
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- 스크립트 끝 -->	
 
 </body>
