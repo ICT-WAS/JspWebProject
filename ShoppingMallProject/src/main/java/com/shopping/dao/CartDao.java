@@ -368,4 +368,30 @@ public class CartDao extends SuperDao{
 		}
 		return bool;
 	}
+
+	public int delete(Long cartProductId) {
+		int cnt = 0;
+		
+		PreparedStatement pstmt = null ;	
+		String sql = " delete cart_product where cart_product_id = ? " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setLong(1, cartProductId);
+			
+			cnt = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return cnt;
+	}
 }

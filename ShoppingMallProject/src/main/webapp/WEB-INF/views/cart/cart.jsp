@@ -51,12 +51,13 @@ str = df.format(total);
                                 <table class="table">
     <thead>
         <tr>
-            <th class="uren-product-remove">선택</th>
+            <th class="uren-product-remove"></th>
             <th class="uren-product-thumbnail">사진</th>
             <th class="cart-product-name">상품명</th>
             <th class="cart-product-option">옵션</th>
             <th class="uren-product-quantity">수량</th>
             <th class="uren-product-subtotal">가격</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -84,6 +85,7 @@ str = df.format(total);
                     </div>
                 </td>
                 <td class="uren-product-price"><span class="amount">${product.formattedTotalPrice} 원</span></td>
+                <td><a href="#" onclick="if(confirm('정말 삭제하시겠습니까?')) { window.location.href='/ShoppingMallProject/cart/delete?cartProductId=${product.cartProductId}'; } return false;" class="uren-btn uren-btn_dark uren-btn_sm"><span>삭제</span></a></td>
             </tr>
         </c:forEach>
     </tbody>
