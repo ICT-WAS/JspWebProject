@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.shopping.dao.CartDao;
 import com.shopping.dao.MemberDao;
@@ -119,7 +120,9 @@ public class SignupController extends HttpServlet {
 			Member member = dao.getMemberById(id);
 			Long member_id = member.getMember_id();
 			new CartDao().createCart(member_id);
-			request.getSession().setAttribute("id", id);
+			HttpSession session = request.getSession(true);
+			session.setMaxInactiveInterval(30 * 60);
+			session.setAttribute("id", id);
 			response.sendRedirect("main");
 		}else {
 			// 실패 시 처리 방안
