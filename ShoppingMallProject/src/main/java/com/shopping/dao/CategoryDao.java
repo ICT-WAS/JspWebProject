@@ -112,4 +112,126 @@ public class CategoryDao extends SuperDao{
 				e.printStackTrace();
 			}
 		}
+
+		public List<Category> getRootCategoryList() {
+			List<Category> categoryList = new ArrayList<Category>();
+			
+			String sql = " SELECT * FROM PRODUCT_CATEGORY WHERE PARENTS_CATEGORY_ID IS NULL";
+			
+			PreparedStatement pstmt = null ;
+			ResultSet rs = null;
+			
+			try{
+				conn = super.getConnection();
+				pstmt = conn.prepareStatement(sql);
+
+				rs = pstmt.executeQuery();
+				
+				while (rs.next()) {
+					categoryList.add(getBeanData(rs));
+				}
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				
+			}finally {
+				try {
+					if(rs!=null) {rs.close();}
+					if(pstmt!=null) {pstmt.close();}
+					if(conn!=null) {conn.close();}
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			
+			return categoryList;
+		}
+
+		public List<Category> getCategoryListByParentId(long parentCategoryId) {
+			List<Category> categoryList = new ArrayList<Category>();
+			
+			String sql = " SELECT * FROM PRODUCT_CATEGORY WHERE PARENTS_CATEGORY_ID = ?";
+			
+			PreparedStatement pstmt = null ;
+			ResultSet rs = null;
+			
+			try{
+				conn = super.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setLong(1, parentCategoryId);
+
+				rs = pstmt.executeQuery();
+				
+				while (rs.next()) {
+					categoryList.add(getBeanData(rs));
+				}
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				
+			}finally {
+				try {
+					if(rs!=null) {rs.close();}
+					if(pstmt!=null) {pstmt.close();}
+					if(conn!=null) {conn.close();}
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			
+			return categoryList;
+		}
+<<<<<<< HEAD
+
+		public int addCategory(Long parentCategoryId, String categoryName, int categoryLevel) {
+			
+			int result = 0;
+			
+			String sql = " INSERT INTO PRODUCT_CATEGORY(CATEGORY_NAME, CATEGORY_LEVEL";
+			
+			if(parentCategoryId != null) {
+				sql += ", PARENTS_CATEGORY_ID";
+			} 
+			
+			sql += ")";
+			sql += " VALUES(?, ?";
+			
+			if(parentCategoryId != null) {
+				sql += ", ?";
+			} 
+			
+			sql += ")";
+			
+			PreparedStatement pstmt = null ;
+			
+			try{
+				conn = super.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, categoryName);
+				pstmt.setInt(2, categoryLevel);
+				
+				if(parentCategoryId != null) {
+					pstmt.setLong(3, parentCategoryId);
+				} 
+
+				result = pstmt.executeUpdate();
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				
+			}finally {
+				try {
+					if(pstmt!=null) {pstmt.close();}
+					if(conn!=null) {conn.close();}
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			
+			return result;
+		}
+=======
+>>>>>>> 51dd1424b061b9f4f6697effe481c757ea3e76ce
 }
