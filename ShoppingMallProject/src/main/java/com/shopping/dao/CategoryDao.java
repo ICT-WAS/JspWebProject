@@ -182,4 +182,53 @@ public class CategoryDao extends SuperDao{
 			
 			return categoryList;
 		}
+
+		public int addCategory(Long parentCategoryId, String categoryName, int categoryLevel) {
+			
+			int result = 0;
+			
+			String sql = " INSERT INTO PRODUCT_CATEGORY(CATEGORY_NAME, CATEGORY_LEVEL";
+			
+			if(parentCategoryId != null) {
+				sql += ", PARENTS_CATEGORY_ID";
+			} 
+			
+			sql += ")";
+			sql += " VALUES(?, ?";
+			
+			if(parentCategoryId != null) {
+				sql += ", ?";
+			} 
+			
+			sql += ")";
+			
+			PreparedStatement pstmt = null ;
+			
+			try{
+				conn = super.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, categoryName);
+				pstmt.setInt(2, categoryLevel);
+				
+				if(parentCategoryId != null) {
+					pstmt.setLong(3, parentCategoryId);
+				} 
+
+				result = pstmt.executeUpdate();
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				
+			}finally {
+				try {
+					if(pstmt!=null) {pstmt.close();}
+					if(conn!=null) {conn.close();}
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			
+			return result;
+		}
 }

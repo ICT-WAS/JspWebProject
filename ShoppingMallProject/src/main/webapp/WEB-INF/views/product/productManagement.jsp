@@ -14,6 +14,68 @@
     <meta charset="UTF-8">
 	
 	<!-- 스크립트 -->
+	<script type="text/javascript">
+	
+	$('#btn-add-category').click(onAddCategoryButtonClicked);
+	
+	// 카테고리 추가
+	function onAddCategoryButtonClicked() {
+		
+		var categoryName = document.getElementById('addCategoryName').value;
+		
+		// 이름이 비어있으면 안됨
+		if(categoryName == null || categoryName === "") {
+			console.log('이름이 비어있음');
+			return;
+		}
+		
+		// 이미 존재하는 카테고리인지 검사(TODO:)
+		
+		
+		
+		var parentCategoryId = parseInt(document.getElementById('addCategory').value);
+		var parentCategoryLevel = 1;
+		
+		var categoryLevel = parentCategoryId == "none" ? 1 : parentCategoryLevel + 1 ;
+		categoryName = parentCategoryId == "none" ? null : categoryName;
+		
+		console.log(categoryName);
+		
+		const data = {
+				parentCategoryId: parentCategoryId,
+                categoryName: categoryName,
+                categoryLevel: categoryLevel
+            };
+
+            // Fetch API로 POST 요청 보내기
+            fetch('/ShoppingMallProject/add-category', {
+                method: 'POST', // HTTP 메소드: POST
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data) 
+            })
+            .then(response => {
+            	  if (!response.ok) {  // 응답이 성공적이지 않은 경우
+            	    throw new Error('Network response was not ok');
+            	  }
+            	  return response.json();  // JSON 형태로 응답을 파싱
+            	})
+            	.then(data => {
+            	  console.log('Success:', data);  // 서버에서 반환한 데이터 처리
+            	  
+            	  // 
+            	  $('#addCategoryModal').modal('hide');
+            	  alert("성공적으로 저장되었습니다.");
+            	  
+            	})
+            	.catch(error => {
+            	  console.error('Error:', error);  // 오류 처리
+            	});
+	}
+	</script>
+	
+	
 	<style>
 		table {
 	            border-collapse: collapse; /* 테두리 겹침 방지 */
@@ -118,6 +180,7 @@
 									<div class="col-md-2"></div>
 									<div class="col-md-3">
 										<a href="/ShoppingMallProject/product/add" class="btn btn-warning btn-lg">상품 등록</a>
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCategoryModal">카테고리 추가</button>
 									</div>
 
 
@@ -219,6 +282,51 @@
            </div>
        </div>
        <!-- 메인 컨텐츠 끝 -->
+       
+       <!-- 카테고리 추가 모달 -->
+		<div class="modal fade" id="addCategoryModal" tabindex="-1"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="myModalLabel">카테고리 추가</h5>
+						<button type="button" class="close addCategoryModal-close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-6 mt-3">
+								<div class="product-size_box">
+									<select name="addCategory" id="addCategory"
+										class="myniceselect nice-select">
+										<option value="none">상위 카테고리 없음</option>
+
+										<c:forEach var="category" items="${rootCategoryList}">
+											<option value="${category.categoryId}">${category.name} ></option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6 mt-3">
+								<input type="text" class="form-control" id="addCategoryName" required maxlength="20">
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-2 mt-3"></div>
+							<div class="col-md-8 mt-3">
+								<button type="button" class="btn btn-warning" id="btn-add-category" >카테고리 추가</button>
+							</div>
+							<div class="col-md-2 mt-3"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 카테고리 추가 모달 끝 -->
+		
     </div>
 	<ui:footer />
 	<ui:js />

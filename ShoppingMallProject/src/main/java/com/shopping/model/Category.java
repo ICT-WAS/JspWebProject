@@ -4,7 +4,7 @@ public class Category {
 	private long categoryId;
 	private Long parentCategoryId;
 	private String name;
-	private int Level;
+	private int level;
 	
 	public Category() {
 		super();
@@ -14,7 +14,7 @@ public class Category {
 		super();
 		this.parentCategoryId = parentCategoryId;
 		this.name = name;
-		this.Level = level;
+		this.level = level;
 	}
 
 
@@ -49,18 +49,18 @@ public class Category {
 
 
 	public int getLevel() {
-		return Level;
+		return level;
 	}
 
 
 	public void setLevel(int level) {
-		Level = level;
+		this.level = level;
 	}
 
 	@Override
 	public String toString() {
 		return "Category [categoryId=" + categoryId + ", parentCategoryId=" + parentCategoryId + ", name=" + name
-				+ ", Level=" + Level + "]";
+				+ ", level=" + level + "]";
 	}
 	
 	
