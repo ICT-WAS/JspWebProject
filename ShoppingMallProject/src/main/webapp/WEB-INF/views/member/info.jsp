@@ -13,7 +13,22 @@
 <head>
     <ui:css />
     <meta charset="UTF-8">
-	
+	<style>
+	.account-btn{
+	    background: #ffc400;
+	    color: #ffffff;
+	    display: block;
+	    float: left;
+	    height: 50px;
+	    line-height: 50px;
+	    width: 145px;
+	    text-align: center;
+	    border-radius: 3px;
+	    -webkit-transition: all 0.3s ease-in-out;
+	    -o-transition: all 0.3s ease-in-out;
+	    transition: all 0.3s ease-in-out;
+	}
+	</style>
 	<!-- 스크립트 -->
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -83,6 +98,12 @@ addressList = (List<Address>)request.getAttribute("addressList");
                             <div class="tab-content myaccount-tab-content" id="account-page-tab-content">
                                 <div class="tab-pane fade show active" id="account-info" role="tabpanel" aria-labelledby="account-dashboard-tab">
                                     <div class="myaccount-dashboard">
+                                    	<div class="account-btn">
+			                                <a class="account-btn" href="#">수정하기</a>
+			                            </div>
+			                            <div class="account-btn">
+			                                <a class="account-btn" href="#">탈퇴하기</a>
+			                            </div>
                                         <p>Hello <b>${member.name }</b> </p>
                                         <p>안녕방구방구~</p>
                                         <p>네놈의 정보를 읊어주마~</p>
@@ -99,6 +120,7 @@ addressList = (List<Address>)request.getAttribute("addressList");
                                         <p>니 상태 : ${member.status }</p>
                                         <p>니 생일 : ${member.birthday }</p>
                                         <p>니 포인트 : ${member.point }</p>
+                                        
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="account-orders" role="tabpanel" aria-labelledby="account-orders-tab">

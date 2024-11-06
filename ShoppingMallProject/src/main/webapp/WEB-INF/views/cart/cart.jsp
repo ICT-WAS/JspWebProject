@@ -42,7 +42,8 @@ str = df.format(total);
     	<div class="uren-cart-area">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12">
+                <div class="col-3"></div>
+                    <div class="col-6">
                         <form action="javascript:void(0)">
                             <div class="table-content table-responsive">
                                    <% if (cartProducts.size() == 0){ %>
@@ -51,19 +52,17 @@ str = df.format(total);
                                 <table class="table">
     <thead>
         <tr>
-            <th class="uren-product-remove"></th>
             <th class="uren-product-thumbnail">사진</th>
             <th class="cart-product-name">상품명</th>
             <th class="cart-product-option">옵션</th>
             <th class="uren-product-quantity">수량</th>
             <th class="uren-product-subtotal">가격</th>
-            <th></th>
+            <th class="uren-product-remove"></th>
         </tr>
     </thead>
     <tbody>
         <c:forEach var="product" items="${cartProducts}">
             <tr class="${product.cartProductId} product-row">
-                <td class="uren-product-check"><input name="check" type="checkbox" checked="checked" value="${product.cartProductId}"></td>
                 <td class="uren-product-thumbnail thumbnail"><img src="${product.image}" alt="Uren's Cart Thumbnail"></td>
                 <td class="uren-product-name"><a href="/ShoppingMallProject/product/detail?id=${product.productId}">${product.name}</a></td>
                 <td class="uren-product-option">
@@ -180,6 +179,7 @@ $(document).ready(function() {
                             </div>
                         </form>
                     </div>
+                    <div class="col-3"></div>
                 </div>
             </div>
         </div>
