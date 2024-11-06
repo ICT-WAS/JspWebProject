@@ -143,13 +143,10 @@
 									data-target="gridview-4" data-toggle="tooltip"
 									data-placement="top" title="4">4</a> <a class="grid-5"
 									data-target="gridview-5" data-toggle="tooltip"
-									data-placement="top" title="5">5</a> <a class="list"
-									data-target="listview" data-toggle="tooltip"
-									data-placement="top" title="List"><i class="fa fa-th-list"></i></a>
+									data-placement="top" title="5">5</a>
 							</div>
 							<div class="product-item-selection_area">
-								<form id="optionsForm" action="${pageContext.request.contextPath}/product/list?page=${pageNumber}&sort=${selectedSort}&pageSize=${pageSize}">
-								    <input type="hidden" name="sort" id="sort" value="${selectedSort}">
+								<form id="optionsForm" action="${pageContext.request.contextPath}/product/list?page=${pageNumber}&pageSize=${pageSize}">
 								    <input type="hidden" name="pageSize" id="pageSize" value="${pageSize}">
 								    <!-- 기타 폼 요소 -->
 								</form>
@@ -180,9 +177,14 @@
 													src="${product.img1}"
 													alt="상품 이미지가 존재하지 않습니다."> 
 													<!-- 토글 이미지, null일 경우 primary-img 와 동일 -->
-													<img class="secondary-img"
-													src="${product.img2}"
-													alt="상품 이미지가 존재하지 않습니다.">
+													<c:choose>
+														<c:when test="${not empty product.img2}">
+															<img class="secondary-img" src="${product.img2}">
+														</c:when>
+														<c:otherwise>
+															<img class="secondary-img" src="${product.img1}">
+														</c:otherwise>
+													</c:choose>
 												</a>
 												<div class="sticker">
 													<span class="sticker">New</span>
@@ -256,7 +258,6 @@ const pageNumber = ${pageNumber};
 const totalPage = ${totalPage};
 const contextPath = "${pageContext.request.contextPath}";
 const pageSize = "<%= request.getParameter("pageSize") != null ? request.getParameter("pageSize") : "15" %>";
-console.log(pageSize);
 
 function createPagenationButton(pageNumber, totalPage){
 	
@@ -268,7 +269,11 @@ function createPagenationButton(pageNumber, totalPage){
     if(pageNumber > 1) {
     	const prevButton = document.createElement("li");
     	const url = contextPath + "/product/list?page=" + (pageNumber - 1) + "&pageSize=" + pageSize;
-    	prevButton.innerHTML = `<a class="Pre" href="${url}">이전</a>`;
+    	const anchor = document.createElement("a");
+        anchor.classList.add("Pre");
+        anchor.setAttribute("href", url);
+        anchor.innerText="이전";
+        prevButton.appendChild(anchor);
     	paginationContainer.appendChild(prevButton);
     }
 	
@@ -296,9 +301,12 @@ function createPagenationButton(pageNumber, totalPage){
     if (pageNumber < totalPage) {
         const nextButton = document.createElement("li");
         const url = contextPath + "/product/list?page=" + (pageNumber + 1) + "&pageSize=" + pageSize;
-        nextButton.innerHTML = `<a class="Next" href="${url}">다음</a>`;
-		console.log(nextButton.innerHTML);
-        paginationContainer.appendChild(nextButton);  
+        const anchor = document.createElement("a");
+        anchor.classList.add("Next");
+        anchor.setAttribute("href", url);
+        anchor.innerText="다음";
+        nextButton.appendChild(anchor);
+        paginationContainer.appendChild(nextButton);
     }
 }
 
@@ -325,7 +333,7 @@ function updatedPrice(){
 const observer = new MutationObserver((mutationsList) => {
     mutationsList.forEach((mutation) => {
         if (mutation.type === "childList") {
-            updatePrice();
+            
         }
     });
 });

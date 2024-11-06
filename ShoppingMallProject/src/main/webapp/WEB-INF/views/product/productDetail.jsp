@@ -130,14 +130,20 @@
 									<c:forEach var="entry" items="${optionTree}">
 										<div class="product-size_box">
 											<span>${entry.key}</span> 
-											<select name="${entry.key}Options" id="${entry.key}Options" class="myniceselect nice-select" onChange="show()">
-												<option value="옵션을 선택해주세요">옵션을 선택해주세요</option>
+											<select name="${entry.key}Options" id="${entry.key}Options" class="myniceselect nice-select" onChange="show(); updateOptionTotalAmount();">
+												<option value="옵션을 선택해주세요" disabled selected>옵션을 선택해주세요</option>
 												<c:forEach var="optionMap" items="${entry.value}">
 													<c:set var="optionDetails" value="${optionMap.value}" />
 													<option class="stock-quantity"
 														value="option-${optionDetails.optionId}"
-														data-stockQuantity="${optionDetails.optionName} (재고: ${optionDetails.optionStockquantity}">
-														${optionDetails.optionName} (재고: <fmt:formatNumber value='${optionDetails.optionStockquantity}' type='number' />)</option>
+														data-stockQuantity="${optionDetails.optionName} (재고: ${optionDetails.optionStockquantity}"
+														data-additionalPrice="${optionDetails.additionalPrice}">
+														${optionDetails.optionName} 
+														<c:if test="${not empty optionDetails.additionalPrice && optionDetails.additionalPrice != 0}">
+															(옵션 추가금: <fmt:formatNumber value='${optionDetails.additionalPrice}' type='number' />)
+														</c:if>
+														(재고: <fmt:formatNumber value='${optionDetails.optionStockquantity}' type='number' />)
+													</option>
 												</c:forEach>
 											</select>
 										</div>
@@ -147,7 +153,7 @@
                                 <div class="quantity" style="display:none;">
 									<label>수량</label>
 									<div class="cart-plus-minus">
-										<input onChange="validateStockQuantity()" id="input-quantity" class="cart-plus-minus-box" value="1" type="text" readonly>
+										<input  id="input-quantity" class="cart-plus-minus-box" value="1" type="text" readonly>
 										<div class="dec qtybutton">
 											<i class="fa fa-angle-down"></i>
 										</div>
@@ -342,7 +348,7 @@
 
 <!-- 스크립트 시작 -->	
 <script>
-//옵션 선택 이벤트
+//옵션이 있는 품목은 옵션 선택 시 수량 콤보박스 보이기
 function show(){
 	const select = document.querySelector('.myniceselect.nice-select');
 	
@@ -364,9 +370,8 @@ function show(){
 	updateTotalAmount();
 
 }
-
-
-//수량 및 가격 포매팅
+	
+//초기 화면 수량 및 가격 포매팅
 function updateTotalAmount() {
 	const quantity = parseInt($('.cart-plus-minus-box').val(), 10);
 	const price = parseFloat(${product.price});
@@ -408,29 +413,58 @@ function updateTotalAmount() {
 			
 }
 
-//재고와 현재 수량 비교하기
-function validateStockQuantity(){
+
+
+
+//옵션 클릭 시 추가금 포함한 금액 나타내기
+function updateOptionTotalAmount(){
 	
+	const select = document.querySelector('.myniceselect.nice-select');
+
+	const selectedOption = select.options[select.selectedIndex];
+	const selectedAdditionalPrice = parseFloat(selectedOption.getAttribute('data-additionalPrice'));
+
 	const quantity = parseInt($('.cart-plus-minus-box').val(), 10);
+	
+	const price = parseFloat(${product.price});
+	
+	var totalPrice = null;
+	
+	if(selectedAdditionalPrice !== 0){
+		totalPrice = (price + selectedAdditionalPrice) * quantity;
+		updateTotal(totalPrice);
+	} else {
+		totalPrice = price * quantity;
+		updateTotal(totalPrice);
+	}
+	
+}
 
-	const stockQuantities = document.querySelectorAll('.stock-quantity');
-	stockQuantities.forEach(option => {
-		const stockQuantityElement = option.getAttribute('data-stockQuantity');
+//총 가격 포매팅 함수
+function updateTotal(amount){
 
-		stockQauntity = parseFloat(stockQuantityElement.split(' (재고: ')[1].trim());
-	});
+	//'금액'을 원화 표시
+	const formatCurrency = (value) => {
+		return new Intl.NumberFormat('ko-KR', {
+            style: 'currency', 
+            currency: 'KRW', 
+            minimumFractionDigits: 0, 
+            maximumFractionDigits: 0
+        }).format(value);
+	};
+	
+	const formattedTotalPrice = formatCurrency(amount);
+	$('#total-amount').text(formattedTotalPrice);
 }
 
 
 //총 상품 금액이 해당 버튼을 클릭할 때마다 동적으로 변경됨
-function updateQuantityTotalAmount() {
+function checkStockQuantity() {
 	const qtyInputs = document.querySelectorAll('.cart-plus-minus');
 	qtyInputs.forEach(qtyInput => {
 		
 		//수량 변경 버튼이 클릭될 시
 		qtyInput.addEventListener('click', function(){
-			//총 금액이 계산되기
-			updateTotalAmount();
 			
 			const select = document.querySelector('.myniceselect.nice-select');
 			
@@ -438,12 +472,13 @@ function updateQuantityTotalAmount() {
 			if(select){
 				const selectedOption = select.options[select.selectedIndex];
 				const selectedQuantity = selectedOption.getAttribute('data-stockQuantity');
+			
+				const stockQauntity = parseFloat(selectedQuantity.split(' (재고: ')[1].trim());
+				
+				const quantity = parseInt($('.cart-plus-minus-box').val(), 10);				
 				
 				//고객이 선택한 옵션의 재고가 null이 아닐 경우
 				if(selectedQuantity !== null){
-					const stockQauntity = parseFloat(selectedQuantity.split(' (재고: ')[1].trim());
-					const quantity = parseInt($('.cart-plus-minus-box').val(), 10);
-					
 					//고객이 선택한 수량(quantity)이 실제 옵션의 재고(stockQauntity) 초과 시 실행되는 로직 
 					//모달 처리 및 수량은 총 재고 수량(stockQauntity)으로 변경
 					if(quantity > stockQauntity){
@@ -467,6 +502,9 @@ function updateQuantityTotalAmount() {
 					$('.cart-plus-minus-box').val(${product.quantity});
 				}
 			}
+			
+			updateOptionTotalAmount();
+		
 		});
 	})
 	
@@ -479,11 +517,14 @@ $(document).ready(function(){
 	//초기 토탈 금액 상태 설정
 	updateTotalAmount();
 
-	//수량 변경 이벤트 발생 시 상품의 총 금액을 업데이트
-	updateQuantityTotalAmount();
+	//수량 변경 이벤트 발생 시 validation 체크
+	checkStockQuantity();
 	
 	//옵션이 없는 상품의 경우 수량 선택 박스 표시
 	show();
+	
+	//초기 금액 포매팅
+	updateTotalAmount();
 	
 });
 	
