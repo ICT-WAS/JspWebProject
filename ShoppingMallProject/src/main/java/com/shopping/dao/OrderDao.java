@@ -518,4 +518,40 @@ public class OrderDao extends SuperDao{
 		return MemberNameByOrderLists;
 	}
 
+	public List<Order> getOrder(Long memberId){
+		List<Order> list = new ArrayList<Order>();
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;	
+		
+	    String sql = " select * from orders where MEMBER_ID = ?" ;
+
+	    
+	    try {
+	        conn = super.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setLong(1, memberId);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            Order order = getBeanData(rs);
+	            if (order != null) {
+	            	list.add(order);
+	            }
+	        }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
 }
