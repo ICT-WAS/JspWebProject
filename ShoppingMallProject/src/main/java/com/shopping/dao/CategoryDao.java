@@ -112,4 +112,74 @@ public class CategoryDao extends SuperDao{
 				e.printStackTrace();
 			}
 		}
+
+		public List<Category> getRootCategoryList() {
+			List<Category> categoryList = new ArrayList<Category>();
+			
+			String sql = " SELECT * FROM PRODUCT_CATEGORY WHERE PARENTS_CATEGORY_ID IS NULL";
+			
+			PreparedStatement pstmt = null ;
+			ResultSet rs = null;
+			
+			try{
+				conn = super.getConnection();
+				pstmt = conn.prepareStatement(sql);
+
+				rs = pstmt.executeQuery();
+				
+				while (rs.next()) {
+					categoryList.add(getBeanData(rs));
+				}
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				
+			}finally {
+				try {
+					if(rs!=null) {rs.close();}
+					if(pstmt!=null) {pstmt.close();}
+					if(conn!=null) {conn.close();}
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			
+			return categoryList;
+		}
+
+		public List<Category> getCategoryListByParentId(long parentCategoryId) {
+			List<Category> categoryList = new ArrayList<Category>();
+			
+			String sql = " SELECT * FROM PRODUCT_CATEGORY WHERE PARENTS_CATEGORY_ID = ?";
+			
+			PreparedStatement pstmt = null ;
+			ResultSet rs = null;
+			
+			try{
+				conn = super.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setLong(1, parentCategoryId);
+
+				rs = pstmt.executeQuery();
+				
+				while (rs.next()) {
+					categoryList.add(getBeanData(rs));
+				}
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				
+			}finally {
+				try {
+					if(rs!=null) {rs.close();}
+					if(pstmt!=null) {pstmt.close();}
+					if(conn!=null) {conn.close();}
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			
+			return categoryList;
+		}
 }
