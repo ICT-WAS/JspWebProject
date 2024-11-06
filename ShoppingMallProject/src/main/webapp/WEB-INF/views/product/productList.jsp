@@ -18,13 +18,20 @@
 <body class="template-color-1">
 	<ui:header />
 
+<!-- 사이드바 + 상품 + 페이지네이션 -->
 	<div class="main-wrapper">
-		<!-- 메인 컨텐츠 -->
+		
 		<div class="shop-content_wrapper">
 			<div class="container-fluid">
 				<div class="row">
+				
+					<!-- 사이드바 시작 -->
 					<div class="col-lg-3 col-md-5 order-2">
+					
+						<!-- 조건 별 조회 시작 -->
 						<div class="uren-sidebar-catagories_area">
+							
+							<!-- 사이드바 - 카테고리 시작 -->
 							<div class="category-module uren-sidebar_categories">
 								<div class="category-module_heading">
 									<h5>카테고리</h5>
@@ -60,16 +67,17 @@
 																	</c:if>	
 																</c:forEach>
 															</c:if>
-															
 														</ul>
 													</c:forEach>
-													
 												</c:if>
 											</c:forEach>
 										</li>
 									</ul>
 								</div>
 							</div>
+							<!-- 사이드바 - 카테고리 끝 -->
+							
+							<!-- 사이드바 - 가격 시작 -->
 							<div class="uren-sidebar_categories">
 								<div class="uren-categories_title">
 									<h5>가격</h5>
@@ -85,6 +93,9 @@
 									</div>
 								</div>
 							</div>
+							<!-- 사이드바 - 가격 끝 -->
+							
+							<!-- 사이드바 - 브랜드 시작 -->
 							<div class="uren-sidebar_categories">
 								<div class="uren-categories_title">
 									<h5>브랜드</h5>
@@ -102,15 +113,24 @@
 									</li>
 								</ul>
 							</div>
+							<!-- 사이드바 - 브랜드 끝 -->
+							
 						</div>
+						<!-- 조건 별 조회 끝 -->
+						
+						<!-- 사이드바 배너 시작 -->
 						<div class="sidebar-banner_area">
 							<div class="banner-item img-hover_effect">
 								<a href="javascript:void(0)"> <img
-									src="assets/images/shop/1.jpg" alt="Uren's Shop Banner Image">
+									src="${pageContext.request.contextPath}/static/template_assets/images/shop/1.jpg" alt="상품 이미지가 존재하지 않습니다.">
 								</a>
 							</div>
 						</div>
+						<!-- 사이드바 배너 끝 -->
 					</div>
+					<!-- 사이드바 끝 -->
+					
+					<!-- 상품 리스트 시작 -->
 					<div class="col-lg-9 col-md-7 order-1">
 						<div class="shop-toolbar">
 							<div class="product-view-mode">
@@ -128,21 +148,17 @@
 									data-placement="top" title="List"><i class="fa fa-th-list"></i></a>
 							</div>
 							<div class="product-item-selection_area">
-								<div class="product-short">
-									<label class="select-label">Short By:</label> <select
-										class="myniceselect nice-select">
-										<option value="1">기본순</option>
-										<option value="2">이름순</option>
-										<option value="3">가격순</option>
-										<option value="4">최신순</option>
-									</select>
-								</div>
+								<form id="optionsForm" action="${pageContext.request.contextPath}/product/list?page=${pageNumber}&sort=${selectedSort}&pageSize=${pageSize}">
+								    <input type="hidden" name="sort" id="sort" value="${selectedSort}">
+								    <input type="hidden" name="pageSize" id="pageSize" value="${pageSize}">
+								    <!-- 기타 폼 요소 -->
+								</form>
 								<div class="product-showing">
-									<label class="select-label">Show:</label> <select
-										class="myniceselect short-select nice-select">
-										<option value="1">15</option>
-										<option value="1">50</option>
-										<option value="1">100</option>
+									<label class="select-label">페이지 크기:</label> 
+									<select class="myniceselect short-select nice-select" id="pageSizeSelect" name="pageSize" onchange="document.getElementById('sort').value = this.value; document.getElementById('optionsForm').submit();">
+										<option value="15" <c:if test="${param.pageSize == '15'}">selected</c:if>>15</option>
+										<option value="50" <c:if test="${param.pageSize == '50'}">selected</c:if>>50</option>
+										<option value="100" <c:if test="${param.pageSize == '100'}">selected</c:if>>100</option>
 									</select>
 								</div>
 							</div>
@@ -150,21 +166,23 @@
 						
 						<!--  상품리스트 보여주는 곳 -->
 						<div class="shop-product-wrap grid gridview-3 img-hover-effect_area row" id="product-list-container">
-							<!--  개별 상품리스트 -->
+							<!--  개별 상품리스트 시작 -->
 							<c:forEach var="product" items="${productList}">
 							<div class="col-lg-4">
 								<div class="product-slide_item">
 									<div class="inner-slide">
-										<div class="single-product">
+										<div class="single-product" id="single-proudct-area">
 											
 											<div class="product-img">
 												<a href="detail?id=${product.productId}"> 
+													<!-- 기본 이미지 -->
 													<img class="primary-img"
-													src="assets/images/product/large-size/1.jpg"
-													alt="기본으로 보여줄 이미지, IMG1"> 
+													src="${product.img1}"
+													alt="상품 이미지가 존재하지 않습니다."> 
+													<!-- 토글 이미지, null일 경우 primary-img 와 동일 -->
 													<img class="secondary-img"
-													src="assets/images/product/large-size/2.jpg"
-													alt="토글 되면 덮어 쓸 이미지, IMG2, null일 시 그대로 IMG1으로 표기">
+													src="${product.img2}"
+													alt="상품 이미지가 존재하지 않습니다.">
 												</a>
 												<div class="sticker">
 													<span class="sticker">New</span>
@@ -190,7 +208,7 @@
 															${product.name}</a>
 													</h6>
 													<div class="price-box">
-														<span class="new-price">'$'${product.price}</span>
+														<span class="new-price" onload="updatePrice(this)">${product.price}</span>
 													</div>
 												</div>
 											</div>
@@ -199,96 +217,142 @@
 								</div>
 							</div>
 							</c:forEach>
-							<!-- 개별 상품 리스트 -->
-							
+							<!-- 개별 상품 리스트 끝-->
 						</div>
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="uren-paginatoin-area">
-							<div class="row">
-								<div class="col-lg-12">
-									<ul class="uren-pagination-box primary-color">
+						<!--  상품리스트 보여주는 곳 끝 -->
+						
+						<!-- 페이지네이션 시작 -->
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="uren-paginatoin-area">
+									<div class="row">
+										<div class="col-lg-12">
 										
-										<c:if test="${pageNumber!=null}">
-											<c:if test="${pageNumber!=1}">
-												<li><a class="Pre" href="${pageContext.request.contextPath}/product/list?page=${pageNumber-1}">이전</a></li>
-											</c:if>
-											
-											<c:if test="${(pageNumber-2)>=1}">
-												<li><a href="${pageContext.request.contextPath}/product/list?page=${pageNumber-2}">${pageNumber-2}</a></li>												
-											</c:if>
-											<c:if test="${(pageNumber-1)>=1}">
-												<li><a href="${pageContext.request.contextPath}/product/list?page=${pageNumber-1}">${pageNumber-1}</a></li>
-											</c:if>
-											
-											<li class="active"><a href="${pageContext.request.contextPath}/product/list?page=${pageNumber}">${pageNumber}</a></li>
-											
-											<c:if test="${(pageNumber+1)<=totalPage}">
-												<li><a href="${pageContext.request.contextPath}/product/list?page=${pageNumber+1}">${pageNumber+1}</a></li>												
-											</c:if>
-											<c:if test="${(pageNumber+2)<=totalPage}">
-													<li><a href="${pageContext.request.contextPath}/product/list?page=${pageNumber+2}">${pageNumber+2}</a></li>
-												</c:if>
-											
-											<c:if test="${pageNumber<totalPage}">
-											<li><a class="Next" href="${pageContext.request.contextPath}/product/list?page=${pageNumber+1}">다음</a></li>
-											</c:if>
-										</c:if>
-									</ul>
+											<!-- 버튼 그리기 시작 -->
+											<ul id="pagination-container" class="uren-pagination-box primary-color">
+												<!-- 자바스크립트  createPagenationButton() 함수로 페이지네이션 -->
+											</ul>
+											<!-- 버튼 그리기 끝 -->
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
+						<!-- 페이지네이션 끝 -->
 					</div>
+					<!-- 상품 리스트 끝 -->
 				</div>
 			</div>
 		</div>
+		<!-- 메인 컨텐츠 끝 -->
 	</div>
-	</div>
-	
-	<!-- 임시코드 -->
-	<script>
-		function setActive(element) {
-		    // 모든 'li.active' 항목에서 'active' 클래스를 제거
-		    document.querySelectorAll('li.active').forEach(li => li.classList.remove('active'));
-		    
-		    // 클릭된 요소의 부모인 'li' 요소에 'active' 클래스 추가
-		    element.parentElement.classList.add('active');
-		    
-		    setPage(pageNumber);
-		}
-		
-		function setPage(currentPage) {
-			const nextPage = currentPage + 1
-			
-			if(nextPage >= 1 && nextPage <= totalPage) {
-				
-				window.location.href = `${pageContext.request.contextPath}/product/list?page=${nextPage}`;
-			}
-		}
-		
-		function loadPage(element){
-			const page = element.getAttribute("data-page");
-			
-			//AJAX 요청
-			fetch(`${window.location.origin}${pageContext.request.contextPath}/list?page=${pageNumber}`)
-				.then(response => {
-					if (!response.ok){
-						throw new Error("네트워크 응답이 원활하지 않습니다.")
-					}
-					retrun response.text();
-				})
-				.then(date => {
-					document.getElementById('product-list-container').innerHTML = data;
-					setActive(element);
-				})
-				.catch(error => {
-					console.error('문제 발생', error)
-				})
-		}
-	</script>
-
-	</div>
+	<!-- 사이드바 + 상품 + 페이지네이션 -->
 	<ui:footer />
 	<ui:js />
+	
+<script>
+
+const pageNumber = ${pageNumber};
+const totalPage = ${totalPage};
+const contextPath = "${pageContext.request.contextPath}";
+const pageSize = "<%= request.getParameter("pageSize") != null ? request.getParameter("pageSize") : "15" %>";
+console.log(pageSize);
+
+function createPagenationButton(pageNumber, totalPage){
+	
+	// 기존 버튼 초기화
+	const paginationContainer = document.getElementById("pagination-container");
+	paginationContainer.innerHTML = ""; 
+	
+    //이전 버튼 추가
+    if(pageNumber > 1) {
+    	const prevButton = document.createElement("li");
+    	const url = contextPath + "/product/list?page=" + (pageNumber - 1) + "&pageSize=" + pageSize;
+    	prevButton.innerHTML = `<a class="Pre" href="${url}">이전</a>`;
+    	paginationContainer.appendChild(prevButton);
+    }
+	
+    //페이지 번호 범위 계산
+    for (let i = Math.max(1, pageNumber - 2); i <= Math.min(totalPage, pageNumber + 2); i++) {
+    	//li 태그를 그림
+        const pageButton = document.createElement("li");
+    	//현재 페이지일 경우 "active"
+        pageButton.className = ( i === pageNumber ) ? "active" : "";
+        
+    	//a태그를 그림
+        const link = document.createElement("a");
+    	//a태그에 연결된 링크 할당
+    	link.href = contextPath + "/product/list?page=" + i + "&pageSize=" + pageSize;
+    	//클라이언트에게 보여줄 값을 세팅(인덱스) 
+        link.textContent=i
+        
+        //a태그를 li태그에 할당
+        pageButton.appendChild(link);
+    	//a태그를 표함한 li태그를 페이지네이션 컨테이너에 할당
+        paginationContainer.appendChild(pageButton);
+    }
+    
+    //다음 버튼 추가
+    if (pageNumber < totalPage) {
+        const nextButton = document.createElement("li");
+        const url = contextPath + "/product/list?page=" + (pageNumber + 1) + "&pageSize=" + pageSize;
+        nextButton.innerHTML = `<a class="Next" href="${url}">다음</a>`;
+		console.log(nextButton.innerHTML);
+        paginationContainer.appendChild(nextButton);  
+    }
+}
+
+
+function updatedPrice(){
+	$(".new-price").each(function(){
+		const productPrice = $(this).text();
+		const price = parseFloat(productPrice);
+		
+		//'금액'을 원화 표시
+		const formatCurrency = (value) => {
+			return new Intl.NumberFormat('ko-KR', {
+	            style: 'currency', 
+	            currency: 'KRW', 
+	            minimumFractionDigits: 0, 
+	            maximumFractionDigits: 0
+	        }).format(value);
+		};
+		const formattedPrice = formatCurrency(price);
+		$(this).text(formattedPrice);
+		})
+	}
+	
+const observer = new MutationObserver((mutationsList) => {
+    mutationsList.forEach((mutation) => {
+        if (mutation.type === "childList") {
+            updatePrice();
+        }
+    });
+});
+
+observer.observe(document.getElementById("single-proudct-area"), { childList: true, subtree: true });
+
+$(document).ready(function(){	
+	
+	// 페이지 사이즈 선택 시 폼 제출
+    $('#pageSizeSelect').change(function() {
+        $('#pageSize').val($(this).val()); // 선택한 값으로 페이지 사이즈 업데이트
+        $('#optionsForm').submit(); // 폼 제출
+    });
+
+    // 페이지 번호 클릭 시 폼 제출 (페이지 번호 버튼을 생성하는 곳에서 호출)
+    function goToPage(pageNumber) {
+        $('#page').val(pageNumber); // 페이지 번호 설정
+        $('#optionsForm').submit(); // 폼 제출
+    }
+    
+  	//초기 로드 시 페이지네이션 버튼 그리기
+    createPagenationButton(pageNumber, totalPage);
+  	
+    updatedPrice();
+  	
+});
+
+</script>
 </body>
 </html>
