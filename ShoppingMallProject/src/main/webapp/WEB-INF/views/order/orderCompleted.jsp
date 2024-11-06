@@ -36,6 +36,22 @@
     <ui:css />
     <meta charset="UTF-8">
 	<style>
+	.gogogo{
+		background: #ffc400;
+    color: #ffffff;
+    display: flex; /* flexbox로 설정 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    font-size: 14px;
+    font-weight: 600;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border: 1px solid transparent;
+    border: 1px solid #ffc400;
+    cursor: pointer;
+	}
 		.button {
 		    background: #ffffff;
 		    display: block;
@@ -194,14 +210,11 @@
 				                    </div>
 		                            
 		                            <div class="col-md-12 mt-3"></div>
-		                            <div class="col-md-1"></div>
-		                            <div class="col-md-5">
-		                            	<input type="submit" value="주문 상세" class="button-fill">
+		                            <div class="col-md-3"></div>
+		                            <div class="col-md-6">
+		                            	<a style="text-align: center;" href="/ShoppingMallProject/member/info" class="gogogo">주문 내역</a>
 		                            </div>
-		                            <div class="col-md-5">
-		                            	<input type="submit" value="주문 내역" class="button">
-		                            </div>
-		                            <div class="col-md-1"></div>
+		                            <div class="col-md-3"></div>
                                 </div>
                              </div>
                          </form>

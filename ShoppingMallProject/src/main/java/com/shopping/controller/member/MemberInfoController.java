@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.shopping.dao.AddressDao;
 import com.shopping.dao.MemberDao;
+import com.shopping.dao.OrderDao;
 import com.shopping.model.Address;
 import com.shopping.model.Member;
+import com.shopping.model.Order;
 
 @WebServlet("/member/info")
 public class MemberInfoController extends HttpServlet {
@@ -42,11 +44,13 @@ public class MemberInfoController extends HttpServlet {
 		request.setAttribute("member", member);
 
 		// 주문내역
+		OrderDao oDao = new OrderDao();
+		List<Order> orderList = oDao.getOrder(member.getMember_id());
+		request.setAttribute("orderList", orderList);
 		
 		// 배송지
 		AddressDao aDao = new AddressDao();
 		List<Address> addressList = aDao.getAddressList(member.getMember_id());
-		
 		request.setAttribute("addressList", addressList);
 		
 		request.getRequestDispatcher("/WEB-INF/views/member/info.jsp").forward(request, response);
