@@ -147,14 +147,9 @@
 							</div>
 							<div class="product-item-selection_area">
 
-								<form id="optionsForm" action="${pageContext.request.contextPath}/product/list?page=${pageNumber}&pageSize=${pageSize}">
-
-								    <input type="hidden" name="pageSize" id="pageSize" value="${pageSize}">
-								    <!-- 기타 폼 요소 -->
-								</form>
 								<div class="product-showing">
 									<label class="select-label">페이지 크기:</label> 
-									<select class="myniceselect short-select nice-select" id="pageSizeSelect" name="pageSize" onchange="document.getElementById('sort').value = this.value; document.getElementById('optionsForm').submit();">
+									<select class="myniceselect short-select nice-select" id="pageSizeSelect" name="pageSize" onchange="changePageSize(this.value)">
 										<option value="15" <c:if test="${param.pageSize == '15'}">selected</c:if>>15</option>
 										<option value="50" <c:if test="${param.pageSize == '50'}">selected</c:if>>50</option>
 										<option value="100" <c:if test="${param.pageSize == '100'}">selected</c:if>>100</option>
@@ -171,7 +166,6 @@
 								<div class="product-slide_item">
 									<div class="inner-slide">
 										<div class="single-product" id="single-proudct-area">
-											
 											<div class="product-img">
 												<a href="detail?id=${product.productId}"> 
 													<!-- 기본 이미지 -->
@@ -179,20 +173,14 @@
 													src="${product.img1}"
 													alt="상품 이미지가 존재하지 않습니다."> 
 													<!-- 토글 이미지, null일 경우 primary-img 와 동일 -->
-<<<<<<< HEAD
 													<c:choose>
-														<c:when test="${not empty product.img2}">
+														<c:when test="${not empty product.img2 and product.img2 != 'NULL'}">
 															<img class="secondary-img" src="${product.img2}">
 														</c:when>
 														<c:otherwise>
 															<img class="secondary-img" src="${product.img1}">
 														</c:otherwise>
 													</c:choose>
-=======
-													<img class="secondary-img"
-													src="${product.img2}"
-													alt="상품 이미지가 존재하지 않습니다.">
->>>>>>> 1d3b8c4bf2727ebc8aedace9990e00db33469212
 												</a>
 												<div class="sticker">
 													<span class="sticker">New</span>
@@ -201,12 +189,17 @@
 													<ul>
 														<li><a class="uren-add_cart" href="cart.html"
 															data-toggle="tooltip" data-placement="top"
-															title="Add To Cart"><i class="ion-bag"></i></a></li>
+															title="Add To Cart">
+																<i class="ion-bag"></i>
+															</a>
+														</li>
 														<li class="quick-view-btn" data-toggle="modal"
-															data-target="#exampleModalCenter"><a
-															href="javascript:void(0)" data-toggle="tooltip"
-															data-placement="top" title="Quick View"><i
-																class="ion-android-open"></i></a></li>
+															data-target="#exampleModalCenter">
+															<a href="javascript:void(0)" data-toggle="tooltip"
+															data-placement="top" title="Quick View">
+																<i class="ion-android-open"></i>
+															</a>
+														</li>
 													</ul>
 												</div>
 											</div>
@@ -215,7 +208,8 @@
 													<h6>
 														<a class="product-name"
 															href="${pageContext.request.contextPath}/product/list?id=${product.productId}">
-															${product.name}</a>
+															${product.name}
+														</a>
 													</h6>
 													<div class="price-box">
 														<span class="new-price" onload="updatePrice(this)">${product.price}</span>
@@ -266,30 +260,72 @@ const pageNumber = ${pageNumber};
 const totalPage = ${totalPage};
 const contextPath = "${pageContext.request.contextPath}";
 const pageSize = "<%= request.getParameter("pageSize") != null ? request.getParameter("pageSize") : "15" %>";
-<<<<<<< HEAD
-=======
-console.log(pageSize);
->>>>>>> 1d3b8c4bf2727ebc8aedace9990e00db33469212
+
+//(수정 중)페이지가 바뀌면 파라미터 변경하기
+function changePage(pageNumber){
+	var currentUrl = window.location.href;
+	var newUrl = updateQueryStringParameter(currentUrl, 'page', pageNumber);
+	window.location.href = newUrl;
+}
+
+//(수정 중)페이지 크기가 바뀌면 파라미터 변경하기
+function changePageSize(pageSize){
+	var currentUrl = window.location.href;
+	var newUrl = updateQueryStringParameter(currentUrl, 'pageSize', pageSize);
+	console.log(newUrl);
+	window.location.href = newUrl;
+}
+
+function updateQueryStringParameter(url, param, value){
+	// URL이 ?를 포함하고 있는지 확인
+	var baseUrl = url.split('?')[0];
+	var queryString = url.includes('?') ? url.split('?')[1] : '';
+	 
+	// 기존 쿼리 파라미터에서 해당 param을 찾아 새로운 값으로 변경
+	var updatedQueryString = [];
+	var params = queryString.split('&');
+	var foundParam = false;
+	
+	params.forEach(function(paramString) {
+        var paramParts = paramString.split('=');
+        if (paramParts[0] === param) {
+            updatedQueryString.push(param + '=' + value); // 원하는 파라미터만 변경
+            foundParam = true;
+        } else {
+            updatedQueryString.push(paramString); // 다른 파라미터는 그대로 추가
+        }
+    });
+	
+	// param이 없으면 새로운 파라미터를 추가
+    if (!foundParam) {
+        updatedQueryString.push(param + '=' + value);
+    }
+
+    // 새로 변경된 쿼리 문자열과 기본 URL을 합쳐서 리턴
+    return baseUrl + '?' + updatedQueryString.join('&');
+     
+}
+
 
 function createPagenationButton(pageNumber, totalPage){
 	
 	// 기존 버튼 초기화
 	const paginationContainer = document.getElementById("pagination-container");
 	paginationContainer.innerHTML = ""; 
+	var currentUrl = window.location.href;
 	
     //이전 버튼 추가
     if(pageNumber > 1) {
     	const prevButton = document.createElement("li");
-    	const url = contextPath + "/product/list?page=" + (pageNumber - 1) + "&pageSize=" + pageSize;
-<<<<<<< HEAD
+    	
+    	var newUrl = updateQueryStringParameter(currentUrl, 'page', pageNumber-1);
+
     	const anchor = document.createElement("a");
         anchor.classList.add("Pre");
-        anchor.setAttribute("href", url);
+        anchor.setAttribute("href", newUrl);
         anchor.innerText="이전";
+        
         prevButton.appendChild(anchor);
-=======
-    	prevButton.innerHTML = `<a class="Pre" href="${url}">이전</a>`;
->>>>>>> 1d3b8c4bf2727ebc8aedace9990e00db33469212
     	paginationContainer.appendChild(prevButton);
     }
 	
@@ -303,7 +339,7 @@ function createPagenationButton(pageNumber, totalPage){
     	//a태그를 그림
         const link = document.createElement("a");
     	//a태그에 연결된 링크 할당
-    	link.href = contextPath + "/product/list?page=" + i + "&pageSize=" + pageSize;
+    	link.href = updateQueryStringParameter(currentUrl, 'page', i);
     	//클라이언트에게 보여줄 값을 세팅(인덱스) 
         link.textContent=i
         
@@ -316,19 +352,16 @@ function createPagenationButton(pageNumber, totalPage){
     //다음 버튼 추가
     if (pageNumber < totalPage) {
         const nextButton = document.createElement("li");
-        const url = contextPath + "/product/list?page=" + (pageNumber + 1) + "&pageSize=" + pageSize;
-<<<<<<< HEAD
+
+        var newUrl = updateQueryStringParameter(currentUrl, 'page', pageNumber+1);
+
         const anchor = document.createElement("a");
         anchor.classList.add("Next");
-        anchor.setAttribute("href", url);
+        anchor.setAttribute("href", newUrl);
         anchor.innerText="다음";
+        
         nextButton.appendChild(anchor);
         paginationContainer.appendChild(nextButton);
-=======
-        nextButton.innerHTML = `<a class="Next" href="${url}">다음</a>`;
-		console.log(nextButton.innerHTML);
-        paginationContainer.appendChild(nextButton);  
->>>>>>> 1d3b8c4bf2727ebc8aedace9990e00db33469212
     }
 }
 
@@ -355,11 +388,6 @@ function updatedPrice(){
 const observer = new MutationObserver((mutationsList) => {
     mutationsList.forEach((mutation) => {
         if (mutation.type === "childList") {
-<<<<<<< HEAD
-            
-=======
-            updatePrice();
->>>>>>> 1d3b8c4bf2727ebc8aedace9990e00db33469212
         }
     });
 });
@@ -367,22 +395,11 @@ const observer = new MutationObserver((mutationsList) => {
 observer.observe(document.getElementById("single-proudct-area"), { childList: true, subtree: true });
 
 $(document).ready(function(){	
-	
-	// 페이지 사이즈 선택 시 폼 제출
-    $('#pageSizeSelect').change(function() {
-        $('#pageSize').val($(this).val()); // 선택한 값으로 페이지 사이즈 업데이트
-        $('#optionsForm').submit(); // 폼 제출
-    });
-
-    // 페이지 번호 클릭 시 폼 제출 (페이지 번호 버튼을 생성하는 곳에서 호출)
-    function goToPage(pageNumber) {
-        $('#page').val(pageNumber); // 페이지 번호 설정
-        $('#optionsForm').submit(); // 폼 제출
-    }
     
   	//초기 로드 시 페이지네이션 버튼 그리기
     createPagenationButton(pageNumber, totalPage);
   	
+  	//초기 로드 시 금액 포매팅
     updatedPrice();
   	
 });
