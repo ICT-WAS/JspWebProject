@@ -377,5 +377,94 @@ public class MemberDao extends SuperDao{
 		}
 		
 		return cnt;
+	}
+
+	public int changePassword(String id, String after) {
+		int cnt = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "UPDATE members ";
+			sql += " SET PASSWORD = ? ";
+			sql += " WHERE SIGNUP_ID = ? ";
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, after);
+			pstmt.setString(2, id);
+			
+			cnt = pstmt.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return cnt;
+	}
+
+	public List<String> getEmailList() {
+		List<String> list = new ArrayList<String>();
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = "SELECT MEMBER_EMAIL FROM members " ;
+		
+	    try {
+	        conn = super.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            String email = rs.getString("MEMBER_EMAIL");
+	            list.add(email);
+	        }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+
+	public int update(Long memberId, String phoneNumber, String nickname, String email) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE members SET MEMBER_NICKNAME = ?, PHONE_NUMBER = ?, MEMBER_EMAIL = ? WHERE MEMBER_ID = ?";
+		try {
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, nickname);
+			pstmt.setString(2, phoneNumber);
+			pstmt.setString(3, email);
+			pstmt.setLong(4, memberId);
+			
+			result = pstmt.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
 	}	
 }
