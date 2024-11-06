@@ -13,22 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.shopping.dao.CategoryDao;
-<<<<<<< HEAD
 import com.shopping.dao.ProductDao;
 import com.shopping.model.Category;
 import com.shopping.model.Product;
-=======
-import com.shopping.model.Category;
->>>>>>> 51dd1424b061b9f4f6697effe481c757ea3e76ce
 
 @WebServlet("/product/add")
 public class ProductInsertController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CategoryDao categoryDao = new CategoryDao();
-<<<<<<< HEAD
 	private ProductDao productDao = new ProductDao();
-=======
->>>>>>> 51dd1424b061b9f4f6697effe481c757ea3e76ce
        
     public ProductInsertController() {
         super();
@@ -52,7 +45,6 @@ public class ProductInsertController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-<<<<<<< HEAD
 		Long categoryId = Long.parseLong(request.getParameter("categoryId"));
 		String productName = request.getParameter("productName");
 		String img = request.getParameter("img");
@@ -86,10 +78,6 @@ public class ProductInsertController extends HttpServlet {
 			// 실패
 			response.sendRedirect("/ShoppingMallProject/main");
 		}
-=======
-		
-		
->>>>>>> 51dd1424b061b9f4f6697effe481c757ea3e76ce
 		
 		response.sendRedirect("/ShoppingMallProject/product/manage");
 	}

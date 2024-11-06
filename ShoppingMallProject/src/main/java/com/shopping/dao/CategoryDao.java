@@ -182,7 +182,6 @@ public class CategoryDao extends SuperDao{
 			
 			return categoryList;
 		}
-<<<<<<< HEAD
 
 		public int addCategory(Long parentCategoryId, String categoryName, int categoryLevel) {
 			
@@ -232,6 +231,4 @@ public class CategoryDao extends SuperDao{
 			
 			return result;
 		}
-=======
->>>>>>> 51dd1424b061b9f4f6697effe481c757ea3e76ce
 }
