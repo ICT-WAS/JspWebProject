@@ -165,17 +165,27 @@ public class CartDao extends SuperDao{
 		try {
 			conn = super.getConnection();
 			conn.setAutoCommit(false);
-			String sql = "insert into cart_product (CART_ID, PRODUCT_ID, OPTION_ID, QUANTITY)";
-					sql += " values ";
-					sql += " (?, ?, ?, ?) ";
+			String sql = "insert into cart_product (CART_ID, PRODUCT_ID, QUANTITY ";
+			if(cartProduct.getOptionId()!=null) {
+				sql += ", OPTION_ID";
+			}
+			sql += ") ";
+			sql += " values ";
+			sql += " (?, ?, ? ";
+			if(cartProduct.getOptionId()!=null) {
+				sql += ", ?";
+			}
+			sql += ")";
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setLong(1, cartProduct.getCartId());
 			pstmt.setLong(2, cartProduct.getProductId());
-			pstmt.setLong(3, cartProduct.getOptionId());
-			pstmt.setDouble(4, cartProduct.getQuantity());
+			pstmt.setDouble(3, cartProduct.getQuantity());
 			
+			if(cartProduct.getOptionId()!=null) {
+				pstmt.setLong(4, cartProduct.getOptionId());
+			}
 			result = pstmt.executeUpdate();
 			conn.commit();
 		}catch (Exception e) {
