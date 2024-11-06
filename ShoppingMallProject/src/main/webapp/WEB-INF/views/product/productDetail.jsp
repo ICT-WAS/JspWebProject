@@ -492,6 +492,8 @@ function checkStockQuantity() {
 					$('.modal-body').text('해당 상품의 재고가 없습니다.');
 		    		$('#myModal').modal('show');
 				}
+				
+				updateOptionTotalAmount();
 			
 			//옵션이 없는 상품일 경우
 			} else {
@@ -501,9 +503,11 @@ function checkStockQuantity() {
 		    		$('#myModal').modal('show');
 					$('.cart-plus-minus-box').val(${product.quantity});
 				}
+				
+				updateTotalAmount();
 			}
 			
-			updateOptionTotalAmount();
+			//
 		
 		});
 	})
