@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.shopping.dao.MemberDao;
 import com.shopping.model.Member;
@@ -37,7 +38,9 @@ public class LoginController extends HttpServlet {
 			request.setAttribute("fail", "아이디 또는 비밀번호가 틀렸습니다.");
 			doGet(request, response);
 		}else {
-			request.getSession().setAttribute("id", id);
+			HttpSession session = request.getSession(true);
+			session.setMaxInactiveInterval(30 * 60);
+			session.setAttribute("id", id);
 			response.sendRedirect("main");
 		}
 	}

@@ -359,6 +359,7 @@
 	            if(!isEm.test(email)){
 	            	showErrorMsg(oMsg, "이메일: 양식을 지켜주세요.");
 	                oDiv.addClass("error");
+	                return false;
 	            }else{
 	            	oMsg.hide();
 	                oDiv.removeClass("error");
