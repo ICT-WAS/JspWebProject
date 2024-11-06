@@ -9,16 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.shopping.dao.AddressDao;
 import com.shopping.dao.MemberDao;
-import com.shopping.model.Address;
 import com.shopping.model.Member;
 
-@WebServlet("/member/info")
-public class MemberInfoController extends HttpServlet {
+@WebServlet("/member/update")
+public class UpdateMemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public MemberInfoController() {
+    public UpdateMemberController() {
         super();
     }
 
@@ -27,31 +25,28 @@ public class MemberInfoController extends HttpServlet {
 			response.sendRedirect("/ShoppingMallProject/login");
 			return;
 		}
-		if("success".equals(request.getParameter("changepw"))) {
-			request.setAttribute("message", "비밀번호 변경이 완료되었습니다.");
-		}else if("success".equals(request.getParameter("change"))) {
-			request.setAttribute("message", "회원정보 변경이 완료되었습니다.");
-		}
-
 		String id = (String)request.getSession().getAttribute("id");
 		MemberDao dao = new MemberDao();
 		Member member = dao.getMemberById(id);
-		// 개인정보
+		List<String> emailList = dao.getEmailList();
+		request.setAttribute("emailList", emailList);
 		request.setAttribute("member", member);
-
-		// 주문내역
-		
-		// 배송지
-		AddressDao aDao = new AddressDao();
-		List<Address> addressList = aDao.getAddressList(member.getMember_id());
-		
-		request.setAttribute("addressList", addressList);
-		
-		request.getRequestDispatcher("/WEB-INF/views/member/info.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/member/update.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		Long memberId = Long.parseLong(request.getParameter("memberId"));
+		String phoneNumber = request.getParameter("phoneNumber");
+		String nickname = request.getParameter("nickname");
+		String email = request.getParameter("email");
+		MemberDao dao = new MemberDao();
+		int cnt = dao.update(memberId, phoneNumber, nickname, email);
+		if(cnt==1) {
+			response.sendRedirect("/ShoppingMallProject/member/info?change=success");
+		}else {
+			request.setAttribute("fail", "회원 정보 수정에 실패했습니다.");
+			doGet(request, response);
+		}
 	}
 
 }

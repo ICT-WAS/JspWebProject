@@ -1,3 +1,5 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDate"%>
 <%@page import="com.shopping.model.Address"%>
 <%@page import="java.util.List"%>
 <%@page import="com.shopping.model.Member"%>
@@ -35,6 +37,11 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
 	    $(document).ready(function() {
+	    	var message = "${message}"; 
+        	if (message) {
+            	alert(message);
+            	window.location.href = "/ShoppingMallProject/member/info";
+        	}
 	        $('.openModal2').click(function(e) {
 	        	var addressId = $(this).data('address-id');
 	        	console.log(addressId);
@@ -98,28 +105,46 @@ addressList = (List<Address>)request.getAttribute("addressList");
                             <div class="tab-content myaccount-tab-content" id="account-page-tab-content">
                                 <div class="tab-pane fade show active" id="account-info" role="tabpanel" aria-labelledby="account-dashboard-tab">
                                     <div class="myaccount-dashboard">
-                                    	<div class="account-btn">
-			                                <a class="account-btn" href="#">수정하기</a>
-			                            </div>
-			                            <div class="account-btn">
-			                                <a class="account-btn" href="#">탈퇴하기</a>
-			                            </div>
-                                        <p>Hello <b>${member.name }</b> </p>
-                                        <p>안녕방구방구~</p>
-                                        <p>네놈의 정보를 읊어주마~</p>
-                                        <p>니 고유 키 : ${member.member_id }</p>
-                                        <p>니 아이디 : ${member.id }</p>
-                                        <p>니 이름 : ${member.name }</p>
-                                        <p>니 닉네임 : ${member.nickname }</p>
-                                        <p>니 비밀번호 ㅋㅋ : ${member.password }</p>
-                                        <p>니 이메일 : ${member.email }</p>
-                                        <p>니 폰번호 : ${member.phoneNumber }</p>
-                                        <p>니 가입일 : ${member.createdAt }</p>
-                                        <p>니 수정날짜 : ${member.updatedAt }</p>
-                                        <p>니 마지막로그인 : ${member.lastLogin }</p>
-                                        <p>니 상태 : ${member.status }</p>
-                                        <p>니 생일 : ${member.birthday }</p>
-                                        <p>니 포인트 : ${member.point }</p>
+                                    	<h4 class="small-title">내 정보</h4>
+                                    	<br><br>
+			                            <form method="post">
+		                      <div class="login-form">
+		                          <div class="row">
+		                              <div class="col-md-6 col-12 mb--20">
+		                                  <label>아이디</label>
+		                                  	<input id="id" name="id" type="text" value="${member.id}" disabled>
+		                              </div>
+		                              <div class="col-md-6 col-12 mb--20">
+		                                  <label>전화번호</label>
+		                                  <input id="phoneNumber" name="phoneNumber" type="text" value="${member.phoneNumber}" maxlength="11" disabled>
+		                              </div>
+		                              <div class="col-md-6">
+		                                  <label>닉네임</label>
+		                                  <input id="nickname" name="nickname" type="text" value="${member.nickname}" maxlength="10" disabled>
+		                              </div>
+		                              <div class="col-md-6">
+		                                  <label>이름</label>
+		                                  <input id="name" name="name" type="text" value="${member.name}" disabled>
+		                              </div>
+		                              <div class="col-md-12">
+		                                  <label>생년월일</label>
+		                                  <%
+		                                  String _birth = member.getBirthday();
+		                                  String birth = _birth.substring(0, 10);
+		                                  %>
+		                                  <input id="birth" name="birth" type="text" value="<%=birth%>" disabled>
+		                              </div>
+		                              <div class="col-md-12">
+		                                  <label>이메일</label>
+		                                  <input id="email" name="email" type="email" value="${member.email}" disabled>
+		                              </div>
+		                          </div>
+		                      </div>
+		                  </form>
+		                  <br><br>
+						<a class="btn btn-secondary" href="/ShoppingMallProject/member/update">수정하기</a>
+                       	<a class="btn btn-secondary" href="/ShoppingMallProject/changePassword">비밀번호 변경</a>
+                       	
                                         
                                     </div>
                                 </div>
