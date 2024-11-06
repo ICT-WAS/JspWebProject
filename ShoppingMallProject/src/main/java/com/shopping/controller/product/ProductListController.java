@@ -1,7 +1,9 @@
 package com.shopping.controller.product;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.shopping.dao.CategoryDao;
 import com.shopping.dao.ProductDao;
-import com.shopping.model.Product;
 import com.shopping.model.Category;
+import com.shopping.model.Product;
 import com.shopping.model.ProductPage;
 
 @WebServlet("/product/list")
@@ -65,8 +67,8 @@ public class ProductListController extends HttpServlet{
 
         //productList 가져오기
         List<Product> productList = new ArrayList<>();
+        ProductDao productDao = new ProductDao();
         try {
-            ProductDao productDao = new ProductDao();
             ProductPage productPage = productDao.getFilteredProductPage(categoryId, name, minPrice, maxPrice, brand, pageNumber, pageSize);
             int totalCount = productPage.getTotalCount();  //전체 상품 갯수
             productList = productPage.getproductList();  //가져온 상품(pageSize)
@@ -92,17 +94,25 @@ public class ProductListController extends HttpServlet{
 
         //categoryList 가져오기
         List<Category> categoryList = new ArrayList<>();
+        Map<Long, Integer> productCounts = new HashMap<>();
+        
 
         try {
             CategoryDao categoryDao = new CategoryDao();
             categoryList = categoryDao.getCategoryList();
+            
+            for (Category category : categoryList) {
+            	int count = productDao.getProductCountByCategoryId(category.getCategoryId());
+            	productCounts.put(category.getCategoryId(), count);
+            }
 
             //카테고리 정보 없을 때 에러 처리 분기
             if (categoryList == null || categoryList.isEmpty()) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "카테고리 리스트가 없습니다.");
                 return;
             }
-
+            
+            request.setAttribute("productCounts", productCounts);
             request.setAttribute("categoryList", categoryList);
 
         } catch (Exception e) {

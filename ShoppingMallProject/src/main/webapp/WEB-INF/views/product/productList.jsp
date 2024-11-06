@@ -45,7 +45,7 @@
 												<c:if test="${category.parentCategoryId==0}">
 													<a
 														href="${pageContext.request.contextPath}/product/list?category=${category.categoryId}">
-														${category.name} <span>(수량)</span>
+														${category.name}
 													</a>
 
 													<!-- 하위 카테고리 리스트 -->
@@ -53,15 +53,21 @@
 														<ul class="module-sub-list_item">
 															<c:if
 																test="${midCategory.parentCategoryId == category.categoryId}">
-																<li><a href="${pageContext.request.contextPath}/product/list?category=${midCategory.categoryId}">
-																		${midCategory.name} <span>(수량)</span>
-																</a></li>
+																<li>
+																	<a href="${pageContext.request.contextPath}/product/list?category=${midCategory.categoryId}">
+																		- ${midCategory.name} 
+																		<c:set var="categoryQuantity" value="${productCounts[midCategory.categoryId]}" />
+																		<span>(${categoryQuantity})</span>
+																	</a>
+																</li>
 																<c:forEach var="subCategory" items="${categoryList}">
 																	<c:if test="${subCategory.parentCategoryId == midCategory.categoryId}">
 																		<ul class="module-sub-list_item">
-																			<li><a href="${pageContext.request.contextPath}/product/list?category=${subCategory.categoryId}">
-																					${subCategory.name} <span>(수량)</span>
-																			</a></li>
+																			<li>
+																				<a href="${pageContext.request.contextPath}/product/list?category=${subCategory.categoryId}">
+																					- ${subCategory.name} <span>(수량)</span>
+																				</a>
+																			</li>
 																															
 																		</ul>
 																	</c:if>	
@@ -76,45 +82,6 @@
 								</div>
 							</div>
 							<!-- 사이드바 - 카테고리 끝 -->
-							
-							<!-- 사이드바 - 가격 시작 -->
-							<div class="uren-sidebar_categories">
-								<div class="uren-categories_title">
-									<h5>가격</h5>
-								</div>
-								<div class="price-filter">
-									<div id="slider-range"></div>
-									<div class="price-slider-amount">
-										<div class="label-input">
-											<label>price : </label> <input type="text" id="amount"
-												name="price" placeholder="Add Your Price" />
-										</div>
-										<!-- <button type="button">Filter</button> -->
-									</div>
-								</div>
-							</div>
-							<!-- 사이드바 - 가격 끝 -->
-							
-							<!-- 사이드바 - 브랜드 시작 -->
-							<div class="uren-sidebar_categories">
-								<div class="uren-categories_title">
-									<h5>브랜드</h5>
-								</div>
-								<ul class="sidebar-checkbox_list">
-									<li><a href="javascript:void(0)">Sanai <span>(10)</span></a>
-									</li>
-									<li><a href="javascript:void(0)">Xail <span>(2)</span></a>
-									</li>
-									<li><a href="javascript:void(0)">Chamcham <span>(1)</span></a>
-									</li>
-									<li><a href="javascript:void(0)">Meito <span>(3)</span></a>
-									</li>
-									<li><a href="javascript:void(0)">Walton <span>(0)</span></a>
-									</li>
-								</ul>
-							</div>
-							<!-- 사이드바 - 브랜드 끝 -->
-							
 						</div>
 						<!-- 조건 별 조회 끝 -->
 						
