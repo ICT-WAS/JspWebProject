@@ -36,47 +36,74 @@ public class ProductDao extends SuperDao{
 				productList.add(getBeanData(rs));
 			}
 			
-			System.out.println(productList);
-			
 		}catch (Exception e) {
 			e.printStackTrace();
 			
 		}finally {
 			closeResources(conn, pstmt, rs);
 		}
-			
-		
+
 		return productList;
 	}
 
 	//(수정중)상품등록
-			public Product addProduct(Product product) {
-				String sql = "INSERT INTO product (product_name, brand, img1, img2, img3, stock_quantity, price, category_id, product_description, points, registration_date)";
-				sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	public Product addProduct(Product product) {
+		String sql = "INSERT INTO product (product_name, brand, img1, img2, img3, stock_quantity, price, category_id, product_description, points, registration_date)";
+		sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-				PreparedStatement pstmt = null;		
-				ResultSet rs = null;
-				
-				try{
-					conn = super.getConnection();
-					pstmt = conn.prepareStatement(sql);
-					
-					pstmt.setString(1, product.getName());					
-				
-					rs = pstmt.executeQuery();
-					
-					if(rs.next()) {
-						product = getBeanData(rs);
-					}
-				
-				}catch(SQLException e) {
-					e.printStackTrace();
-				}finally {
-					closeResources(conn, pstmt, rs);
-				}
-				
-				return product;  //조회된 상품 반환, 찾지 못하면 null
+		PreparedStatement pstmt = null;		
+		ResultSet rs = null;
+		
+		try{
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, product.getName());					
+		
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				product = getBeanData(rs);
 			}
+		
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			closeResources(conn, pstmt, rs);
+		}
+		
+		return product;  //조회된 상품 반환, 찾지 못하면 null
+	}
+	
+	//productDao 카테고리 상품 별 수량 가져오기
+	public int getProductCountByCategoryId(long categoryId) {
+		int count = 0;
+		
+		String sql = " SELECT COUNT(*) FROM PRODUCT WHERE CATEGORY_ID = ?";
+		
+		PreparedStatement pstmt = null;		
+		ResultSet rs = null;
+		
+		try{
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, categoryId);					
+		
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			closeResources(conn, pstmt, rs);
+		}
+		
+		return count;
+	}
 	
 	//productId에 매칭되는 상품 한 개 가져오기 - 옵션 포함
 	public ProductOptionDTO getProductById(long productId) {
