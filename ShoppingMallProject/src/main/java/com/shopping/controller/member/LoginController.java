@@ -37,6 +37,10 @@ public class LoginController extends HttpServlet {
 			// 로그인 실패
 			request.setAttribute("fail", "아이디 또는 비밀번호가 틀렸습니다.");
 			doGet(request, response);
+		}else if(member.getStatus()==0){
+			// 비활성 회원
+			request.setAttribute("fail", "탈퇴한 회원입니다.");
+			doGet(request, response);
 		}else {
 			HttpSession session = request.getSession(true);
 			session.setMaxInactiveInterval(30 * 60);

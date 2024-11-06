@@ -31,6 +31,8 @@ public class MemberInfoController extends HttpServlet {
 			request.setAttribute("message", "비밀번호 변경이 완료되었습니다.");
 		}else if("success".equals(request.getParameter("change"))) {
 			request.setAttribute("message", "회원정보 변경이 완료되었습니다.");
+		}else if("fail".equals(request.getParameter("delete"))){
+			request.setAttribute("message", "회원탈퇴 실패 입니다.");
 		}
 
 		String id = (String)request.getSession().getAttribute("id");

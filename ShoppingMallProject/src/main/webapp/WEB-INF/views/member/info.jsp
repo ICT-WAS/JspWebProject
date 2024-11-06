@@ -144,6 +144,7 @@ addressList = (List<Address>)request.getAttribute("addressList");
 		                  <br><br>
 						<a class="btn btn-secondary" href="/ShoppingMallProject/member/update">수정하기</a>
                        	<a class="btn btn-secondary" href="/ShoppingMallProject/changePassword">비밀번호 변경</a>
+                       	<a class="btn btn-secondary" href="#" onclick="if(confirm('정말 회원 탈퇴하시겠습니까?')) { window.location.href='/ShoppingMallProject/deleteMember?memberId=${member.member_id}'; } return false;">탈퇴하기</a>
                        	
                                         
                                     </div>
