@@ -55,8 +55,7 @@ public class ProductListController extends HttpServlet{
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "잘못된 페이지 번호입니다.");
                 return;
             }
-            
-            System.out.println(pageNumber + " " + pageSize + " " + categoryId);
+
             request.setAttribute("pageNumber", pageNumber);  //현재 페이지
             request.setAttribute("pageSize", pageSize);  //한 페이지당 게시글 수
 

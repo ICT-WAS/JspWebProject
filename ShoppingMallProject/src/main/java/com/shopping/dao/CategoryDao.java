@@ -31,8 +31,6 @@ public class CategoryDao extends SuperDao{
 				 categoryIdList.add(rs.getLong("CATEGORY_ID"));
 			}
 			
-			System.out.println(categoryIdList);
-			
 		}catch (Exception e) {
 			e.printStackTrace();
 			
