@@ -466,5 +466,42 @@ public class MemberDao extends SuperDao{
 		}
 		
 		return result;
+	}
+
+	public int inactive(Long memberId) {
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = super.getConnection();
+			conn.setAutoCommit(false);
+			String sql = "update members set STATUS = 0 ";
+			sql += " WHERE MEMBER_ID = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, memberId);
+			
+			cnt = pstmt.executeUpdate();
+			conn.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return cnt;
 	}	
 }
