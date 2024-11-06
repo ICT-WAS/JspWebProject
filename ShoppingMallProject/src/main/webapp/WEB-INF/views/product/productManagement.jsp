@@ -14,6 +14,7 @@
     <meta charset="UTF-8">
 	
 	<!-- 스크립트 -->
+<<<<<<< HEAD
 	<script type="text/javascript">
 	
 	$('#btn-add-category').click(onAddCategoryButtonClicked);
@@ -76,6 +77,8 @@
 	</script>
 	
 	
+=======
+>>>>>>> 51dd1424b061b9f4f6697effe481c757ea3e76ce
 	<style>
 		table {
 	            border-collapse: collapse; /* 테두리 겹침 방지 */
@@ -180,7 +183,10 @@
 									<div class="col-md-2"></div>
 									<div class="col-md-3">
 										<a href="/ShoppingMallProject/product/add" class="btn btn-warning btn-lg">상품 등록</a>
+<<<<<<< HEAD
 										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCategoryModal">카테고리 추가</button>
+=======
+>>>>>>> 51dd1424b061b9f4f6697effe481c757ea3e76ce
 									</div>
 
 
@@ -282,6 +288,7 @@
            </div>
        </div>
        <!-- 메인 컨텐츠 끝 -->
+<<<<<<< HEAD
        
        <!-- 카테고리 추가 모달 -->
 		<div class="modal fade" id="addCategoryModal" tabindex="-1"
@@ -327,6 +334,8 @@
 		</div>
 		<!-- 카테고리 추가 모달 끝 -->
 		
+=======
+>>>>>>> 51dd1424b061b9f4f6697effe481c757ea3e76ce
     </div>
 	<ui:footer />
 	<ui:js />

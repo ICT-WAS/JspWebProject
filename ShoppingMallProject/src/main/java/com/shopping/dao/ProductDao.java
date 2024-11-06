@@ -81,6 +81,7 @@ public class ProductDao extends SuperDao {
 
 		return product; // 조회된 상품 반환, 찾지 못하면 null
 	}
+<<<<<<< HEAD
 	
 	public boolean insertProduct(Product product) {
 		int cnt = 0;
@@ -121,6 +122,8 @@ public class ProductDao extends SuperDao {
 
 		return cnt == 1;
 	}
+=======
+>>>>>>> 51dd1424b061b9f4f6697effe481c757ea3e76ce
 
 	// productId에 매칭되는 상품 한 개 가져오기 - 옵션 포함
 	public ProductOptionDTO getProductById(long productId) {
