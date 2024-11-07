@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.shopping.dao.CategoryDao;
 import com.shopping.dao.ProductDao;
+import com.shopping.model.Category;
 import com.shopping.model.ProductOptionDTO;
 
 @WebServlet("/product/manage")
@@ -17,6 +19,7 @@ public class ProductManagementController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private ProductDao productDao = new ProductDao();
+	private CategoryDao categoryDao = new CategoryDao();
        
     public ProductManagementController() {
         super();
@@ -24,8 +27,17 @@ public class ProductManagementController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		List<ProductOptionDTO> productDtoList = productDao.getAllProductDto();
+		String id = (String)request.getSession(false).getAttribute("id");
 		
+		if(id == null || !id.equals("admin")) {
+			response.sendRedirect("/ShoppingMallProject/main");
+			return;
+		}
+		
+		List<ProductOptionDTO> productDtoList = productDao.getAllProductDto();
+		List<Category> rootCategoryList = categoryDao.getRootCategoryList();
+		
+		request.setAttribute("rootCategoryList", rootCategoryList);
 		request.setAttribute("productDtoList", productDtoList);
 		
 		request.getRequestDispatcher("/WEB-INF/views/product/productManagement.jsp").forward(request, response);

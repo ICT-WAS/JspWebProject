@@ -29,6 +29,13 @@ public class ProductInsertController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String id = (String)request.getSession(false).getAttribute("id");
+		
+		if(id == null || !id.equals("admin")) {
+			response.sendRedirect("/ShoppingMallProject/main");
+			return;
+		}
+		
         List<Category> rootCategoryList = categoryDao.getRootCategoryList();
         Map<Long, List<Category>> categoryMap = new HashMap<Long, List<Category>>(); // <rootCategoryId, childCategoryList>
         

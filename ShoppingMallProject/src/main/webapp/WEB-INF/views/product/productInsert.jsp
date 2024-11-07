@@ -27,8 +27,7 @@ Map<Long, List<Category>> categoryMap = (Map<Long, List<Category>>) request.getA
 List<Category> categoryList = new ArrayList<Category>();
 %>
 <script>
-	$(document).ready(
-			function() {
+	$(document).ready(function() {
 				hideAllCategory();
 
 				// parentId 없는 하위 선택 드롭박스 표시
@@ -83,6 +82,11 @@ List<Category> categoryList = new ArrayList<Category>();
 		hideAllCategory();
 
 		var parentCategoryId = document.getElementById('rootCategory').value;
+		
+		if(parentCategoryId == "0") {
+			document.getElementById('0').style.display = 'block';
+		}
+		
 		var categoryDiv = document.getElementById('div' + parentCategoryId);
 		var category = document.getElementById(parentCategoryId);
 
@@ -100,6 +104,58 @@ List<Category> categoryList = new ArrayList<Category>();
 		document.getElementById('categoryId').value = categoryId;
 	}
 
+	// 옵션 추가
+	function onAddOptionButtonClicked() {
+		var optionName = document.getElementById('addOptionName').value;
+		
+		// 이름이 비어있으면 안됨
+		if(optionName == null || optionName === "") {
+			console.log('이름이 비어있음');
+			return;
+		}
+		
+		var additionalPrice = document.getElementById('addAdditionalPrice').value;
+		var parsedPrice = isNaN(parseInt(additionalPrice)) ? 0 : parseInt(additionalPrice);
+		
+		var optionStockquantity = document.getElementById('addOptionStockquantity').value;
+		var parsedStockquantity = isNaN(parseInt(optionStockquantity)) ? 0 : parseInt(optionStockquantity);
+		
+		const data = {
+				productId : productId,
+				optionName: optionName,
+				additionalPrice: parsedPrice,
+				optionStockquantity: parsedStockquantity
+            };
+
+            // Fetch API로 POST 요청 보내기
+            fetch('/ShoppingMallProject/add-option', {
+                method: 'POST', // HTTP 메소드: POST
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data) 
+            })
+            .then(response => {
+            	  if (!response.ok) {  // 응답이 성공적이지 않은 경우
+            	    throw new Error('Network response was not ok');
+            	  }
+            	  return response.json();  // JSON 형태로 응답을 파싱
+            	})
+            	.then(data => {
+            	  console.log('Success:', data);  // 서버에서 반환한 데이터 처리
+            	  
+            	  // 
+            	  $('.addCategoryModal-close').trigger('click');
+            	  $('.modal-backdrop').hide();
+            	  alert("성공적으로 저장되었습니다.");
+            	  
+            	})
+            	.catch(error => {
+            	  console.error('Error:', error);  // 오류 처리
+            	});
+	}
+	
+	// 이미지 업로드
 	function onImgChanged() {
 		var fileList = document.getElementById("fileList");
 		fileList.innerHTML = "";
@@ -356,7 +412,7 @@ th, td {
 					</div>
 					<div class="modal-body">
 						<!-- 옵션 -->
-
+						<input type="hidden" id="addOptionId"/>
 						<table class="table">
 							<tr>
 								<th colspan="2">옵션명</th>
@@ -364,10 +420,14 @@ th, td {
 								<th>재고</th>
 							</tr>
 							<tr>
-								<td colspan="2"><input class="form-control" type="text"
-									value="" /></td>
-								<td><input type="text" class="form-control" value="" /></td>
-								<td><input type="text" class="form-control" value="" /></td>
+								<td colspan="2">
+									<input id="addOptionName" class="form-control" type="text" value="" /></td>
+								<td>
+									<input id="addAdditionalPrice" type="text" class="form-control" value="" />
+								</td>
+								<td>
+									<input id="addOptionStockquantity" type="text" class="form-control" value="" />
+								</td>
 							</tr>
 						</table>
 
@@ -381,7 +441,7 @@ th, td {
 				</div>
 			</div>
 		</div>
-
+		<!-- 옵션 추가 모달 끝 -->
 
 	</div>
 	<ui:footer />

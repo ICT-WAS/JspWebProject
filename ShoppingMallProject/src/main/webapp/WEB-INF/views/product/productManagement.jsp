@@ -25,6 +25,12 @@
 		$('#btn-add-category').click(onAddCategoryButtonClicked);
 	});
 	
+	// 옵션 수정 버튼 클릭
+	function onModifyOptionButtonClicked() {
+		
+	}
+	// 옵션 정보 받아오기
+	
 	// 카테고리 추가
 	function onAddCategoryButtonClicked() {
 		
@@ -271,7 +277,7 @@
 													<td><input type="button" value="상품 수정"
 														class="button-modify"></td>
 													<td><input type="button" value="옵션 수정"
-														class="button-modify"></td>
+														class="button-modify" data-toggle="modal" data-target="#myModal"></td>
 													<td><c:set var="localDateTime"
 															value="${productDto.product.registrationDate}" /> <c:set
 															var="localDate" value="${fn:split(localDateTime, 'T')}" />
@@ -333,6 +339,57 @@
 			</div>
 		</div>
 		<!-- 카테고리 추가 모달 끝 -->
+		
+		<!-- 옵션 수정 모달 -->
+		<div class="modal fade" id="myModal" tabindex="-1"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="myModalLabel">옵션 추가</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- 옵션 -->
+
+						<table class="table">
+							<tr>
+								<th colspan="2">옵션명</th>
+								<th>옵션가격</th>
+								<th>재고</th>
+							</tr>
+							<tr>
+								<td colspan="2"><input class="form-control" type="text"
+									value="" /></td>
+								<td><input type="text" class="form-control" value="" /></td>
+								<td><input type="text" class="form-control" value="" /></td>
+							</tr>
+							<c:forEach var="option" items="${ }">
+								<tr>
+									<td colspan="2"><input class="form-control" type="text"
+										value="${option.optionName }" /></td>
+									<td><input type="text" class="form-control" 
+										value="${option.additionalPrice }" /></td>
+									<td><input type="text" class="form-control" 
+										value="${option.optionStockquantity }" /></td>
+								</tr>
+							</c:forEach>
+						</table>
+
+						<div class="col-md-2 mt-3"></div>
+						<div class="col-md-8 mt-3">
+							<button type="button" class="btn btn-warning"
+								onclick="onAddOptionButtonClicked">옵션 수정</button>
+						</div>
+						<div class="col-md-2 mt-3"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 옵션 수정 모달 끝 -->
 		
     </div>
 	<ui:footer />
