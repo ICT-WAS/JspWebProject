@@ -69,18 +69,23 @@ public class CartService {
 	      dto.setImage(product.getImg1());
 	      dto.setName(product.getName());
 	      dto.setProductPrice((int)product.getPrice());
-	      
+	      dto.setQuantity(cartProduct.getQuantity());
 
-	      if(optionId == null) {
+	      if(optionId == null || optionId < 1) {
 	    	  return dto;
 	      }
 	      
+	      System.out.println("optionId : " + optionId);
+	      
 	      ProductOption productOption = productDao.getOption(optionId);
 	      
-	      dto.setOptionId(productOption.getOptionId());
+	      if(productOption == null) {
+	    	  return dto;
+	      }
+	      
+	      dto.setOptionId(optionId);
 	      dto.setOptionName(productOption.getOptionName());
 	      dto.setOptionPrice((int)productOption.getAdditionalPrice());
-	      dto.setQuantity(cartProduct.getQuantity());
 	      
 	      return dto;
 	}

@@ -272,6 +272,12 @@
 <body class="template-color-1">
 	<ui:header />
 	
+	
+	<% String msg = request.getParameter("msg"); %>
+	<% if (msg != null) { %>
+	    <div class="alert alert-info"><%= msg %></div>
+	<% } %>
+	
     <div class="main-wrapper">
     	<!-- 메인 컨텐츠 -->
         <div class="checkout-area">
