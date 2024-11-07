@@ -27,8 +27,7 @@ Map<Long, List<Category>> categoryMap = (Map<Long, List<Category>>) request.getA
 List<Category> categoryList = new ArrayList<Category>();
 %>
 <script>
-	$(document).ready(
-			function() {
+	$(document).ready(function() {
 				hideAllCategory();
 
 				// parentId 없는 하위 선택 드롭박스 표시
@@ -36,39 +35,24 @@ List<Category> categoryList = new ArrayList<Category>();
 
 				document.getElementById("img").addEventListener("change",
 						onImgChanged);
-
-				// 가격 형변환
-
-				// 폼 전송시 확인
-				function checkValidation() {
-
-					// 카테고리 미선택
-					if (document.getElementById('categoryId').value == 'none') {
-						alert("카테고리를 선택하세요");
-						return false;
-					}
-
-					// 가격 숫자 형식이 아님
-
-					// 재고 숫자 형식이 아님
-
-					return true;
-				}
-
-				/* 
-
-				[옵션 수정]
-				옵션이름, 옵션가격, 재고
-
-				[상품 수정]
-				상품명, 이미지, 상세설명, 가격,
-				재고, 브랜드, 카테고리
-
-
-				<<결제시 옵션이 없는 상품 재고 확인 고려>> */
-
-				// 재고, 가격 필드 유효성 검사 또는 형변환 필요
+				
 			});
+	
+	// 폼 전송시 확인
+	function checkValidation() {
+
+		// 카테고리 미선택
+		if (document.getElementById('categoryId').value == 'none') {
+			alert("카테고리를 선택하세요");
+			return false;
+		}
+
+		// 가격 숫자 형식이 아님
+
+		// 재고 숫자 형식이 아님
+
+		return true;
+	}
 
 	function hideAllCategory() {
 		document.getElementById('categoryId').value = 'none';
@@ -83,6 +67,11 @@ List<Category> categoryList = new ArrayList<Category>();
 		hideAllCategory();
 
 		var parentCategoryId = document.getElementById('rootCategory').value;
+		
+		if(parentCategoryId == "0") {
+			document.getElementById('0').style.display = 'block';
+		}
+		
 		var categoryDiv = document.getElementById('div' + parentCategoryId);
 		var category = document.getElementById(parentCategoryId);
 
@@ -100,6 +89,7 @@ List<Category> categoryList = new ArrayList<Category>();
 		document.getElementById('categoryId').value = categoryId;
 	}
 
+	// 이미지 업로드
 	function onImgChanged() {
 		var fileList = document.getElementById("fileList");
 		fileList.innerHTML = "";
@@ -188,7 +178,7 @@ th, td {
 											<div class="row">
 
 												<!-- 카테고리 -->
-												<div class="col-md-2 mt-3">
+												<div class="col-md-4 mt-3">
 													<label for="category">카테고리</label>
 												</div>
 
@@ -293,30 +283,6 @@ th, td {
 												<!-- 재고 끝-->
 
 
-												<!-- 옵션 추가 버튼 -->
-												<div class="col-md-12 mt-3">
-													<button type="button" class="btn btn-primary"
-														data-toggle="modal" data-target="#myModal">옵션 추가</button>
-												</div>
-												<!-- 옵션 추가 버튼 끝-->
-
-												<!-- 옵션 정보 -->
-												
-												<div class="col-md-12 mt-3 overflow-auto">
-												<table class="table">
-													<tr>
-														<td colspan="2">옵션명</td>
-														<td>옵션가</td>
-														<td>남은 수량</td>
-													</tr>
-													<tr>
-														<td colspan="2">옵션이름</td>
-														<td>+3,000</td>
-														<td>00</td>
-													</tr>
-												</table>
-												</div>
-
 												<!-- 상세설명 -->
 												<label for="description">상세설명</label>
 												<textarea class="form-control" rows="20" id="description"
@@ -341,47 +307,6 @@ th, td {
 				</div>
 			</div>
 		</div>
-
-		<!-- 옵션 추가 모달 -->
-		<div class="modal fade" id="myModal" tabindex="-1"
-			aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="myModalLabel">옵션 추가</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<!-- 옵션 -->
-
-						<table class="table">
-							<tr>
-								<th colspan="2">옵션명</th>
-								<th>옵션가격</th>
-								<th>재고</th>
-							</tr>
-							<tr>
-								<td colspan="2"><input class="form-control" type="text"
-									value="" /></td>
-								<td><input type="text" class="form-control" value="" /></td>
-								<td><input type="text" class="form-control" value="" /></td>
-							</tr>
-						</table>
-
-						<div class="col-md-2 mt-3"></div>
-						<div class="col-md-8 mt-3">
-							<button type="button" class="btn btn-warning"
-								onclick="onAddOptionButtonClicked">옵션 추가</button>
-						</div>
-						<div class="col-md-2 mt-3"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-
 
 	</div>
 	<ui:footer />

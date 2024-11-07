@@ -64,13 +64,13 @@ addressList = (List<Address>)request.getAttribute("addressList");
 				                <a class="nav-link" id="account-orders-tab" data-toggle="tab" href="#account-order-details" role="tab" aria-controls="account-order-details" aria-selected="false">주문내역 조회</a>
 				            </li>
 				            <li class="nav-item">
-				                <a class="nav-link" id="account-product-tab" data-toggle="tab" href="#account-product-management" role="tab" aria-controls="account-product-management" aria-selected="false">상품 관리</a>
+				                <a class="nav-link" id="account-product-tab" href="/ShoppingMallProject/product/manage" aria-selected="false">상품 관리</a>
 				            </li>
 				            <li class="nav-item">
-				                <a class="nav-link" id="account-product-insert-tab" data-toggle="tab" href="#account-product-insert" role="tab" aria-controls="account-product-insert" aria-selected="false">상품 등록</a>
+				                <a class="nav-link" id="account-product-insert-tab" href="/ShoppingMallProject/product/add" aria-selected="false">상품 등록</a>
 				            </li>
 				            <li class="nav-item">
-				                <a class="nav-link" id="account-product-delete-tab" data-toggle="tab" href="#account-product-delete" role="tab" aria-controls="account-product-delete" aria-selected="false">상품 삭제</a>
+				                <a class="nav-link" id="account-product-delete-tab" href="/ShoppingMallProject/product/manage" aria-selected="false">상품 삭제</a>
 				            </li>
 				        </ul>
 				    </div>

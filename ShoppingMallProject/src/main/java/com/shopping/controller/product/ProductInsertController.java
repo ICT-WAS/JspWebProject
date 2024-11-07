@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.shopping.dao.CategoryDao;
 import com.shopping.dao.ProductDao;
@@ -28,6 +29,19 @@ public class ProductInsertController extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		HttpSession session = request.getSession(false);
+		
+		if(session == null) {
+			response.sendRedirect("/ShoppingMallProject/main");
+			return;
+		}
+
+		String id = (String) session.getAttribute("id");
+		if(!id.equals("admin")) {
+			response.sendRedirect("/ShoppingMallProject/main");
+			return;
+		}
 		
         List<Category> rootCategoryList = categoryDao.getRootCategoryList();
         Map<Long, List<Category>> categoryMap = new HashMap<Long, List<Category>>(); // <rootCategoryId, childCategoryList>
