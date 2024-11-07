@@ -172,7 +172,7 @@
                                         </div>
                                         <div class="footer-widgets">
                                             <ul>
-                                                <li><a href="javascript:void(0)">조원 소개(추가 예정)</a></li>
+                                                <li><a href="https://www.canva.com/design/DAGVqLwHOX4/ZR1J4sbkumkVsfG4eL9APQ/edit?utm_content=DAGVqLwHOX4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton">조원 소개</a></li>
                                                 <li><a href="https://github.com/ICT-WAS/JspWebProject">깃허브</a></li>
                                                 <li><a href="https://www.templateshub.net/">부트스트랩 템플릿</a></li>
                                                 <li><a href="https://ictedu.co.kr/index_new.php?main_page=home">한국ICT인재개발원</a></li>
@@ -188,7 +188,7 @@
                                                 <li><a href="https://miro.com/app/board/uXjVLQRFe_4=/?moveToWidget=3458764604263981844&cot=14">참고자료</a></li>
                                                 <li><a href="https://www.erdcloud.com/d/6Kc6aEZHbiGw4ekME">테이블 설계1</a></li>
                                                 <li><a href="https://docs.google.com/spreadsheets/d/17t8Lppm_wKqV4mi_W-lrew5vdrCWp3bQou6if-u2BvY/edit?gid=1524174810#gid=1524174810">테이블 설계2</a></li>
-                                                <li><a href="javascript:void(0)">발표자료(추가 예정)</a></li>
+                                                <li><a href="https://www.canva.com/design/DAGVqMDA4aQ/rKE1JQpc7b3oWLo3hQ2C0A/edit?utm_content=DAGVqMDA4aQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton">발표자료</a></li>
                                             </ul>
                                         </div>
                                     </div>

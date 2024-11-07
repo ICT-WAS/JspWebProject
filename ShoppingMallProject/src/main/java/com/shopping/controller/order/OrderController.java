@@ -1,6 +1,7 @@
 package com.shopping.controller.order;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,11 +56,12 @@ public class OrderController extends HttpServlet {
 		
 		// 배송지 목록 찾기
 		List<Address> memberAddrs = addressDao.getAddressList(member.getMember_id());
-		
-		Shipping shipping = new Shipping();
+
+		Shipping shipping = null;
 		// 기본배송지 찾기
 		for(Address addr : memberAddrs) {
 			if(addr.getIsDefault() == 1) {
+				shipping = new Shipping();
 				shipping.setRecipientName(addr.getRecipientName());
 				shipping.setPhoneNumber(addr.getPhoneNumber());
 				shipping.setPostalCode(addr.getPostalCode());
@@ -68,6 +70,11 @@ public class OrderController extends HttpServlet {
 			}
 		}
 		
+		if(shipping == null) {
+			String message = "기본 배송지를 설정해주세요";
+			response.sendRedirect("/ShoppingMallProject/member/info?message=" + URLEncoder.encode(message, "UTF-8"));
+			return;
+		}
 		
 		request.setAttribute("cartItems", cartItems);
 		request.setAttribute("member", member);

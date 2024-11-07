@@ -38,9 +38,25 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
 	    $(document).ready(function() {
-	    	var message = "${message}"; 
-        	if (message) {
-            	alert(message);
+	    	var urlParams = new URLSearchParams(window.location.search);
+	    	var message = urlParams.get('message');  // 'msg' 파라미터 값
+
+	        if (message) {
+	            alert(message);  // 'msg' 파라미터 값을 알림으로 표시
+	            
+	            // 현재 URL에서 'msg' 파라미터를 제거
+	            urlParams.delete('message');
+	            
+	            // 파라미터가 제거된 새로운 URL 생성
+	            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + urlParams.toString();
+	            
+	            // 수정된 URL로 리디렉션
+	            window.location.href = newUrl;
+	        }
+	    
+	    	var message2 = "${message}"; 
+        	if (message2) {
+            	alert(message2);
             	window.location.href = "/ShoppingMallProject/member/info";
         	}
 	        $('.openModal2').click(function(e) {
