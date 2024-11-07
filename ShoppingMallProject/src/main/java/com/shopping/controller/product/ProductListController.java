@@ -75,6 +75,19 @@ public class ProductListController extends HttpServlet{
 
             //상품 정보 없을 때 에러 처리 분기
             if (productList == null || productList.isEmpty() || totalCount == 0) {
+            	
+            	//상품 검색 시 에러 처리 분기
+                if(name!=null) {
+                	response.sendRedirect(request.getContextPath() +  "/product/list?noResults=true");
+                	return;
+                }
+                
+                //카테고리 선택 시 에러 처리 분기
+                if(categoryId !=null) {
+                	response.sendRedirect(request.getContextPath() +  "/product/list?noCategory=true");
+                	return;
+                }
+                
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "상품 리스트가 없습니다.");
                 return;
             }
