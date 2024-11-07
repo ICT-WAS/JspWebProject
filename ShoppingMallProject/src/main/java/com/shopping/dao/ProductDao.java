@@ -461,4 +461,89 @@ public class ProductDao extends SuperDao{
 		return result;
 		
 	}
+	
+	public boolean insertProduct(Product product) {
+		int cnt = 0;
+		
+		String sql = "INSERT INTO product (category_id, product_name, img1, img2, img3, price, stock_quantity, brand, status, product_description)";
+		sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, '판매중', ?)";
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setLong(1, product.getCategoryId());
+			pstmt.setString(2, product.getName());
+			pstmt.setString(3, product.getImg1());
+			pstmt.setString(4, product.getImg2());
+			pstmt.setString(5, product.getImg3());
+			pstmt.setDouble(6, product.getPrice());
+			pstmt.setDouble(7, product.getQuantity());
+			pstmt.setString(8, product.getBrand());
+			pstmt.setString(9, product.getDescription());
+
+			cnt = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+		return cnt == 1;
+	}
+
+	public List<ProductOptionDTO> getAllProductDto() {
+		// (관리자용) 옵션 정보 포함됨전체 상품 조회
+		List<ProductOptionDTO> productDtoList  = new ArrayList<ProductOptionDTO>();
+		List<Product> productList = getProductList();
+		
+		try {
+			conn = getConnection();
+			for(Product product : productList) {
+				String sql = " SELECT * FROM PRODUCT_OPTION WHERE PRODUCT_ID = ?";
+				
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+				
+				List<ProductOption> optionList = new ArrayList<>();
+				try {
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setLong(1, product.getProductId());
+					rs = pstmt.executeQuery();
+					while (rs.next()) {
+						optionList.add(getOptionBeanData(rs));
+					}
+					
+					productDtoList.add(new ProductOptionDTO(product, optionList));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						if(rs!=null) {rs.close();}
+						if(pstmt!=null) {pstmt.close();}
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+				}
+			}
+		} finally {
+			try {
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			
+		}
+		return productDtoList;
+	}
 }
