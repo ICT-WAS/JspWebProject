@@ -1,8 +1,8 @@
 package com.shopping.model;
 
 public class ProductOption {
-	private long optionId;
-	private long productId;
+	private Long optionId;
+	private Long productId;
 	private String optionType;
 	private String optionName;
 	private double additionalPrice;
@@ -12,7 +12,7 @@ public class ProductOption {
 		super();
 	}
 
-	public ProductOption(long productId, String optionType, String optionName, double additionalPrice,
+	public ProductOption(Long productId, String optionType, String optionName, double additionalPrice,
 			double optionStockquantity) {
 		super();
 		this.productId = productId;
@@ -22,11 +22,11 @@ public class ProductOption {
 		this.optionStockquantity = optionStockquantity;
 	}
 
-	public long getOptionId() {
+	public Long getOptionId() {
 		return optionId;
 	}
 
-	public void setOptionId(long optionId) {
+	public void setOptionId(Long optionId) {
 		this.optionId = optionId;
 	}
 

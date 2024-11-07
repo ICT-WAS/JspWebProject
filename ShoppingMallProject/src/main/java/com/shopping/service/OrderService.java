@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.naming.CannotProceedException;
+
 //import com.shopping.dao.CartDao;
 import com.shopping.dao.MemberDao;
 import com.shopping.dao.OrderDao;
@@ -91,7 +93,7 @@ public class OrderService {
 	
 	// Long 은 상품id
 	// Order 또는 OrderId를 반환..?
-	public boolean processOrder(Long memberId, Order orderData, List<OrderDetail> orderDetails, Shipping shipping) {
+	public boolean processOrder(Long memberId, Order orderData, List<OrderDetail> orderDetails, Shipping shipping) throws CannotProceedException, SQLException {
 		// ========= 결제 진행중 ===========
 		
 		conn = getConnection();
@@ -104,25 +106,37 @@ public class OrderService {
 			
 			// 옵션별 업데이트될 재고
 			Map<Long, Integer> optionIdAndQuantity = new HashMap<Long, Integer>();
+			// 옵션 없는 상품 업데이트될 재고
+			Map<Long, Integer> productIdAndQuantity = new HashMap<Long, Integer>();
 			boolean success = true;
 			// 주문 상품 재고 확인
 			for (OrderDetail orderDetail : orderDetails) {
-				ProductOption option = productDao.getOption(orderDetail.getOptionId());
+				
+				// 재고
+				int stock = (int)productDao.getProduct(orderDetail.getProductId()).getQuantity();
+				// 옵션 있는 상품
+				if(orderDetail.getOptionId() != null) {
+					ProductOption option = productDao.getOption(orderDetail.getOptionId());
+					stock = (int)option.getOptionStockquantity();
+				}
 
-				int afterPaymentStock = (int)option.getOptionStockquantity() - orderDetail.getQuantity();
+				int afterPaymentStock = stock - orderDetail.getQuantity();
 				// 재고 부족
 				if(afterPaymentStock < 0) {
-					// 상품의 재고가 없습니다.
 					success &= false;
 				}
 				
-				optionIdAndQuantity.put(option.getOptionId(), afterPaymentStock);
+				if(orderDetail.getOptionId() != null) { // 옵션 있는 상품
+					optionIdAndQuantity.put(orderDetail.getOptionId(), afterPaymentStock);
+				} else { // 옵션 없는 상품
+					productIdAndQuantity.put(orderDetail.getProductId(), afterPaymentStock);
+				}
 			}
 			
 			if(!success) {
 				orderData.setOrderStatus(OrderStatus.PAYMENT_FAILED);
 				System.out.println("재고없음");
-				return false;
+				throw new CannotProceedException();
 			}
 			
 			// 상품 재고 변경
@@ -146,7 +160,7 @@ public class OrderService {
 				conn.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				return false;
+				throw new SQLException();
 			}
 			return false;
 		} finally {
@@ -197,19 +211,27 @@ public class OrderService {
 	public CartProductDto createCartProductDto(Long productId, Long optionId, Integer quantity) {
 		CartProductDto dto = new CartProductDto();
 
-		ProductOption productOption = productDao.getOption(optionId);
 		Product product = productDao.getProduct(productId);
 
 		dto.setProductId(productId);
 		dto.setImage(product.getImg1());
 		dto.setName(product.getName());
 		dto.setProductPrice((int) product.getPrice());
+		dto.setQuantity(quantity);
+		
+		if(optionId == null) {
+			return dto;
+		}
+		
+		ProductOption productOption = productDao.getOption(optionId);
+		if(productOption == null) {
+			return dto;
+		}
 
 		dto.setOptionId(productOption.getOptionId());
 		dto.setOptionName(productOption.getOptionName());
 		dto.setOptionPrice((int) productOption.getAdditionalPrice());
-		dto.setQuantity(quantity);
-
+		
 		return dto;
 	}
 

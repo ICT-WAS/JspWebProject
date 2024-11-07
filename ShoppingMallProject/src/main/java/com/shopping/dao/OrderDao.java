@@ -253,8 +253,21 @@ public class OrderDao extends SuperDao{
 		try {
 			conn = getConnection();
 			conn.setAutoCommit(false);
-			String sql = "INSERT INTO ORDER_DETAIL (ORDER_ID, PRODUCT_ID, QUANTITY, UNIT_PRICE, TOTAL_PRICE, OPTION_ID)";
-			sql += " VALUES (?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO ORDER_DETAIL (ORDER_ID, PRODUCT_ID, QUANTITY, UNIT_PRICE, TOTAL_PRICE";
+			
+			Long optionId = orderDetail.getOptionId();
+			
+			if(optionId != null) {
+				sql += ", OPTION_ID";
+			}
+			
+			sql += ")";
+			sql += " VALUES (?, ?, ?, ?, ?";
+			
+			if(optionId != null) {
+				sql += ", ?";
+			}
+			sql += ")";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -263,7 +276,10 @@ public class OrderDao extends SuperDao{
             pstmt.setDouble(3, orderDetail.getQuantity());
             pstmt.setDouble(4, orderDetail.getUnitPrice());
             pstmt.setDouble(5, orderDetail.getTotalPrice());
-            pstmt.setLong(6, orderDetail.getOptionId());
+            
+            if(optionId != null) {
+            	pstmt.setLong(6, orderDetail.getOptionId());
+            }
 			
 			result = pstmt.executeUpdate();
 			conn.commit();
