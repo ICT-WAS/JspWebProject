@@ -195,7 +195,7 @@ List<Order> orderList = (List<Order>)request.getAttribute("orderList");
 												        <div class="modal-content">
 												            <div class="modal-header">
 												                <h5 class="modal-title" id="modalLabel">주소 추가</h5>
-												                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#addressModal').modal('hide');">
 												                    <span aria-hidden="true">&times;</span>
 												                </button>
 												            </div>
@@ -248,7 +248,7 @@ List<Order> orderList = (List<Order>)request.getAttribute("orderList");
 															        <div class="modal-content">
 															            <div class="modal-header">
 															                <h5 class="modal-title" id="modalLabel">배송지 수정</h5>
-															                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#addressModal2').modal('hide');">
 															                    <span aria-hidden="true">&times;</span>
 															                </button>
 															            </div>
