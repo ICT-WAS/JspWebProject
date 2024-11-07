@@ -30,14 +30,21 @@ public class ProductDetailController extends HttpServlet {
 			return;
 		}
 		
+		ProductDao dao = new ProductDao();
+		
+		Long id = Long.parseLong(productId);
+		
+		if(!dao.isProductAvailable(id)) {
+			response.sendRedirect(request.getContextPath() + "/product/list");
+			return;
+		}
+		
+		
 		ProductOptionDTO productDTO = null;
 		Map<String, Map<Long, ProductOption>> optionTree = new HashMap<>();
 		
 		try {
 			
-			Long id = Long.parseLong(productId);
-			
-			ProductDao dao = new ProductDao();
 			productDTO = dao.getProductById(id);
 			
 			//옵션 정보가 있을 때만 옵션을 맵에 세팅하기
@@ -60,6 +67,8 @@ public class ProductDetailController extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "유효하지 않은 상품ID 형식입니다.");
 	        return;
 		}
+		
+		
         
         // 조회된 상품을 request 속성에 저장하여 JSP에 전달
 		request.setAttribute("optionTree", optionTree);

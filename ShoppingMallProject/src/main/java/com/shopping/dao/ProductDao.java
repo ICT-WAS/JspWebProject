@@ -105,6 +105,41 @@ public class ProductDao extends SuperDao{
 		return count;
 	}
 	
+	public boolean isProductAvailable(long productId) {
+		int count = 0;
+		boolean ProductAvailable = false;
+		
+		String sql = " SELECT COUNT(*) FROM PRODUCT WHERE PRODUCT_ID=?";
+		
+		PreparedStatement pstmt = null;		
+		ResultSet rs = null;
+		
+		try{
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, productId);					
+		
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+				if(count!=0) {
+					ProductAvailable = true;
+				}else {
+					ProductAvailable = false;
+				}
+			}
+		
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			closeResources(conn, pstmt, rs);
+		}
+			
+		return ProductAvailable;
+	}
+	
 	//productId에 매칭되는 상품 한 개 가져오기 - 옵션 포함
 	public ProductOptionDTO getProductById(long productId) {
 		Product product = new Product();

@@ -83,8 +83,6 @@ public class AdminUserManagementController extends HttpServlet {
             if (order2 != null) {
             String dates = order2.getOrderDate().toString().split("T")[0];
             String times = order2.getOrderDate().toString().split("T")[1];
-            
-            System.out.println(order2.getOrderDate().toString().split("T"));
 
             String[] date = dates.split("-");
             String year = date[0];
@@ -94,7 +92,7 @@ public class AdminUserManagementController extends HttpServlet {
             String[] time = times.split(":");
             String hour = time[0];
             String minute = time[1];
-            String second = time.length >=3 ? time[2] : "00";
+            String second = time.length>=3 ? time[2] : "00";
             
             // 날짜 변수 하나로 합치기
             String finalOrderDate = String.format("%s년 %s월 %s일 %s시 %s분 %s초", year, month, day, hour, minute, second);
@@ -127,7 +125,6 @@ public class AdminUserManagementController extends HttpServlet {
 			                              phoneNumber.substring(3, 7) + "-" +
 			                              phoneNumber.substring(7);
 			                member.setPhoneNumber(phoneNumber);
-			                System.out.println(phoneNumber);
 			            }
 			            return member;
 				})

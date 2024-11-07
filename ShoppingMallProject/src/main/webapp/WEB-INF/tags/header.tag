@@ -9,14 +9,14 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-3 col-lg-2 col-md-3 col-sm-5">
-                            <div class="header-logo_area">
+                            <div style="margin-left: 10px;" class="header-logo_area">
                                 <a href="/ShoppingMallProject/main">
-                                    <img src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/2.png" alt="Uren's Logo">
+                                    <img width="189px" height="80px" src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/4.png" alt="Uren's Logo">
                                 </a>
                             </div>
                         </div>
                         <div class="col-xl-5 col-lg-6 d-none d-lg-block">
-                            <div class="hm-form_area">
+                            <div style="margin-top: 20px;" class="hm-form_area">
                                 <form action="${pageContext.request.contextPath}/product/list" class="hm-searchbox" method="get">
                                     <input type="text" name="name" placeholder="찾으려는 상품명을 입력하세요">
                                     <button class="header-search_btn" type="submit">
@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-9 col-sm-7">
-                            <div class="header-right_area">
+                            <div style="margin-top: 20px;" class="header-right_area">
                                 <ul>
                                     <li class="mobile-menu_wrap d-flex d-lg-none">
                                         <a href="#mobileMenu" class="mobile-menu_btn toolbar-btn color--white">
@@ -45,7 +45,7 @@
                                     <c:if test="${sessionScope.id == 'admin'}">
 	                                    <li class="minicart-wrap">
 	                                        <a href="/ShoppingMallProject/admin/usermanagement" class="">
-	                                            <div class="minicart-count_area">
+	                                            <div style="" class="minicart-count_area">
 	                                                <span class="fa fa-user">관리자 메뉴</span>
 	                                                
 	                                            </div>
@@ -166,7 +166,11 @@
                     <div class="row">
                         <div class="col-xl-8 col-lg-7 d-lg-block d-none">
                             <div class="main-menu_area position-relative">
-                                
+                            <div class="header-logo_area">
+                                <a href="/ShoppingMallProject/main">
+                                    <img width="189px" height="80px" src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/4.png" alt="Uren's Logo">
+                                </a>
+                            </div>
                             </div>
                         </div>
                         <div class="col-sm-3 d-block d-lg-none">
@@ -194,7 +198,7 @@
                                         </a>
                                     </li>
                                     <li class="contact-us_wrap">
-                                        <a href="#"><i class="ion-android-call"></i>+82 10-5570-0010</a>
+                                        <a href="tel://+821055700010"><i class="ion-android-call"></i>+82 10-5570-0010</a>
                                     </li>
                                 </ul>
                             </div>
