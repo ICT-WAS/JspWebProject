@@ -19,7 +19,66 @@
 	
     <div class="main-wrapper">
     	<!-- 메인 컨텐츠 -->
-    	
+    	<div class="about-us-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6 col-md-5">
+                        <div class="overview-img text-center img-hover_effect">
+                            <a href="https://www.canva.com/design/DAGVqMDA4aQ/rKE1JQpc7b3oWLo3hQ2C0A/edit?utm_content=DAGVqMDA4aQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton">
+                                <img class="img-full" src="${pageContext.request.contextPath}/static/template_assets/images/project.png" alt="Uren's About Us Image">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-7 d-flex align-items-center">
+                        <div class="overview-content">
+                            <h2><span>쇼핑몰</span> 에 오신 것을 환영합니다!</h2>
+                            <p class="short_desc">JSP 프로젝트로 쇼핑몰을 만들었습니다.</p>
+                            <div class="uren-about-us_btn-area">
+                                <a class="about-us_btn" href="/ShoppingMallProject/product/list">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="project-count-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-count text-center">
+                            
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-count text-center">
+							<div class="count-icon">
+                                <span class="ion-ios-briefcase-outline"></span>
+                            </div>
+                            <div class="count-title">
+                                <h2 class="count"><%=request.getAttribute("productCount") %></h2>
+                                <span>보유 상품 수</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-count text-center">
+                            <div class="count-icon">
+                                <span class="ion-happy-outline"></span>
+                            </div>
+                            <div class="count-title">
+                                <h2 class="count"><%=request.getAttribute("memberCount") %></h2>
+                                <span>이용 고객</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-count text-center">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 	<ui:footer />
 	<ui:js />

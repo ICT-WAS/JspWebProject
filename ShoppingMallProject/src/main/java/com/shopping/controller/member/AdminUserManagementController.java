@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -114,7 +115,22 @@ public class AdminUserManagementController extends HttpServlet {
 		request.setAttribute("orderDetailLists", orderDetailLists);
 		
 		// 개인정보
-		List<Member> memberlist = memberDao.memberList();
+		List<Member> allMembers = memberDao.memberList();
+		
+		List<Member> memberlist = allMembers.stream()
+				.map(member -> {
+					 String phoneNumber = member.getPhoneNumber();
+			            if (phoneNumber != null && phoneNumber.length() == 11) {
+			                phoneNumber = phoneNumber.substring(0, 3) + "-" +
+			                              phoneNumber.substring(3, 7) + "-" +
+			                              phoneNumber.substring(7);
+			                member.setPhoneNumber(phoneNumber);
+			                System.out.println(phoneNumber);
+			            }
+			            return member;
+				})
+				.collect(Collectors.toList());
+		
 		request.setAttribute("memberlist", memberlist);
 		
 		request.getRequestDispatcher("/WEB-INF/views/member/admininfo.jsp").forward(request, response);

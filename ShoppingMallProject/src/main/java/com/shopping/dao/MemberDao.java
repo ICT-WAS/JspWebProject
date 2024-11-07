@@ -3,6 +3,7 @@ package com.shopping.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -504,4 +505,72 @@ public class MemberDao extends SuperDao{
 		
 		return cnt;
 	}	
+	
+
+	public int memberDeactivate(long id){
+		int cnt = 0;
+		
+		PreparedStatement pstmt = null ;
+		
+		String sql = " UPDATE MEMBERS ";
+		sql += " SET STATUS = 0 ";
+		sql += " WHERE MEMBER_ID = ? " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			
+			pstmt.setLong(1, id);
+			
+			cnt = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return cnt;
+	}
+	
+	public int memberUpdate(String nickName, String email, String phoneNumber, int status, long id){
+		int cnt = 0;
+		
+		PreparedStatement pstmt = null ;
+		
+		String sql = " UPDATE MEMBERS ";
+		sql += " SET MEMBER_NICKNAME = ?, MEMBER_EMAIL = ?, PHONE_NUMBER = ?, UPDATED_AT = ?, STATUS = ? ";
+		sql += " WHERE MEMBER_ID = ? " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			
+	        pstmt.setString(1, nickName);     
+	        pstmt.setString(2, email);        
+	        pstmt.setString(3, phoneNumber);
+	        pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+	        pstmt.setInt(5, status);
+	        pstmt.setLong(6, id);               
+			
+			cnt = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return cnt;
+	}
 }
