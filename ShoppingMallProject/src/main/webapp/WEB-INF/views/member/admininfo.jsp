@@ -79,44 +79,46 @@ addressList = (List<Address>)request.getAttribute("addressList");
 				    <div class="col-lg-9">
 				        <div class="tab-content myaccount-tab-content" id="account-page-tab-content">
 				        
-				            <!-- 대쉬보드겸 회원관리 창 -->
-				            <div class="tab-pane fade show active" id="account-user-management" role="tabpanel" aria-labelledby="account-dashboard-tab">
-				                <div class="myaccount-dashboard">
-				                    <p>쇼핑몰 가입한 유저: ${UserCount}</p>
-				                    <table class="table table-bordered">
-				                        <thead>
-				                            <tr>
-				                                <th>회원 이름</th>
-				                                <th>닉네임</th>
-				                                <th>이메일</th>
-				                                <th>전화번호</th>
-				                                <th>회원상태</th>
-				                                <th>마지막 로그인</th>
-				                                <th></th>
-				                            </tr>
-				                        </thead>
-				                        <tbody>
-				                            <c:forEach var="memberlist" items="${memberlist}">
-				                                <tr>
-				                                    <td>${memberlist.name}</td>
-				                                    <td>${memberlist.nickname}</td>
-				                                    <td>${memberlist.email}</td>
-				                                    <td>${memberlist.phoneNumber}</td>
-				                                    <td>
-				                                        <c:choose>
-				                                            <c:when test="${memberlist.status == 1}">활성화</c:when>
-				                                            <c:otherwise>비활성화</c:otherwise>
-				                                        </c:choose>
-				                                    </td>
-				                                    <td>${memberlist.lastLogin}</td>
-				                                    <td><a href="javascript:void(0)" class="uren-btn uren-btn_dark uren-btn_sm"><span>자세히 보기</span></a></td>
-				                                </tr>
-				                            </c:forEach>
-				                        </tbody>
-				                    </table>
-				                </div>
-				            </div>
-				            <!-- 회원 관리 끝 -->
+							<!-- 대쉬보드겸 회원관리 창 -->
+							<div class="tab-pane fade show active"
+								id="account-user-management" role="tabpanel"
+								aria-labelledby="account-dashboard-tab">
+								<div class="myaccount-dashboard">
+									<p>쇼핑몰 가입한 유저: ${UserCount}</p>
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>회원 이름</th>
+												<th>닉네임</th>
+												<th>이메일</th>
+												<th>전화번호</th>
+												<th>회원상태</th>
+												<th>마지막 로그인</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="memberDate" items="${memberlist}">
+												<tr>
+													<td>${memberDate.name}</td>
+													<td>${memberDate.nickname}</td>
+													<td>${memberDate.email}</td>
+													<td>${memberDate.phoneNumber}</td>
+													<td><c:choose>
+															<c:when test="${memberDate.status == 1}">활성화</c:when>
+															<c:otherwise>비활성화</c:otherwise>
+														</c:choose></td>
+													<td>${memberDate.lastLogin}</td>
+													<td><button
+															onclick="window.location.href='update?memberId=${memberDate.id}'"
+															class="uren-btn uren-btn_dark uren-btn_sm">회원 수정</button></td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- 회원 관리 끝 -->
 					        <!-- 주문 내역 조회 시작 -->
 					        <div class="tab-pane fade" id="account-order-details" role="tabpanel">
 					            <div class="myaccount-orders">
