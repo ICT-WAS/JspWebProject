@@ -574,7 +574,14 @@ public class ProductDao extends SuperDao{
 			try {
 				if(rs!=null) {rs.close();}
 				if(pstmt!=null) {pstmt.close();}
-	
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return result == 1;
+	}
+		
 	public Long getProductCount() {
 		Long count = 0L;
 		String sql = "SELECT count(*) as count from product";
