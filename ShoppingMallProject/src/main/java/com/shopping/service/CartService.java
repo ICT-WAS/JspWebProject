@@ -62,7 +62,6 @@ public class CartService {
 	      Long productId = cartProduct.getProductId();
 	      Long optionId = cartProduct.getOptionId();
 	      
-	      ProductOption productOption = productDao.getOption(optionId);
 	      Product product = productDao.getProduct(productId);
 	      
 	      dto.setCartProductId(cartProduct.getCartProductId());
@@ -70,11 +69,23 @@ public class CartService {
 	      dto.setImage(product.getImg1());
 	      dto.setName(product.getName());
 	      dto.setProductPrice((int)product.getPrice());
+	      dto.setQuantity(cartProduct.getQuantity());
+
+	      if(optionId == null || optionId < 1) {
+	    	  return dto;
+	      }
 	      
-	      dto.setOptionId(productOption.getOptionId());
+	      System.out.println("optionId : " + optionId);
+	      
+	      ProductOption productOption = productDao.getOption(optionId);
+	      
+	      if(productOption == null) {
+	    	  return dto;
+	      }
+	      
+	      dto.setOptionId(optionId);
 	      dto.setOptionName(productOption.getOptionName());
 	      dto.setOptionPrice((int)productOption.getAdditionalPrice());
-	      dto.setQuantity(cartProduct.getQuantity());
 	      
 	      return dto;
 	}

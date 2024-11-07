@@ -253,8 +253,21 @@ public class OrderDao extends SuperDao{
 		try {
 			conn = getConnection();
 			conn.setAutoCommit(false);
-			String sql = "INSERT INTO ORDER_DETAIL (ORDER_ID, PRODUCT_ID, QUANTITY, UNIT_PRICE, TOTAL_PRICE, OPTION_ID)";
-			sql += " VALUES (?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO ORDER_DETAIL (ORDER_ID, PRODUCT_ID, QUANTITY, UNIT_PRICE, TOTAL_PRICE";
+			
+			Long optionId = orderDetail.getOptionId();
+			
+			if(optionId != null) {
+				sql += ", OPTION_ID";
+			}
+			
+			sql += ")";
+			sql += " VALUES (?, ?, ?, ?, ?";
+			
+			if(optionId != null) {
+				sql += ", ?";
+			}
+			sql += ")";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -263,7 +276,10 @@ public class OrderDao extends SuperDao{
             pstmt.setDouble(3, orderDetail.getQuantity());
             pstmt.setDouble(4, orderDetail.getUnitPrice());
             pstmt.setDouble(5, orderDetail.getTotalPrice());
-            pstmt.setLong(6, orderDetail.getOptionId());
+            
+            if(optionId != null) {
+            	pstmt.setLong(6, orderDetail.getOptionId());
+            }
 			
 			result = pstmt.executeUpdate();
 			conn.commit();
@@ -518,4 +534,40 @@ public class OrderDao extends SuperDao{
 		return MemberNameByOrderLists;
 	}
 
+	public List<Order> getOrder(Long memberId){
+		List<Order> list = new ArrayList<Order>();
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;	
+		
+	    String sql = " select * from orders where MEMBER_ID = ?" ;
+
+	    
+	    try {
+	        conn = super.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setLong(1, memberId);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            Order order = getBeanData(rs);
+	            if (order != null) {
+	            	list.add(order);
+	            }
+	        }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
 }

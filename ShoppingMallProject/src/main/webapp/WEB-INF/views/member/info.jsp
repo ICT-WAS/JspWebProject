@@ -1,3 +1,4 @@
+<%@page import="com.shopping.model.Order"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.shopping.model.Address"%>
@@ -77,6 +78,7 @@ List<Address> addressList;
 <% 
 member = (Member)request.getAttribute("member"); 
 addressList = (List<Address>)request.getAttribute("addressList"); 
+List<Order> orderList = (List<Order>)request.getAttribute("orderList"); 
 %>
 
 <body class="template-color-1">
@@ -162,22 +164,15 @@ addressList = (List<Address>)request.getAttribute("addressList");
                                                         <th>결제금액</th>
                                                         <th></th>
                                                     </tr>
-                                                    <tr>
-                                                        <td><a class="account-order-id" href="javascript:void(0)">#5364</a></td>
-                                                        <td>Mar 27, 2019</td>
-                                                        <td>On Hold</td>
-                                                        <td>£162.00 for 2 items</td>
-                                                        <td><a href="javascript:void(0)" class="uren-btn uren-btn_dark uren-btn_sm"><span>View</span></a>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a class="account-order-id" href="javascript:void(0)">#5356</a></td>
-                                                        <td>Mar 27, 2019</td>
-                                                        <td>On Hold</td>
-                                                        <td>£162.00 for 2 items</td>
-                                                        <td><a href="javascript:void(0)" class="uren-btn uren-btn_dark uren-btn_sm"><span>View</span></a>
-                                                        </td>
-                                                    </tr>
+                                                   <c:forEach var="order" items="${orderList}">
+								                    <tr>
+								                        <td>${order.orderNumber}</td>
+								                        <td>${order.orderDate}</td>
+								                        <td>${order.orderStatus.description}</td>
+								                        <td>${order.finalPaymentAmount} 원</td>
+								                        <td><a href="/ShoppingMallProject/order/completed?orderNo=${order.orderNumber}" class="uren-btn uren-btn_dark uren-btn_sm"><span>자세히</span></a></td>
+								                    </tr>
+								                </c:forEach>
                                                 </tbody>
                                             </table>
                                         </div>

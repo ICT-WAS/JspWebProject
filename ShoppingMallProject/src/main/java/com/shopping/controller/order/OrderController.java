@@ -1,9 +1,11 @@
 package com.shopping.controller.order;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.CannotProceedException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -145,22 +147,30 @@ public class OrderController extends HttpServlet {
 		
 		// ==================================================================================
 		// OrderService 객체를 통해 주문 진행
-		boolean success = orderService.processOrder(memberId, order, orderDetails, shipping);
-		
-		// 실패요
-		if(!success) {
-			// 메인 페이지로 이동(에러 페이지 보여줘야 함)
-			response.sendRedirect("/ShoppingMallProject/main");
-			return;
-		}
-		
-		// 장바구니에서 아이템 삭제
-		for (CartProductDto cartItem : cartItems) {
-			cartService.removeFromCart(cartItem.getCartProductId());
-		}
+		try {
+			boolean success = orderService.processOrder(memberId, order, orderDetails, shipping);
+			
+			// 실패요
+			if(!success) {
+				// 메인 페이지로 이동(에러 페이지 보여줘야 함)
+				response.sendRedirect("/ShoppingMallProject/main");
+				return;
+			}
+			
+			// 장바구니에서 아이템 삭제
+			for (CartProductDto cartItem : cartItems) {
+				cartService.removeFromCart(cartItem.getCartProductId());
+			}
 
-		// 주문 확인 페이지로 이동
-		response.sendRedirect("/ShoppingMallProject/order/completed?orderNo=" + orderNo);
+			// 주문 확인 페이지로 이동
+			response.sendRedirect("/ShoppingMallProject/order/completed?orderNo=" + orderNo);
+			
+		} catch (CannotProceedException e) { // 결제 실패
+			response.sendRedirect("/ShoppingMallProject/order/checkout?msg=proceed-error");
+		} catch (SQLException e) { // db 업데이트 실패
+			response.sendRedirect("/ShoppingMallProject/order/checkout?msg=sql-error");
+		}
+		
 	}
 
 }
