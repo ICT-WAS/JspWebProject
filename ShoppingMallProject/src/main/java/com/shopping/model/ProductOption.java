@@ -5,7 +5,7 @@ public class ProductOption {
 	private Long productId;
 	private String optionType;
 	private String optionName;
-	private double additionalPrice;
+	private double additionalPrice = 0;
 	private double optionStockquantity;
 
 	public ProductOption() {
