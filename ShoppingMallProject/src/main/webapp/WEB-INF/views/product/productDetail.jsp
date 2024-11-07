@@ -17,15 +17,31 @@
 	padding: 15px 0px 0px 0px !important;
 }
 </style>
-	
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // 현재 URL에서 'msg' 파라미터 값을 추출
+    var urlParams = new URLSearchParams(window.location.search);
+    var message = urlParams.get('msg');  // 'msg' 파라미터 값
+
+    if (message) {
+        alert(message);  // 'msg' 파라미터 값을 알림으로 표시
+        
+        // 현재 URL에서 'msg' 파라미터를 제거
+        urlParams.delete('msg');
+        
+        // 파라미터가 제거된 새로운 URL 생성
+        var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + urlParams.toString();
+        
+        // 수정된 URL로 리디렉션
+        window.location.href = newUrl;
+    }
+});
+</script>
 </head>
 
 <body class="template-color-1">
 	<ui:header />
-	<% String msg = request.getParameter("msg"); %>
-	<% if (msg != null) { %>
-	    <div class="alert alert-info"><%= msg %></div>
-	<% } %>
 	<!-- 메인 컨텐츠 시작 -->
     <div class="main-wrapper">
     

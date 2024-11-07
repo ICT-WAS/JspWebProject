@@ -105,142 +105,8 @@
             </div>
         </div>
         <!-- Uren's Brand Area End Here -->
-
-        <!-- Begin Uren's Blog Area -->
-        <div class="uren-blog_area bg--white_smoke">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-title_area">
-                            <span>Our Recent Posts</span>
-                            <h3>From Our Blogs</h3>
-                        </div>
-                        <div class="blog-slider uren-slick-slider slider-navigation_style-1" data-slick-options='{
-                        "slidesToShow": 4,
-                        "spaceBetween": 30,
-                        "arrows" : true
-                        }' data-slick-responsive='[
-                            {"breakpoint":1200, "settings": {"slidesToShow": 3}},
-                            {"breakpoint":992, "settings": {"slidesToShow": 2}},
-                            {"breakpoint":768, "settings": {"slidesToShow": 2}},
-                            {"breakpoint":576, "settings": {"slidesToShow": 1}}
-                        ]'>
-                            <div class="slide-item">
-                                <div class="inner-slide">
-                                    <div class="blog-img img-hover_effect">
-                                        <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/1.jpg" alt="Uren's Blog Image">
-                                        </a>
-                                        <span class="post-date">12-09-19</span>
-                                    </div>
-                                    <div class="blog-content">
-                                        <h3><a href="blog-details-left-sidebar.html">Quaerat eligendi dolores autem omnis sed</a></h3>
-                                        <p>Maiores accusamus unde nulla quaerat deserunt, beatae molestias blanditiis aut recusandae saepe, quis, culpa voluptatum?</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="slide-item">
-                                <div class="inner-slide">
-                                    <div class="blog-img img-hover_effect">
-                                        <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/2.jpg" alt="Uren's Blog Image">
-                                        </a>
-                                        <span class="post-date">15-09-19</span>
-                                    </div>
-                                    <div class="blog-content">
-                                        <h3><a href="blog-details-left-sidebar.html">Nulla voluptatum maiores dolorem nobis</a></h3>
-                                        <p>Maiores accusamus unde nulla quaerat deserunt, beatae molestias blanditiis aut recusandae saepe, quis, culpa voluptatum?</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="slide-item">
-                                <div class="inner-slide">
-                                    <div class="blog-img img-hover_effect">
-                                        <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/3.jpg" alt="Uren's Blog Image">
-                                        </a>
-                                        <span class="post-date">19-09-19</span>
-                                    </div>
-                                    <div class="blog-content">
-                                        <h3><a href="blog-details-left-sidebar.html">Laudantium minus excepturi expedita dolore</a></h3>
-                                        <p>Maiores accusamus unde nulla quaerat deserunt, beatae molestias blanditiis aut recusandae saepe, quis, culpa voluptatum?</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="slide-item">
-                                <div class="inner-slide">
-                                    <div class="blog-img img-hover_effect">
-                                        <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/4.jpg" alt="Uren's Blog Image">
-                                        </a>
-                                        <span class="post-date">16-09-19</span>
-                                    </div>
-                                    <div class="blog-content">
-                                        <h3><a href="blog-details-left-sidebar.html">Aliquam nihil dolorem beatae totam tempora</a></h3>
-                                        <p>Maiores accusamus unde nulla quaerat deserunt, beatae molestias blanditiis aut recusandae saepe, quis, culpa voluptatum?</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="slide-item">
-                                <div class="inner-slide">
-                                    <div class="blog-img img-hover_effect">
-                                        <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/5.jpg" alt="Uren's Blog Image">
-                                        </a>
-                                        <span class="post-date">20-09-19</span>
-                                    </div>
-                                    <div class="blog-content">
-                                        <h3><a href="blog-details-left-sidebar.html">Reprehenderit illum iusto sit asperiores</a></h3>
-                                        <p>Maiores accusamus unde nulla quaerat deserunt, beatae molestias blanditiis aut recusandae saepe, quis, culpa voluptatum?</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="slide-item">
-                                <div class="inner-slide">
-                                    <div class="blog-img img-hover_effect">
-                                        <a href="blog-details-left-sidebar.html">
-                                            <img src="${pageContext.request.contextPath}/static/template_assets/images/blog/large-size/6.jpg" alt="Uren's Blog Image">
-                                        </a>
-                                        <span class="post-date">25-09-19</span>
-                                    </div>
-                                    <div class="blog-content">
-                                        <h3><a href="blog-details-left-sidebar.html">Corrupti, dolore tempore totam voluptate</a></h3>
-                                        <p>Maiores accusamus unde nulla quaerat deserunt, beatae molestias blanditiis aut recusandae saepe, quis, culpa voluptatum?</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Uren's Blog Area End Here -->
-
-
 <!-- Begin Uren's Footer Area -->
         <div class="uren-footer_area">
-            <div class="footer-top_area">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="newsletter-area">
-                                <h3 class="title">Join Our Newsletter Now</h3>
-                                <p class="short-desc">Get E-mail updates about our latest shop and special offers.</p>
-                                <div class="newsletter-form_wrap">
-                                    <form action="http://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="newsletters-form validate" target="_blank" novalidate>
-                                        <div id="mc_embed_signup_scroll">
-                                            <div id="mc-form" class="mc-form subscribe-form">
-                                                <input id="mc-email" class="newsletter-input" type="email" autocomplete="off" placeholder="Enter your email" />
-                                                <button class="newsletter-btn" id="mc-submit">Subscribe</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="footer-middle_area">
                 <div class="container-fluid">
                     <div class="row">
@@ -364,7 +230,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6">
                                 <div class="copyright">
-                                    <span><a href="templateshub.net">Templateshub</a></span>
+                                    <span><a href="https://www.templateshub.net/">Templateshub</a></span>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
