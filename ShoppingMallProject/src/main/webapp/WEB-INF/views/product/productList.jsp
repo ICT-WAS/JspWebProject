@@ -43,10 +43,7 @@
 											<!-- 부모 카테고리 리스트 --> <c:forEach var="category"
 												items="${categoryList}">
 												<c:if test="${category.parentCategoryId==0}">
-													<a
-														href="${pageContext.request.contextPath}/product/list?category=${category.categoryId}">
-														${category.name}
-													</a>
+													<a>${category.name}</a>
 
 													<!-- 하위 카테고리 리스트 -->
 													<c:forEach var="midCategory" items="${categoryList}">
@@ -153,6 +150,7 @@
 													<span class="sticker">New</span>
 												</div>
 												<div class="add-actions">
+													<div style="height: 1.0em;"></div>
 													<ul>
 														<li><a class="uren-add_cart" href="cart.html"
 															data-toggle="tooltip" data-placement="top"
@@ -172,6 +170,7 @@
 											</div>
 											<div class="product-content">
 												<div class="product-desc_info">
+												<div style="height: 1.0em;"></div>
 													<h6>
 														<a class="product-name"
 															href="${pageContext.request.contextPath}/product/list?id=${product.productId}">
@@ -204,6 +203,7 @@
 												<!-- 자바스크립트  createPagenationButton() 함수로 페이지네이션 -->
 											</ul>
 											<!-- 버튼 그리기 끝 -->
+											
 										</div>
 									</div>
 								</div>
@@ -281,6 +281,15 @@ function createPagenationButton(pageNumber, totalPage){
 	paginationContainer.innerHTML = ""; 
 	var currentUrl = window.location.href;
 	
+	// 페이지 번호 범위 설정
+	const maxPageButtons=5;
+	let startPage = Math.max(1, pageNumber - Math.floor(maxPageButtons / 2));
+    let endPage = Math.min(totalPage, startPage + maxPageButtons - 1);
+    
+    if (endPage - startPage < maxPageButtons - 1) {
+        startPage = Math.max(1, endPage - maxPageButtons + 1);
+    }
+	
     //이전 버튼 추가
     if(pageNumber > 1) {
     	const prevButton = document.createElement("li");
@@ -297,7 +306,7 @@ function createPagenationButton(pageNumber, totalPage){
     }
 	
     //페이지 번호 범위 계산
-    for (let i = Math.max(1, pageNumber - 2); i <= Math.min(totalPage, pageNumber + 2); i++) {
+    for (let i = startPage; i <= endPage; i++) {
     	//li 태그를 그림
         const pageButton = document.createElement("li");
     	//현재 페이지일 경우 "active"

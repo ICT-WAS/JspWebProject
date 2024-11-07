@@ -50,7 +50,7 @@
 									<div class="single-slide">
 										<c:choose>
 											<c:when test="${not empty productDTO.product.img1}">
-												<img src="${productDTO.product.img1 }" />
+												<img id="main-image" src="${productDTO.product.img1 }" />
 											</c:when>
 											<c:otherwise>
 												<img
@@ -76,23 +76,23 @@
                                     ]'>
                                     <c:choose>
                                 		<c:when test="${not empty productDTO.product.img1}">
-											<c:if test="${not empty productDTO.product.img1}">
+											<c:if test="${not empty productDTO.product.img1 and productDTO.product.img1 != 'NULL'}">
 												<div class="single-slide red">
-													<img
+													<img onclick="changeMainImage(this)"
 														src="${productDTO.product.img1}"
 														alt="${product.name}" />
 												</div>
 											</c:if>
-											<c:if test="${not empty productDTO.product.img2}">
-												<div class="single-slide red">
-													<img
+											<c:if test="${not empty productDTO.product.img2 and productDTO.product.img2 != 'NULL'}">
+												<div class="single-slide orange">
+													<img onclick="changeMainImage(this)"
 														src="${productDTO.product.img2}"
 														alt="${product.name}" />
 												</div>
 											</c:if>
-											<c:if test="${not empty productDTO.product.img3}">
-												<div class="single-slide red">
-													<img
+											<c:if test="${not empty productDTO.product.img3 and productDTO.product.img3 != 'NULL'}">
+												<div class="single-slide brown">
+													<img onclick="changeMainImage(this)"
 														src="${productDTO.product.img3}"
 														alt="${product.name}" />
 												</div>
@@ -208,8 +208,6 @@
                             <div class="product-tab">
                                 <ul class="nav product-menu">
                                     <li><a class="active" data-toggle="tab" href="#description"><span>상품설명</span></a></li>
-                                    <li><a data-toggle="tab" href="#specification"><span>상세정보</span></a></li>
-                                    <li><a data-toggle="tab" href="#reviews"><span>리뷰(수정필요)</span></a></li>
                                 </ul>
                             </div>
                             <div class="tab-content uren-tab_content">
@@ -217,37 +215,11 @@
                                     <div class="product-description">
                                         <ul>
                                             <li>
-                                                <strong>상품설명</strong>
+                                                <strong></strong>
                                                 <span>${product.description}</span>
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
-                                <div id="specification" class="tab-pane" role="tabpanel">
-                                    <table class="table table-bordered specification-inner_stuff">
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="2"><strong>Memory</strong></td>
-                                            </tr>
-                                        </tbody>
-                                        <tbody>
-                                            <tr>
-                                                <td>test 1</td>
-                                                <td>8gb</td>
-                                            </tr>
-                                        </tbody>
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="2"><strong>Processor</strong></td>
-                                            </tr>
-                                        </tbody>
-                                        <tbody>
-                                            <tr>
-                                                <td>No. of Cores</td>
-                                                <td>1</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                                 <div id="reviews" class="tab-pane" role="tabpanel">
                                     <div class="tab-pane active" id="tab-review">
@@ -352,6 +324,7 @@
 function show(){
 	const select = document.querySelector('.myniceselect.nice-select');
 	
+	//옵션이 있는 상품
 	if (select){
 		const selectedValue = select.value; 
 
@@ -362,11 +335,14 @@ function show(){
 			$(".quantity").hide();		
 			$(".cart-plus-minus-box").val(1);	
 		}
+		//옵션이 없는 상품
 	} else {
+		
 		$(".quantity").show();
 		$(".cart-plus-minus-box").val(1);
 	}
 	
+	//가격 초기화
 	updateTotalAmount();
 
 }
@@ -414,8 +390,6 @@ function updateTotalAmount() {
 }
 
 
-
-
 //옵션 클릭 시 추가금 포함한 금액 나타내기
 function updateOptionTotalAmount(){
 	
@@ -457,6 +431,12 @@ function updateTotal(amount){
 	$('#total-amount').text(formattedTotalPrice);
 }
 
+//이미지 변경 함수
+function changeMainImage(subImage){
+	var mainImage = document.getElementById('main-image');
+	mainImage.src=subImage.src;
+	mainImage.setAttribute('role', 'presentation');
+}
 
 //총 상품 금액이 해당 버튼을 클릭할 때마다 동적으로 변경됨
 function checkStockQuantity() {
