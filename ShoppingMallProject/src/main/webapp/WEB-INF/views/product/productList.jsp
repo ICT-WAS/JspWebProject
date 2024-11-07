@@ -18,9 +18,8 @@
 <body class="template-color-1">
 	<ui:header />
 
-<!-- 사이드바 + 상품 + 페이지네이션 -->
+<!-- 메인 컨텐츠 : 사이드바 + 상품 + 페이지네이션 끝-->
 	<div class="main-wrapper">
-		
 		<div class="shop-content_wrapper">
 			<div class="container-fluid">
 				<div class="row">
@@ -48,12 +47,12 @@
 													<!-- 하위 카테고리 리스트 -->
 													<c:forEach var="midCategory" items="${categoryList}">
 														<ul class="module-sub-list_item">
+														<c:set var="categoryQuantity" value="${productCounts[midCategory.categoryId]}" />
 															<c:if
-																test="${midCategory.parentCategoryId == category.categoryId}">
+																test="${midCategory.parentCategoryId == category.categoryId && categoryQuantity!=0}">
 																<li>
 																	<a href="${pageContext.request.contextPath}/product/list?category=${midCategory.categoryId}">
 																		- ${midCategory.name} 
-																		<c:set var="categoryQuantity" value="${productCounts[midCategory.categoryId]}" />
 																		<span>(${categoryQuantity})</span>
 																	</a>
 																</li>
@@ -185,9 +184,46 @@
 				</div>
 			</div>
 		</div>
-		<!-- 메인 컨텐츠 끝 -->
 	</div>
-	<!-- 사이드바 + 상품 + 페이지네이션 -->
+	<!-- 메인 컨텐츠 : 사이드바 + 상품 + 페이지네이션 끝-->
+	
+	<!-- 모달 영역 시작 -->
+	<!-- 검색어에 맞는 상품 없을 때 보여줄 모달 시작 -->
+	<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="myModalLabel">검색 결과</h5>
+				</div>
+				<div class="modal-body">
+					검색 조건에 맞는 상품이 없습니다.
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close-btn-search">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 검색어에 맞는 상품 없을 때 보여줄 모달 끝 -->
+	<!-- 수량이 없는 카테고리 조회 시 보여줄 모달 시작 -->
+	<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="myModalLabel">경고: 상품 조회 실패</h5>
+				</div>
+				<div class="modal-body">
+					해당 카테고리의 상품이 존재하지 않습니다.
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close-btn-category">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 수량이 없는 카테고리 조회 시 보여줄 모달 끝 -->
+	<!-- 모달 영역 끝 -->
+	
 	<ui:footer />
 	<ui:js />
 	
@@ -205,11 +241,21 @@ function changePage(pageNumber){
 	window.location.href = newUrl;
 }
 
-//(수정 중)페이지 크기가 바뀌면 파라미터 변경하기
+//페이지 크기가 바뀌면 파라미터 변경하기
 function changePageSize(pageSize){
 	var currentUrl = window.location.href;
-	var newUrl = updateQueryStringParameter(currentUrl, 'pageSize', pageSize);
-	console.log(newUrl);
+	var url = updateQueryStringParameter(currentUrl, 'pageSize', pageSize);
+	
+	var newUrl = new URL(url);
+	var params = new URLSearchParams(newUrl.search);
+	var urlParams = new URLSearchParams(currentUrl.split('?')[1]);
+	
+	//현재 url에 페이지 번호가 존재할 시 1으로 초기화
+	if(urlParams.has('page')){
+		params.set('page', '1');
+		newUrl.search = params.toString();
+	}
+	
 	window.location.href = newUrl;
 }
 
@@ -311,7 +357,6 @@ function createPagenationButton(pageNumber, totalPage){
     }
 }
 
-
 function updatedPrice(){
 	$(".new-price").each(function(){
 		const productPrice = $(this).text();
@@ -336,6 +381,51 @@ const observer = new MutationObserver((mutationsList) => {
         if (mutation.type === "childList") {
         }
     });
+});
+
+//조건에 맞는 모달 창을 보여주기
+window.onload = function() {
+    // URL 파라미터에서 모달 옵션을 확인
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('noResults') && urlParams.get('noResults') === 'true') {
+        $('#searchModal').modal('show');
+    }
+    if (urlParams.has('noCategory') && urlParams.get('noCategory') === 'true') {
+        $('#categoryModal').modal('show');
+        console.log("걸리는지 확인")
+    } 
+}
+
+//모달 닫기 버튼 클릭 시 URL에서 noResults=true 제거하고 페이지 업데이트
+document.getElementById('modal-close-btn-search').addEventListener('click', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // 'noResults' 파라미터가 존재하면 제거
+    if (urlParams.has('noResults')) {
+        urlParams.delete('noResults');
+    }
+
+    // URL을 새로 업데이트
+    const newUrl = window.location.pathname + '?' + urlParams.toString();
+
+    // 주소 표시줄에서 'noResults' 파라미터를 제거한 새로운 URL로 변경
+    window.history.replaceState({}, '', newUrl);
+});
+
+//모달 닫기 버튼 클릭 시 URL에서 noCategory=true 제거하고 페이지 업데이트
+document.getElementById('modal-close-btn-category').addEventListener('click', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // 'noCategory' 파라미터가 존재하면 제거
+    if (urlParams.has('noCategory')) {
+        urlParams.delete('noCategory');
+    }
+
+    // URL을 새로 업데이트
+    const newUrl = window.location.pathname + '?' + urlParams.toString();
+
+    // 주소 표시줄에서 'noResults' 파라미터를 제거한 새로운 URL로 변경
+    window.history.replaceState({}, '', newUrl);
 });
 
 observer.observe(document.getElementById("single-proudct-area"), { childList: true, subtree: true });
