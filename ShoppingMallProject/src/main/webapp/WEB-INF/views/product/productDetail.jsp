@@ -198,13 +198,7 @@ $(document).ready(function() {
 								
                                 <div class="qty-btn_area">
 									<ul>
-										<li><a class="qty-order_btn" href="cart.html">바로 구매</a></li>
 										<li><a class="qty-cart_btn" href="javascript:void(0)" onclick="addToCart(${product.productId})">카트 담기</a></li>
-										<li><a class="qty-wishlist_btn" href="wishlist.html"
-											data-toggle="tooltip" title="Add To Wishlist">
-												<i class="ion-android-favorite-outline"></i>
-											</a>
-										</li>
 									</ul>
 								</div>
                             </div>
