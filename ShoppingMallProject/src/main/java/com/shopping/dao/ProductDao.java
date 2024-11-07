@@ -15,167 +15,167 @@ import com.shopping.model.ProductPage;
 
 
 public class ProductDao extends SuperDao{
-   
-   //전체 상품 리스트
-   public List<Product> getProductList(){
-      List<Product> productList = new ArrayList<>();
-      
-      String sql = " SELECT * FROM PRODUCT";
-      
-      PreparedStatement pstmt = null ;
-      ResultSet rs = null;
-      
-      try{
-         
-         conn = super.getConnection();
-         pstmt = conn.prepareStatement(sql);
+	
+	//전체 상품 리스트
+	public List<Product> getProductList(){
+		List<Product> productList = new ArrayList<>();
+		
+		String sql = " SELECT * FROM PRODUCT";
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null;
+		
+		try{
+			
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
 
-         rs = pstmt.executeQuery();
-         
-         while (rs.next()) {
-            productList.add(getBeanData(rs));
-         }
-         
-      }catch (Exception e) {
-         e.printStackTrace();
-         
-      }finally {
-         closeResources(conn, pstmt, rs);
-      }
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				productList.add(getBeanData(rs));
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			
+		}finally {
+			closeResources(conn, pstmt, rs);
+		}
 
-      return productList;
-   }
+		return productList;
+	}
 
-   //(수정중)상품등록
-   public Product addProduct(Product product) {
-      String sql = "INSERT INTO product (product_name, brand, img1, img2, img3, stock_quantity, price, category_id, product_description, points, registration_date)";
-      sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	//(수정중)상품등록
+	public Product addProduct(Product product) {
+		String sql = "INSERT INTO product (product_name, brand, img1, img2, img3, stock_quantity, price, category_id, product_description, points, registration_date)";
+		sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-      PreparedStatement pstmt = null;      
-      ResultSet rs = null;
-      
-      try{
-         conn = super.getConnection();
-         pstmt = conn.prepareStatement(sql);
-         
-         pstmt.setString(1, product.getName());               
-      
-         rs = pstmt.executeQuery();
-         
-         if(rs.next()) {
-            product = getBeanData(rs);
-         }
-      
-      }catch(SQLException e) {
-         e.printStackTrace();
-      }finally {
-         closeResources(conn, pstmt, rs);
-      }
-      
-      return product;  //조회된 상품 반환, 찾지 못하면 null
-   }
-   
-   //productDao 카테고리 상품 별 수량 가져오기
-   public int getProductCountByCategoryId(long categoryId) {
-      int count = 0;
-      
-      String sql = " SELECT COUNT(*) FROM PRODUCT WHERE CATEGORY_ID = ?";
-      
-      PreparedStatement pstmt = null;      
-      ResultSet rs = null;
-      
-      try{
-         conn = super.getConnection();
-         pstmt = conn.prepareStatement(sql);
-         
-         pstmt.setLong(1, categoryId);               
-      
-         rs = pstmt.executeQuery();
-         
-         if(rs.next()) {
-            count = rs.getInt(1);
-         }
-      
-      }catch(SQLException e) {
-         e.printStackTrace();
-      }finally {
-         closeResources(conn, pstmt, rs);
-      }
-      
-      return count;
-   }
-   
-   //productId에 매칭되는 상품 한 개 가져오기 - 옵션 포함
-   public ProductOptionDTO getProductById(long productId) {
-      Product product = new Product();
-      String sql = " SELECT * FROM PRODUCT WHERE PRODUCT_ID = ?";
-      
-      PreparedStatement pstmt = null ;
-      ResultSet rs = null;
-      
-      try{
-         
-         conn = super.getConnection();
-         pstmt = conn.prepareStatement(sql);
-         pstmt.setLong(1, productId);
-         
-         rs = pstmt.executeQuery();
-         
-         if (rs.isBeforeFirst()) {
-             System.out.println("resultSet에 데이터가 없습니다.");
-         } else {
-             System.out.println("resultSet을 찾을 수 없습니다.");
-         }
-         
-         if(rs.next()) {
-            product = getBeanData(rs);
-         }
-         
-      }catch(SQLException e) {
-         System.err.println("SQL Error: " + e.getMessage());
-         e.printStackTrace();
-         
-      }finally {
-         closeResources(conn, pstmt, rs);
-      }
-      
-      // 상품에 맞는 옵션 가져오기
-      
-      sql = " SELECT * FROM PRODUCT_OPTION WHERE PRODUCT_ID = ?";
-      
-      pstmt = null ;  //초기화
-      rs = null;  //초기화
-      List<ProductOption> OptionList= new ArrayList<>();
-      
-      try{
-         
-         conn = super.getConnection();
-         pstmt = conn.prepareStatement(sql);
-         pstmt.setLong(1, productId);
-         
-         rs = pstmt.executeQuery();
-         
-      while (rs.next()) {
-         OptionList.add(getOptionBeanData(rs));
-      }
-      
-      
-      
-      }catch(SQLException e) {
-         System.err.println("SQL Error: " + e.getMessage());
-         e.printStackTrace();
-         
-      }finally {
-         closeResources(conn, pstmt, rs);
-      }
+		PreparedStatement pstmt = null;		
+		ResultSet rs = null;
+		
+		try{
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, product.getName());					
+		
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				product = getBeanData(rs);
+			}
+		
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			closeResources(conn, pstmt, rs);
+		}
+		
+		return product;  //조회된 상품 반환, 찾지 못하면 null
+	}
+	
+	//productDao 카테고리 상품 별 수량 가져오기
+	public int getProductCountByCategoryId(long categoryId) {
+		int count = 0;
+		
+		String sql = " SELECT COUNT(*) FROM PRODUCT WHERE CATEGORY_ID = ?";
+		
+		PreparedStatement pstmt = null;		
+		ResultSet rs = null;
+		
+		try{
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, categoryId);					
+		
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			closeResources(conn, pstmt, rs);
+		}
+		
+		return count;
+	}
+	
+	//productId에 매칭되는 상품 한 개 가져오기 - 옵션 포함
+	public ProductOptionDTO getProductById(long productId) {
+		Product product = new Product();
+		String sql = " SELECT * FROM PRODUCT WHERE PRODUCT_ID = ?";
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null;
+		
+		try{
+			
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, productId);
+			
+			rs = pstmt.executeQuery();
+			
+			if (rs.isBeforeFirst()) {
+			    System.out.println("resultSet에 데이터가 없습니다.");
+			} else {
+			    System.out.println("resultSet을 찾을 수 없습니다.");
+			}
+			
+			if(rs.next()) {
+				product = getBeanData(rs);
+			}
+			
+		}catch(SQLException e) {
+			System.err.println("SQL Error: " + e.getMessage());
+			e.printStackTrace();
+			
+		}finally {
+			closeResources(conn, pstmt, rs);
+		}
+		
+		// 상품에 맞는 옵션 가져오기
+		
+		sql = " SELECT * FROM PRODUCT_OPTION WHERE PRODUCT_ID = ?";
+		
+		pstmt = null ;  //초기화
+		rs = null;  //초기화
+		List<ProductOption> OptionList= new ArrayList<>();
+		
+		try{
+			
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, productId);
+			
+			rs = pstmt.executeQuery();
+			
+		while (rs.next()) {
+			OptionList.add(getOptionBeanData(rs));
+		}
+		
+		
+		
+		}catch(SQLException e) {
+			System.err.println("SQL Error: " + e.getMessage());
+			e.printStackTrace();
+			
+		}finally {
+			closeResources(conn, pstmt, rs);
+		}
 
-      return new ProductOptionDTO(product, OptionList);  //조회된 상품 반환, 찾지 못하면 null
-   }
-   
-   //필터링된 리스트 + 총 카운트 가져오기
+		return new ProductOptionDTO(product, OptionList);  //조회된 상품 반환, 찾지 못하면 null
+	}
+	
+	//필터링된 리스트 + 총 카운트 가져오기
     public ProductPage getFilteredProductPage(Integer categoryId, String name, Double minPrice, Double maxPrice, String brand, int page, int pageSize) {
         System.out.println(categoryId);
-       int totalCount = 0;
+    	int totalCount = 0;
         Product product = new Product();
         List<Product> productList = new ArrayList<>();
 
@@ -214,7 +214,7 @@ public class ProductDao extends SuperDao{
         sql += setConditionSql(categoryId, name, minPrice, maxPrice, brand);
 
         sql += " ORDER BY PRODUCT_ID DESC"+
-              " ) p " +
+        		" ) p " +
                 " WHERE ROWNUM <= ? " +  //endRow
                 ") " +
                 " WHERE rnum >= ?";  //startRow
@@ -251,51 +251,51 @@ public class ProductDao extends SuperDao{
 
         return new ProductPage(productList, totalCount);
     }
-   
-   
-   //예외처리 받아서 처리하는 곳
-   private Product getBeanData(ResultSet rs) throws SQLException{
-       Product product = null;
-       
-       try {
-          product = new Product();
-          product.setProductId(rs.getLong("PRODUCT_ID"));
-           product.setCategoryId(rs.getLong("CATEGORY_ID"));
-           product.setName(rs.getString("PRODUCT_NAME"));
-           product.setImg1(rs.getString("IMG1"));
-           product.setImg2(rs.getString("IMG2"));
-           product.setImg3(rs.getString("IMG3"));
-           product.setDescription(rs.getString("PRODUCT_DESCRIPTION"));
-           product.setPrice(rs.getDouble("PRICE"));
-           product.setQuantity(rs.getDouble("STOCK_QUANTITY"));
-           product.setRegistrationDate(rs.getTimestamp("REGISTRATION_DATE").toLocalDateTime());
-           product.setBrand(rs.getString("BRAND"));
-           product.setStatus(rs.getString("STATUS"));
-       }catch (Exception e) {
-          e.printStackTrace();
-          return null;
-       }
-       return product;
-   }
-   
-   private ProductOption getOptionBeanData(ResultSet rs) throws SQLException{
-      ProductOption productOption = new ProductOption();
-      try {
-         productOption.setOptionId(rs.getLong("OPTION_ID"));
-         productOption.setProductId(rs.getLong("PRODUCT_ID"));
-         productOption.setOptionType(rs.getString("OPTION_TYPE"));
-         productOption.setOptionName(rs.getString("OPTION_NAME"));
-         productOption.setAdditionalPrice(rs.getDouble("ADDITIONAL_PRICE"));
-         productOption.setOptionStockquantity(rs.getDouble("OPTION_STOCK_QUANTITY"));
-      }catch (Exception e) {
-          e.printStackTrace();
-          return null;
-       }
-      return productOption;
-      
-   }
-   
-   //조건에 맞는 sql 문장 설정
+	
+	
+	//예외처리 받아서 처리하는 곳
+	private Product getBeanData(ResultSet rs) throws SQLException{
+		 Product product = null;
+		 
+		 try {
+			 product = new Product();
+			 product.setProductId(rs.getLong("PRODUCT_ID"));
+		     product.setCategoryId(rs.getLong("CATEGORY_ID"));
+		     product.setName(rs.getString("PRODUCT_NAME"));
+		     product.setImg1(rs.getString("IMG1"));
+		     product.setImg2(rs.getString("IMG2"));
+		     product.setImg3(rs.getString("IMG3"));
+		     product.setDescription(rs.getString("PRODUCT_DESCRIPTION"));
+		     product.setPrice(rs.getDouble("PRICE"));
+		     product.setQuantity(rs.getDouble("STOCK_QUANTITY"));
+		     product.setRegistrationDate(rs.getTimestamp("REGISTRATION_DATE").toLocalDateTime());
+		     product.setBrand(rs.getString("BRAND"));
+		     product.setStatus(rs.getString("STATUS"));
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 return null;
+		 }
+		 return product;
+	}
+	
+	private ProductOption getOptionBeanData(ResultSet rs) throws SQLException{
+		ProductOption productOption = new ProductOption();
+		try {
+			productOption.setOptionId(rs.getLong("OPTION_ID"));
+			productOption.setProductId(rs.getLong("PRODUCT_ID"));
+			productOption.setOptionType(rs.getString("OPTION_TYPE"));
+			productOption.setOptionName(rs.getString("OPTION_NAME"));
+			productOption.setAdditionalPrice(rs.getDouble("ADDITIONAL_PRICE"));
+			productOption.setOptionStockquantity(rs.getDouble("OPTION_STOCK_QUANTITY"));
+		}catch (Exception e) {
+			 e.printStackTrace();
+			 return null;
+		 }
+		return productOption;
+		
+	}
+	
+	//조건에 맞는 sql 문장 설정
     private String setConditionSql(Integer categoryId, String name, Double minPrice, Double maxPrice, String brand) {
         String sql = "";
         if (name != null && !name.isEmpty()) {
@@ -337,159 +337,50 @@ public class ProductDao extends SuperDao{
         }
         return paramIndex;
     }
-   
-   //리소스 닫기
-   private void closeResources(Connection conn, PreparedStatement pstmt, ResultSet rs) {
-      try {
-         if (rs != null) {rs.close();}
-         
-      }catch (Exception e) {
-         e.printStackTrace();
-      }
-      
-      closeResources(conn, pstmt);
-   }
-   
-   private void closeResources(Connection conn, PreparedStatement pstmt) {
-      try {
-         if (pstmt != null) {pstmt.close();}
-         if (conn != null) {conn.close();}
-         
-      }catch (Exception e) {
-         e.printStackTrace();
-      }
-   }
-
-   public ProductOption getOption(Long optionId) {
-      ProductOption option = null;
-      
-      PreparedStatement pstmt = null ;
-      ResultSet rs = null ;      
-      String sql = " select * from PRODUCT_OPTION " ;
-      sql += " where OPTION_ID = ?  " ;
-      
-      try {
-         conn = super.getConnection() ;
-         pstmt = conn.prepareStatement(sql) ;
-         pstmt.setLong(1, optionId);
-         rs = pstmt.executeQuery() ;
-         
-         if(rs.next()) {
-            option = getOptionBeanData(rs);
-         }
-         
-      } catch (Exception e) {
-         e.printStackTrace();
-      }finally {
-         try {
-            if(rs!=null) {rs.close();}
-            if(pstmt!=null) {pstmt.close();}
-            if(conn!=null) {conn.close();}
-         } catch (Exception e2) {
-            e2.printStackTrace();
-         }
-      }
-      
-      return option;
-   }
-
-   public Product getProduct(Long productId) {
-      Product product = null;
-      
-      PreparedStatement pstmt = null ;
-      ResultSet rs = null ;      
-      String sql = " select * from PRODUCT " ;
-      sql += " where PRODUCT_ID = ?  " ;
-      
-      try {
-         conn = super.getConnection() ;
-         pstmt = conn.prepareStatement(sql) ;
-         pstmt.setLong(1, productId);
-         rs = pstmt.executeQuery() ;
-         
-         if(rs.next()) {
-            product = getBeanData(rs);
-         }
-         
-      } catch (Exception e) {
-         e.printStackTrace();
-      }finally {
-         try {
-            if(rs!=null) {rs.close();}
-            if(pstmt!=null) {pstmt.close();}
-            if(conn!=null) {conn.close();}
-         } catch (Exception e2) {
-            e2.printStackTrace();
-         }
-      }
-      
-      return product;
-   }
-
-   public int updateQuantity(Connection conn, Map<Long, Integer> optionIdAndQuantity) {
-      int result = 0;
-      PreparedStatement pstmt = null;
-      
-      for(Long optionId : optionIdAndQuantity.keySet()) {
-         try {
-            String sql = "UPDATE PRODUCT_OPTION";
-            sql += " SET OPTION_STOCK_QUANTITY = ?";
-            sql += " WHERE OPTION_ID = ?";
-            
-            pstmt = conn.prepareStatement(sql);
-            
-               pstmt.setDouble(1, optionIdAndQuantity.get(optionId));            
-               pstmt.setLong(2, optionId);
-            
-            result = pstmt.executeUpdate();
-         }catch (Exception e) {
-            e.printStackTrace();
-            try {
-               conn.rollback();
-            }catch(Exception e2) {
-               e2.printStackTrace();
-            }
-         }finally {
-            try {
-               if(pstmt!=null) {pstmt.close();}
-            }catch (Exception e) {
-               e.printStackTrace();
-            }
-         }
-      }
-      
-      return result;
-      
-   }
-   
-   public boolean insertProduct(Product product) {
-		int cnt = 0;
-		
-		String sql = "INSERT INTO product (category_id, product_name, img1, img2, img3, price, stock_quantity, brand, status, product_description)";
-		sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, '판매중', ?)";
-
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
+	
+	//리소스 닫기
+	private void closeResources(Connection conn, PreparedStatement pstmt, ResultSet rs) {
 		try {
-			conn = super.getConnection();
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setLong(1, product.getCategoryId());
-			pstmt.setString(2, product.getName());
-			pstmt.setString(3, product.getImg1());
-			pstmt.setString(4, product.getImg2());
-			pstmt.setString(5, product.getImg3());
-			pstmt.setDouble(6, product.getPrice());
-			pstmt.setDouble(7, product.getQuantity());
-			pstmt.setString(8, product.getBrand());
-			pstmt.setString(9, product.getDescription());
-
-			cnt = pstmt.executeUpdate();
+			if (rs != null) {rs.close();}
 			
-		} catch (SQLException e) {
+		}catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		}
+		
+		closeResources(conn, pstmt);
+	}
+	
+	private void closeResources(Connection conn, PreparedStatement pstmt) {
+		try {
+			if (pstmt != null) {pstmt.close();}
+			if (conn != null) {conn.close();}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ProductOption getOption(Long optionId) {
+		ProductOption option = null;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from PRODUCT_OPTION " ;
+		sql += " where OPTION_ID = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setLong(1, optionId);
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				option = getOptionBeanData(rs);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
 			try {
 				if(rs!=null) {rs.close();}
 				if(pstmt!=null) {pstmt.close();}
@@ -498,52 +389,76 @@ public class ProductDao extends SuperDao{
 				e2.printStackTrace();
 			}
 		}
-
-		return cnt == 1;
+		
+		return option;
 	}
 
-	public List<ProductOptionDTO> getAllProductDto() {
-		// (관리자용) 옵션 정보 포함됨전체 상품 조회
-		List<ProductOptionDTO> productDtoList  = new ArrayList<ProductOptionDTO>();
-		List<Product> productList = getProductList();
+	public Product getProduct(Long productId) {
+		Product product = null;
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from PRODUCT " ;
+		sql += " where PRODUCT_ID = ?  " ;
 		
 		try {
-			conn = getConnection();
-			for(Product product : productList) {
-				String sql = " SELECT * FROM PRODUCT_OPTION WHERE PRODUCT_ID = ?";
-				
-				PreparedStatement pstmt = null;
-				ResultSet rs = null;
-				
-				List<ProductOption> optionList = new ArrayList<>();
-				try {
-					pstmt = conn.prepareStatement(sql);
-					pstmt.setLong(1, product.getProductId());
-					rs = pstmt.executeQuery();
-					while (rs.next()) {
-						optionList.add(getOptionBeanData(rs));
-					}
-					
-					productDtoList.add(new ProductOptionDTO(product, optionList));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} finally {
-					try {
-						if(rs!=null) {rs.close();}
-						if(pstmt!=null) {pstmt.close();}
-					} catch (Exception e2) {
-						e2.printStackTrace();
-					}
-				}
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setLong(1, productId);
+			rs = pstmt.executeQuery() ;
+			
+			if(rs.next()) {
+				product = getBeanData(rs);
 			}
-		} finally {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
 			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
 				if(conn!=null) {conn.close();}
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
-			
 		}
-		return productDtoList;
+		
+		return product;
+	}
+
+	public int updateQuantity(Connection conn, Map<Long, Integer> optionIdAndQuantity) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		for(Long optionId : optionIdAndQuantity.keySet()) {
+			try {
+				String sql = "UPDATE PRODUCT_OPTION";
+				sql += " SET OPTION_STOCK_QUANTITY = ?";
+				sql += " WHERE OPTION_ID = ?";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+	            pstmt.setDouble(1, optionIdAndQuantity.get(optionId));            
+	            pstmt.setLong(2, optionId);
+				
+				result = pstmt.executeUpdate();
+			}catch (Exception e) {
+				e.printStackTrace();
+				try {
+					conn.rollback();
+				}catch(Exception e2) {
+					e2.printStackTrace();
+				}
+			}finally {
+				try {
+					if(pstmt!=null) {pstmt.close();}
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return result;
+		
 	}
 }
