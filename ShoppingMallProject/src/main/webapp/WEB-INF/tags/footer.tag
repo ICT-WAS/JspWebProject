@@ -114,7 +114,7 @@
                             <div class="footer-widgets_info">
                                 <div class="footer-widgets_logo">
                                     <a href="#">
-                                        <img src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/1.png" alt="Uren's Footer Logo">
+                                        <img src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/4.png" alt="Uren's Footer Logo">
                                     </a>
                                 </div>
                                 <div class="widget-short_desc">
@@ -186,7 +186,7 @@
                                         <div class="footer-widgets">
                                             <ul>
                                                 <li><a href="https://miro.com/app/board/uXjVLQRFe_4=/?moveToWidget=3458764604263981844&cot=14">참고자료</a></li>
-                                                <li><a href="https://www.erdcloud.com/d/reujrP9ybDxSSHvo2">테이블 설계1</a></li>
+                                                <li><a href="https://www.erdcloud.com/d/6Kc6aEZHbiGw4ekME">테이블 설계1</a></li>
                                                 <li><a href="https://docs.google.com/spreadsheets/d/17t8Lppm_wKqV4mi_W-lrew5vdrCWp3bQou6if-u2BvY/edit?gid=1524174810#gid=1524174810">테이블 설계2</a></li>
                                                 <li><a href="javascript:void(0)">발표자료(추가 예정)</a></li>
                                             </ul>

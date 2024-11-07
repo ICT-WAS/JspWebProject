@@ -140,7 +140,7 @@ addressList = (List<Address>)request.getAttribute("addressList");
 											        <td>${map.OrderDatetime}</td>
 											        <td>${map.formattedTotal }원, (${map.order.paymentMethod})</td>
 											        <td>${map.statusDescription}</td>
-											        <td><a href="javascript:void(0)" class="uren-btn uren-btn_dark uren-btn_sm"><span>자세히 보기</span></a></td>
+											        <td><a href="/ShoppingMallProject/order/completed?orderNo=${map.order.orderNumber}" class="uren-btn uren-btn_dark uren-btn_sm"><span>자세히 보기</span></a></td>
 											    </tr>
 											</c:forEach>
 							                <!-- 주문 내역 반복 -->
