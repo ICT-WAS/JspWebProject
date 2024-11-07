@@ -108,6 +108,7 @@
 									data-placement="top" title="4">4</a> <a class="grid-5"
 									data-target="gridview-5" data-toggle="tooltip"
 									data-placement="top" title="5">5</a>
+									개씩 보기
 							</div>
 							<div class="product-item-selection_area">
 
@@ -152,15 +153,15 @@
 												<div class="add-actions">
 													<div style="height: 1.0em;"></div>
 													<ul>
-														<li><a class="uren-add_cart" href="cart.html"
+														<li><a class="uren-add_cart" href="#"
 															data-toggle="tooltip" data-placement="top"
 															title="Add To Cart">
 																<i class="ion-bag"></i>
 															</a>
 														</li>
-														<li class="quick-view-btn" data-toggle="modal"
+														<li class="quick-view-btn"
 															data-target="#exampleModalCenter">
-															<a href="javascript:void(0)" data-toggle="tooltip"
+															<a href="#" data-toggle="tooltip"
 															data-placement="top" title="Quick View">
 																<i class="ion-android-open"></i>
 															</a>

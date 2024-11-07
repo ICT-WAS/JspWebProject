@@ -18,7 +18,7 @@
                         <div class="col-xl-5 col-lg-6 d-none d-lg-block">
                             <div class="hm-form_area">
                                 <form action="${pageContext.request.contextPath}/product/list" class="hm-searchbox" method="get">
-                                    <input type="text" name="name" placeholder="검색어를 입력하세요">
+                                    <input type="text" name="name" placeholder="찾으려는 상품명을 입력하세요">
                                     <button class="header-search_btn" type="submit">
 	                                    <i class="ion-ios-search-strong">
 	                                    	<span>검색</span>
@@ -98,7 +98,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="custom-menu_col col-12 d-none d-lg-block"></div>  <!-- css 정렬 -->
+                        <div class="custom-menu_col col-12 d-none d-lg-block">
+                        <div class="main-menu_area position-relative">
+                                <nav class="main-nav">
+                                    <ul>
+                                        <li class=""><a href="/ShoppingMallProject/product/list">상품 목록</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>  <!-- css 정렬 -->
                         <div class="custom-setting_col col-12 d-none d-lg-block">
                             <div class="ht-right_area">
                                 <div class="ht-menu">

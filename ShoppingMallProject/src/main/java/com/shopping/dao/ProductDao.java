@@ -546,4 +546,42 @@ public class ProductDao extends SuperDao{
 		}
 		return productDtoList;
 	}
+	
+	public Long getProductCount() {
+		Long count = 0L;
+		String sql = "SELECT count(*) as count from product";
+		try {
+			conn = getConnection();
+			
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			
+			try {
+				conn = super.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					count = rs.getLong("count");					
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if(rs!=null) {rs.close();}
+					if(pstmt!=null) {pstmt.close();}
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		} finally {
+			try {
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			
+		}
+		return count;
+	}
 }
