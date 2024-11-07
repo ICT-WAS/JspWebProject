@@ -81,16 +81,6 @@
 							<!-- 사이드바 - 카테고리 끝 -->
 						</div>
 						<!-- 조건 별 조회 끝 -->
-						
-						<!-- 사이드바 배너 시작 -->
-						<div class="sidebar-banner_area">
-							<div class="banner-item img-hover_effect">
-								<a href="javascript:void(0)"> <img
-									src="${pageContext.request.contextPath}/static/template_assets/images/shop/1.jpg" alt="상품 이미지가 존재하지 않습니다.">
-								</a>
-							</div>
-						</div>
-						<!-- 사이드바 배너 끝 -->
 					</div>
 					<!-- 사이드바 끝 -->
 					
@@ -108,10 +98,8 @@
 									data-placement="top" title="4">4</a> <a class="active grid-5"
 									data-target="gridview-5" data-toggle="tooltip"
 									data-placement="top" title="5">5</a>
-									개씩 보기
 							</div>
 							<div class="product-item-selection_area">
-
 								<div class="product-showing">
 									<label class="select-label">페이지 크기:</label> 
 									<select class="myniceselect short-select nice-select" id="pageSizeSelect" name="pageSize" onchange="changePageSize(this.value)">
@@ -186,7 +174,6 @@
 												<!-- 자바스크립트  createPagenationButton() 함수로 페이지네이션 -->
 											</ul>
 											<!-- 버튼 그리기 끝 -->
-											
 										</div>
 									</div>
 								</div>
@@ -211,7 +198,7 @@ const totalPage = ${totalPage};
 const contextPath = "${pageContext.request.contextPath}";
 const pageSize = "<%= request.getParameter("pageSize") != null ? request.getParameter("pageSize") : "15" %>";
 
-//(수정 중)페이지가 바뀌면 파라미터 변경하기
+//페이지가 바뀌면 파라미터 변경하기
 function changePage(pageNumber){
 	var currentUrl = window.location.href;
 	var newUrl = updateQueryStringParameter(currentUrl, 'page', pageNumber);
