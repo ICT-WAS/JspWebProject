@@ -52,7 +52,7 @@ public class AdminUpdate extends HttpServlet {
 	    }
 	    
 	    if(status == 1) { // 회원 수정
-	    	int cnt = dao.memberUpdate(memberNickname, memberEmail, memberPhoneNumber, memberId);
+	    	int cnt = dao.memberUpdate(memberNickname, memberEmail, memberPhoneNumber, status, memberId);
 	    	System.out.println("업데이트 다오값 확인 " + cnt);
 	    	
 	    }

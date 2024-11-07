@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ taglib prefix="ui" tagdir="/WEB-INF/tags"%>
 
@@ -53,12 +54,20 @@
 										required /></td>
 								</div>
 								<!-- 수정하기 버튼 -->
+								
 								<td><button type="submit" name="status" value="1"
 										class="uren-btn uren-btn_primary uren-btn_sm">수정하기</button></td>
 
-								<!-- 탈퇴 버튼(비활성화) -->
+								<!-- 회원 활성화 버튼 -->
+								<c:if test="${member.status == 1 }">
 								<td><button type="submit" name="status" value="0"
-										class="uren-btn uren-btn_dark uren-btn_sm">회원 탈퇴</button></td>
+										class="uren-btn uren-btn_dark uren-btn_sm">회원 비활성화</button></td>
+								</c:if>
+								<c:if test="${member.status == 0 }">
+								<td><button type="submit" name="status" value="1"
+										class="uren-btn uren-btn_dark uren-btn_sm">회원 활성화</button></td>
+								</c:if>
+								
 							</form>
 							<!-- 정보 끝 -->
 						</tbody>
