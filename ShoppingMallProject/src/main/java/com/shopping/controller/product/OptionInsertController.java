@@ -3,6 +3,9 @@ package com.shopping.controller.product;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.shopping.dao.ProductDao;
@@ -52,13 +56,30 @@ public class OptionInsertController extends HttpServlet {
         	return;
         }
         
+        // ===========================================================
+        
+        JSONArray optionArray = new JSONArray();
+        List<ProductOption> optionList = productDao.getOptionList(productId);
+
+        // 리스트의 각 항목을 JSON 배열에 추가
+        for (ProductOption optionItem : optionList) {
+        	JSONObject jsonResponse = new JSONObject();
+        	jsonResponse.put("optionId", optionItem.getOptionId());
+            jsonResponse.put("optionName", optionItem.getOptionName());
+            jsonResponse.put("additionalPrice", optionItem.getAdditionalPrice());
+            jsonResponse.put("optionStockquantity", optionItem.getOptionStockquantity());
+
+            optionArray.put(jsonResponse);
+        }
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
         // 응답
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("status", "success");
         jsonResponse.put("message", "Data received successfully");
-        
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        jsonResponse.put("data", optionArray);
 
         response.getWriter().write(jsonResponse.toString());
 	}

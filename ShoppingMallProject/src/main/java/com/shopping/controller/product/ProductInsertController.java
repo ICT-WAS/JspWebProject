@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.shopping.dao.CategoryDao;
 import com.shopping.dao.ProductDao;
@@ -29,9 +30,15 @@ public class ProductInsertController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String id = (String)request.getSession(false).getAttribute("id");
+		HttpSession session = request.getSession(false);
 		
-		if(id == null || !id.equals("admin")) {
+		if(session == null) {
+			response.sendRedirect("/ShoppingMallProject/main");
+			return;
+		}
+
+		String id = (String) session.getAttribute("id");
+		if(!id.equals("admin")) {
 			response.sendRedirect("/ShoppingMallProject/main");
 			return;
 		}

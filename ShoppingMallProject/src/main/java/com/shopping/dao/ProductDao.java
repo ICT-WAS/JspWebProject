@@ -654,4 +654,38 @@ public class ProductDao extends SuperDao{
 		}
 		return count;
 	}
+
+	public List<ProductOption> getOptionList(Long productId) {
+		List<ProductOption> optionList  = new ArrayList<ProductOption>();
+		
+		PreparedStatement pstmt = null ;
+		ResultSet rs = null ;		
+		String sql = " select * from PRODUCT_OPTION " ;
+		sql += " where PRODUCT_ID = ?  " ;
+		
+		try {
+			conn = super.getConnection() ;
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setLong(1, productId);
+			
+			rs = pstmt.executeQuery() ;
+			
+			while(rs.next()) {
+				optionList.add(getOptionBeanData(rs));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+				
+		return optionList;
+	}
 }

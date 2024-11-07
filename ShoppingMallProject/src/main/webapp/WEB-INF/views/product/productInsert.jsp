@@ -35,39 +35,24 @@ List<Category> categoryList = new ArrayList<Category>();
 
 				document.getElementById("img").addEventListener("change",
 						onImgChanged);
-
-				// 가격 형변환
-
-				// 폼 전송시 확인
-				function checkValidation() {
-
-					// 카테고리 미선택
-					if (document.getElementById('categoryId').value == 'none') {
-						alert("카테고리를 선택하세요");
-						return false;
-					}
-
-					// 가격 숫자 형식이 아님
-
-					// 재고 숫자 형식이 아님
-
-					return true;
-				}
-
-				/* 
-
-				[옵션 수정]
-				옵션이름, 옵션가격, 재고
-
-				[상품 수정]
-				상품명, 이미지, 상세설명, 가격,
-				재고, 브랜드, 카테고리
-
-
-				<<결제시 옵션이 없는 상품 재고 확인 고려>> */
-
-				// 재고, 가격 필드 유효성 검사 또는 형변환 필요
+				
 			});
+	
+	// 폼 전송시 확인
+	function checkValidation() {
+
+		// 카테고리 미선택
+		if (document.getElementById('categoryId').value == 'none') {
+			alert("카테고리를 선택하세요");
+			return false;
+		}
+
+		// 가격 숫자 형식이 아님
+
+		// 재고 숫자 형식이 아님
+
+		return true;
+	}
 
 	function hideAllCategory() {
 		document.getElementById('categoryId').value = 'none';
@@ -104,57 +89,6 @@ List<Category> categoryList = new ArrayList<Category>();
 		document.getElementById('categoryId').value = categoryId;
 	}
 
-	// 옵션 추가
-	function onAddOptionButtonClicked() {
-		var optionName = document.getElementById('addOptionName').value;
-		
-		// 이름이 비어있으면 안됨
-		if(optionName == null || optionName === "") {
-			console.log('이름이 비어있음');
-			return;
-		}
-		
-		var additionalPrice = document.getElementById('addAdditionalPrice').value;
-		var parsedPrice = isNaN(parseInt(additionalPrice)) ? 0 : parseInt(additionalPrice);
-		
-		var optionStockquantity = document.getElementById('addOptionStockquantity').value;
-		var parsedStockquantity = isNaN(parseInt(optionStockquantity)) ? 0 : parseInt(optionStockquantity);
-		
-		const data = {
-				productId : productId,
-				optionName: optionName,
-				additionalPrice: parsedPrice,
-				optionStockquantity: parsedStockquantity
-            };
-
-            // Fetch API로 POST 요청 보내기
-            fetch('/ShoppingMallProject/add-option', {
-                method: 'POST', // HTTP 메소드: POST
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data) 
-            })
-            .then(response => {
-            	  if (!response.ok) {  // 응답이 성공적이지 않은 경우
-            	    throw new Error('Network response was not ok');
-            	  }
-            	  return response.json();  // JSON 형태로 응답을 파싱
-            	})
-            	.then(data => {
-            	  console.log('Success:', data);  // 서버에서 반환한 데이터 처리
-            	  
-            	  // 
-            	  $('.addCategoryModal-close').trigger('click');
-            	  $('.modal-backdrop').hide();
-            	  alert("성공적으로 저장되었습니다.");
-            	  
-            	})
-            	.catch(error => {
-            	  console.error('Error:', error);  // 오류 처리
-            	});
-	}
-	
 	// 이미지 업로드
 	function onImgChanged() {
 		var fileList = document.getElementById("fileList");
@@ -244,7 +178,7 @@ th, td {
 											<div class="row">
 
 												<!-- 카테고리 -->
-												<div class="col-md-2 mt-3">
+												<div class="col-md-4 mt-3">
 													<label for="category">카테고리</label>
 												</div>
 
@@ -349,30 +283,6 @@ th, td {
 												<!-- 재고 끝-->
 
 
-												<!-- 옵션 추가 버튼 -->
-												<div class="col-md-12 mt-3">
-													<button type="button" class="btn btn-primary"
-														data-toggle="modal" data-target="#myModal">옵션 추가</button>
-												</div>
-												<!-- 옵션 추가 버튼 끝-->
-
-												<!-- 옵션 정보 -->
-												
-												<div class="col-md-12 mt-3 overflow-auto">
-												<table class="table">
-													<tr>
-														<td colspan="2">옵션명</td>
-														<td>옵션가</td>
-														<td>남은 수량</td>
-													</tr>
-													<tr>
-														<td colspan="2">옵션이름</td>
-														<td>+3,000</td>
-														<td>00</td>
-													</tr>
-												</table>
-												</div>
-
 												<!-- 상세설명 -->
 												<label for="description">상세설명</label>
 												<textarea class="form-control" rows="20" id="description"
@@ -397,51 +307,6 @@ th, td {
 				</div>
 			</div>
 		</div>
-
-		<!-- 옵션 추가 모달 -->
-		<div class="modal fade" id="myModal" tabindex="-1"
-			aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="myModalLabel">옵션 추가</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<!-- 옵션 -->
-						<input type="hidden" id="addOptionId"/>
-						<table class="table">
-							<tr>
-								<th colspan="2">옵션명</th>
-								<th>옵션가격</th>
-								<th>재고</th>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<input id="addOptionName" class="form-control" type="text" value="" /></td>
-								<td>
-									<input id="addAdditionalPrice" type="text" class="form-control" value="" />
-								</td>
-								<td>
-									<input id="addOptionStockquantity" type="text" class="form-control" value="" />
-								</td>
-							</tr>
-						</table>
-
-						<div class="col-md-2 mt-3"></div>
-						<div class="col-md-8 mt-3">
-							<button type="button" class="btn btn-warning"
-								onclick="onAddOptionButtonClicked">옵션 추가</button>
-						</div>
-						<div class="col-md-2 mt-3"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 옵션 추가 모달 끝 -->
 
 	</div>
 	<ui:footer />
