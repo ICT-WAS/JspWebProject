@@ -14,9 +14,16 @@
     <meta charset="UTF-8">
 	
 	<!-- 스크립트 -->
-	<script type="text/javascript">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	
-	$('#btn-add-category').click(onAddCategoryButtonClicked);
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$('#btn-add-category').click(onAddCategoryButtonClicked);
+	});
 	
 	// 카테고리 추가
 	function onAddCategoryButtonClicked() {
@@ -30,7 +37,6 @@
 		}
 		
 		// 이미 존재하는 카테고리인지 검사(TODO:)
-		
 		
 		
 		var parentCategoryId = parseInt(document.getElementById('addCategory').value);
@@ -65,7 +71,8 @@
             	  console.log('Success:', data);  // 서버에서 반환한 데이터 처리
             	  
             	  // 
-            	  $('#addCategoryModal').modal('hide');
+            	  $('.addCategoryModal-close').trigger('click');
+            	  $('.modal-backdrop').hide();
             	  alert("성공적으로 저장되었습니다.");
             	  
             	})

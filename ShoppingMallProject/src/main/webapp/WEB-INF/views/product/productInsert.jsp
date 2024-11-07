@@ -27,52 +27,52 @@ Map<Long, List<Category>> categoryMap = (Map<Long, List<Category>>) request.getA
 List<Category> categoryList = new ArrayList<Category>();
 %>
 <script>
-	$(document).ready(function() {
-		hideAllCategory();
-		
-		// parentId 없는 하위 선택 드롭박스 표시
-		document.getElementById('0').style.display = 'block';
-		
-		document.getElementById("img").addEventListener("change", onImgChanged);
-		
-		// 가격 형변환
-		
-		
-		// 폼 전송시 확인
-		function checkValidation() {
-			
-			// 카테고리 미선택
-			if(document.getElementById('categoryId').value == 'none') {
-				 alert("카테고리를 선택하세요");
-				 return false;
-			}
-			
-			// 가격 숫자 형식이 아님
-			
-			
-			// 재고 숫자 형식이 아님
-			
-			return true;
-		}
+	$(document).ready(
+			function() {
+				hideAllCategory();
 
-		/* 
+				// parentId 없는 하위 선택 드롭박스 표시
+				document.getElementById('0').style.display = 'block';
 
-		[옵션 수정]
-		옵션이름, 옵션가격, 재고
+				document.getElementById("img").addEventListener("change",
+						onImgChanged);
 
-		[상품 수정]
-		상품명, 이미지, 상세설명, 가격,
-		재고, 브랜드, 카테고리
+				// 가격 형변환
+
+				// 폼 전송시 확인
+				function checkValidation() {
+
+					// 카테고리 미선택
+					if (document.getElementById('categoryId').value == 'none') {
+						alert("카테고리를 선택하세요");
+						return false;
+					}
+
+					// 가격 숫자 형식이 아님
+
+					// 재고 숫자 형식이 아님
+
+					return true;
+				}
+
+				/* 
+
+				[옵션 수정]
+				옵션이름, 옵션가격, 재고
+
+				[상품 수정]
+				상품명, 이미지, 상세설명, 가격,
+				재고, 브랜드, 카테고리
 
 
-		<<결제시 옵션이 없는 상품 재고 확인 고려>> */
+				<<결제시 옵션이 없는 상품 재고 확인 고려>> */
 
-		// 재고, 가격 필드 유효성 검사 또는 형변환 필요
-	});
+				// 재고, 가격 필드 유효성 검사 또는 형변환 필요
+			});
 
 	function hideAllCategory() {
 		document.getElementById('categoryId').value = 'none';
-		
+
 		var categories = document.querySelectorAll('.category');
 		categories.forEach(function(category) {
 			category.style.display = 'none';
@@ -85,66 +85,65 @@ List<Category> categoryList = new ArrayList<Category>();
 		var parentCategoryId = document.getElementById('rootCategory').value;
 		var categoryDiv = document.getElementById('div' + parentCategoryId);
 		var category = document.getElementById(parentCategoryId);
-		
+
 		if (categoryDiv != null) {
-			const optionToSelect = category.querySelector('option[value="none"]');
+			const optionToSelect = category
+					.querySelector('option[value="none"]');
 			optionToSelect.selected = true;
 			categoryDiv.style.display = 'block';
 		}
 	}
-	
+
 	function updateCategory() {
 		var parentCategoryId = document.getElementById('rootCategory').value;
 		var categoryId = document.getElementById(parentCategoryId).value;
 		document.getElementById('categoryId').value = categoryId;
 	}
-	
+
 	function onImgChanged() {
 		var fileList = document.getElementById("fileList");
-        fileList.innerHTML = ""; 
-        
-        var files = event.target.files;
-        
-        for (var i = 0; i < Math.min(files.length, 3); i++) {
-            var file = files[i];
-            
-            // 이미지 파일인 경우 미리보기 표시
-            if (file.type.startsWith("image/")) {
-                var reader = new FileReader();
-                
-                reader.onload = (function(file) {
-                    return function(e) {
-                        // 파일 이름
-                        var fileName = file.name;
-                        
-                        // 이미지 미리보기
-                        var imgElement = document.createElement("img");
-                        imgElement.src = e.target.result; // 읽은 이미지 데이터
-                        imgElement.style.maxWidth = "100px"; // 미리보기 이미지 크기 제한
-                        imgElement.style.margin = "5px"; // 간격 설정
-                        
-                        // 파일 이름과 이미지 미리보기 표시
-                        var fileItem = document.createElement("div");
-                        fileItem.appendChild(imgElement);
-                        fileItem.appendChild(document.createTextNode(fileName));
-                        fileList.appendChild(fileItem);
-                    };
-                })(file);
-                
-                reader.readAsDataURL(file); // 이미지 파일을 읽어 Data URL로 변환
-            } else {
-                var fileItem = document.createElement("div");
-                fileItem.appendChild(document.createTextNode(file.name)); // 파일 이름만 표시
-                fileList.appendChild(fileItem);
-            }
-        }
+		fileList.innerHTML = "";
+
+		var files = event.target.files;
+
+		for (var i = 0; i < Math.min(files.length, 3); i++) {
+			var file = files[i];
+
+			// 이미지 파일인 경우 미리보기 표시
+			if (file.type.startsWith("image/")) {
+				var reader = new FileReader();
+
+				reader.onload = (function(file) {
+					return function(e) {
+						// 파일 이름
+						var fileName = file.name;
+
+						// 이미지 미리보기
+						var imgElement = document.createElement("img");
+						imgElement.src = e.target.result; // 읽은 이미지 데이터
+						imgElement.style.maxWidth = "100px"; // 미리보기 이미지 크기 제한
+						imgElement.style.margin = "5px"; // 간격 설정
+
+						// 파일 이름과 이미지 미리보기 표시
+						var fileItem = document.createElement("div");
+						fileItem.appendChild(imgElement);
+						fileItem.appendChild(document.createTextNode(fileName));
+						fileList.appendChild(fileItem);
+					};
+				})(file);
+
+				reader.readAsDataURL(file); // 이미지 파일을 읽어 Data URL로 변환
+			} else {
+				var fileItem = document.createElement("div");
+				fileItem.appendChild(document.createTextNode(file.name)); // 파일 이름만 표시
+				fileList.appendChild(fileItem);
+			}
+		}
 	}
-	
 </script>
 
 <!-- style -->
 <style>
-
 table {
 	table-layout: fixed;
 	border-collapse: collapse; /* 테두리 겹침 방지 */
@@ -178,7 +177,9 @@ th, td {
 					<div class="row">
 						<div class="col-6 col-lg-12">
 							<div class="checkbox-form">
-								<form action="/ShoppingMallProject/product/uploadServlet" method="POST" enctype="multipart/form-data" onsubmit="return checkValidation()">
+								<form action="/ShoppingMallProject/product/uploadServlet"
+									method="POST" enctype="multipart/form-data"
+									onsubmit="return checkValidation()">
 									<div class="row">
 										<div class="col-md-2"></div>
 										<div class="col-md-8 mt-3">
@@ -227,8 +228,9 @@ th, td {
 																	<option value="none">하위 카테고리 선택</option>
 
 																	<!-- rootCategoryId 카테고리의 하위 카테고리 목록 생성-->
-																	<c:forEach var="category" items="${categoryMap.get(rootCategoryId)}">
-																		<option value="${category.categoryId}" >${category.name}</option>
+																	<c:forEach var="category"
+																		items="${categoryMap.get(rootCategoryId)}">
+																		<option value="${category.categoryId}">${category.name}</option>
 																	</c:forEach>
 																</select>
 															</div>
@@ -236,7 +238,7 @@ th, td {
 													</div>
 												</div>
 												<!-- 하위 카테고리 옵션 추가 끝-->
-												
+
 												<input type="hidden" id="categoryId" name="categoryId">
 												<!-- 카테고리 끝-->
 
@@ -245,7 +247,8 @@ th, td {
 													<label for="brand">브랜드</label>
 												</div>
 												<div class="col-md-8 mt-3">
-													<input type="text" class="form-control" id="brand" name="brand" required maxlength="20">
+													<input type="text" class="form-control" id="brand"
+														name="brand" required maxlength="20">
 												</div>
 												<!-- 브랜드 끝-->
 
@@ -254,15 +257,16 @@ th, td {
 													<label for="product-name">상품명</label>
 												</div>
 												<div class="col-md-8 mt-3">
-													<input type="text" class="form-control" id="productName" name="productName" required maxlength="50">
+													<input type="text" class="form-control" id="productName"
+														name="productName" required maxlength="50">
 												</div>
 												<!-- 상품명 끝-->
 
 												<!-- 이미지 -->
 												<div class="col-md-12 mt-3">
 													<label for="formFileMultiple" class="form-label">이미지</label>
-													<input class="form-control" type="file"
-														id="img" name="img" multiple accept="image/*">
+													<input class="form-control" type="file" id="img" name="img"
+														multiple accept="image/*">
 													<p>최대 3개까지 선택 가능합니다.</p>
 													<div id="fileList"></div>
 												</div>
@@ -273,7 +277,8 @@ th, td {
 													<label for="price">가격</label>
 												</div>
 												<div class="col-md-8 mt-3">
-													<input type="text" class="form-control" id="price" name="price" required>
+													<input type="text" class="form-control" id="price"
+														name="price" required>
 												</div>
 												<!-- 가격 끝 -->
 
@@ -282,7 +287,8 @@ th, td {
 													<label for="quantity">재고</label>
 												</div>
 												<div class="col-md-8 mt-3">
-													<input type="number" class="form-control" id="quantity" name="quantity" required>
+													<input type="number" class="form-control" id="quantity"
+														name="quantity" required>
 												</div>
 												<!-- 재고 끝-->
 
@@ -295,6 +301,8 @@ th, td {
 												<!-- 옵션 추가 버튼 끝-->
 
 												<!-- 옵션 정보 -->
+												
+												<div class="col-md-12 mt-3 overflow-auto">
 												<table class="table">
 													<tr>
 														<td colspan="2">옵션명</td>
@@ -307,6 +315,7 @@ th, td {
 														<td>00</td>
 													</tr>
 												</table>
+												</div>
 
 												<!-- 상세설명 -->
 												<label for="description">상세설명</label>
@@ -332,7 +341,7 @@ th, td {
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- 옵션 추가 모달 -->
 		<div class="modal fade" id="myModal" tabindex="-1"
 			aria-labelledby="myModalLabel" aria-hidden="true">
@@ -355,7 +364,8 @@ th, td {
 								<th>재고</th>
 							</tr>
 							<tr>
-								<td colspan="2"><input class="form-control" type="text" value="" /></td>
+								<td colspan="2"><input class="form-control" type="text"
+									value="" /></td>
 								<td><input type="text" class="form-control" value="" /></td>
 								<td><input type="text" class="form-control" value="" /></td>
 							</tr>
@@ -363,8 +373,8 @@ th, td {
 
 						<div class="col-md-2 mt-3"></div>
 						<div class="col-md-8 mt-3">
-						<button type="button" class="btn btn-warning"
-							onclick="onAddOptionButtonClicked">옵션 추가</button>
+							<button type="button" class="btn btn-warning"
+								onclick="onAddOptionButtonClicked">옵션 추가</button>
 						</div>
 						<div class="col-md-2 mt-3"></div>
 					</div>

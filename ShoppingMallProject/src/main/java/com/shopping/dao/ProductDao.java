@@ -547,6 +547,41 @@ public class ProductDao extends SuperDao{
 		return productDtoList;
 	}
 	
+	public boolean insertOption(ProductOption option) {
+		int result = 0;
+		
+		String sql = "INSERT INTO PRODUCT_OPTION (PRODUCT_ID, OPTION_TYPE, OPTION_NAME, ADDITIONAL_PRICE, OPTION_STOCK_QUANTITY)";
+		sql += " VALUES (?, ?, ?, ?, ?)";
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = super.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setLong(1, option.getProductId());
+			pstmt.setString(2, option.getOptionType());
+			pstmt.setString(3, option.getOptionName());
+			pstmt.setDouble(4, option.getAdditionalPrice());
+			pstmt.setDouble(5, option.getOptionStockquantity());
+
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+				if(conn!=null) {conn.close();}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return result == 1;
+	}
+		
 	public Long getProductCount() {
 		Long count = 0L;
 		String sql = "SELECT count(*) as count from product";
