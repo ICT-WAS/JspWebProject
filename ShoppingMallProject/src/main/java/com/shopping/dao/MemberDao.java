@@ -538,13 +538,13 @@ public class MemberDao extends SuperDao{
 		return cnt;
 	}
 	
-	public int memberUpdate(String nickName, String email, String phoneNumber, long id){
+	public int memberUpdate(String nickName, String email, String phoneNumber, int status, long id){
 		int cnt = 0;
 		
 		PreparedStatement pstmt = null ;
 		
 		String sql = " UPDATE MEMBERS ";
-		sql += " SET MEMBER_NICKNAME = ?, MEMBER_EMAIL = ?, PHONE_NUMBER = ?, UPDATED_AT = ? ";
+		sql += " SET MEMBER_NICKNAME = ?, MEMBER_EMAIL = ?, PHONE_NUMBER = ?, UPDATED_AT = ?, STATUS = ? ";
 		sql += " WHERE MEMBER_ID = ? " ;
 		
 		try {
@@ -555,7 +555,8 @@ public class MemberDao extends SuperDao{
 	        pstmt.setString(2, email);        
 	        pstmt.setString(3, phoneNumber);
 	        pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
-	        pstmt.setLong(5, id);               
+	        pstmt.setInt(5, status);
+	        pstmt.setLong(6, id);               
 			
 			cnt = pstmt.executeUpdate();
 			
