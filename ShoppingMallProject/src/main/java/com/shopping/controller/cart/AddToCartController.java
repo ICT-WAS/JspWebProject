@@ -30,7 +30,7 @@ public class AddToCartController extends HttpServlet {
 		}
 		Long productId = Long.parseLong(request.getParameter("productId"));
 		Long optionId;
-		if(request.getParameter("optionId").equals("null")) {
+		if("null".equals(request.getParameter("optionId")) || request.getParameter("optionId")==null || "undefined".equals(request.getParameter("optionId"))) {
 			optionId = null;
 		}else {
 			optionId = Long.parseLong(request.getParameter("optionId"));
@@ -49,7 +49,6 @@ public class AddToCartController extends HttpServlet {
 		cartProduct.setProductId(productId);
 		cartProduct.setOptionId(optionId);
 		cartProduct.setQuantity(quantity);
-		
 		boolean bool = dao.check(cartId, productId, optionId);
 		String message = "";
 		if(bool) {
