@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page import="com.shopping.dao.ProductDao" %>
 	
 <!doctype html>	
 <html class="no-js" lang="zxx">
@@ -42,13 +43,6 @@ $(document).ready(function() {
 
 <body class="template-color-1">
 	<ui:header />
-	<!-- 상품 id가 없는 파라미터가 요청될 시 리스트로 리다이렉트 시작 -->
-	<c:if test="${empty product}">
-		<script>
-			window.location.href = '${pageContext.request.contextPath}/product/list';
-		</script>
-	</c:if>
-	<!-- 상품 id가 없는 파라미터가 요청될 시 리스트로 리다이렉트 끝 -->
 	<!-- 메인 컨텐츠 시작 -->
     <div class="main-wrapper">
     
