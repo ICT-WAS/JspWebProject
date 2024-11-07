@@ -101,11 +101,11 @@
 								<a class="grid-1" data-target="gridview-1" data-toggle="tooltip"
 									data-placement="top" title="1">1</a> <a class="grid-2"
 									data-target="gridview-2" data-toggle="tooltip"
-									data-placement="top" title="2">2</a> <a class="active grid-3"
+									data-placement="top" title="2">2</a> <a class="grid-3"
 									data-target="gridview-3" data-toggle="tooltip"
 									data-placement="top" title="3">3</a> <a class="grid-4"
 									data-target="gridview-4" data-toggle="tooltip"
-									data-placement="top" title="4">4</a> <a class="grid-5"
+									data-placement="top" title="4">4</a> <a class="active grid-5"
 									data-target="gridview-5" data-toggle="tooltip"
 									data-placement="top" title="5">5</a>
 									개씩 보기
@@ -124,7 +124,7 @@
 						</div>
 						
 						<!--  상품리스트 보여주는 곳 -->
-						<div class="shop-product-wrap grid gridview-3 img-hover-effect_area row" id="product-list-container">
+						<div class="shop-product-wrap grid gridview-5 img-hover-effect_area row" id="product-list-container">
 							<!--  개별 상품리스트 시작 -->
 							<c:forEach var="product" items="${productList}">
 							<div class="col-lg-4">
@@ -149,24 +149,6 @@
 												</a>
 												<div class="sticker">
 													<span class="sticker">New</span>
-												</div>
-												<div class="add-actions">
-													<div style="height: 1.0em;"></div>
-													<ul>
-														<li><a class="uren-add_cart" href="#"
-															data-toggle="tooltip" data-placement="top"
-															title="Add To Cart">
-																<i class="ion-bag"></i>
-															</a>
-														</li>
-														<li class="quick-view-btn"
-															data-target="#exampleModalCenter">
-															<a href="#" data-toggle="tooltip"
-															data-placement="top" title="Quick View">
-																<i class="ion-android-open"></i>
-															</a>
-														</li>
-													</ul>
 												</div>
 											</div>
 											<div class="product-content">
