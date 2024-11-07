@@ -114,7 +114,7 @@
                             <div class="footer-widgets_info">
                                 <div class="footer-widgets_logo">
                                     <a href="#">
-                                        <img src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/1.png" alt="Uren's Footer Logo">
+                                        <img src="${pageContext.request.contextPath}/static/template_assets/images/menu/logo/4.png" alt="Uren's Footer Logo">
                                     </a>
                                 </div>
                                 <div class="widget-short_desc">
